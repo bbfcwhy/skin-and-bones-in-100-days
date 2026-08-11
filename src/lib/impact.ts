@@ -1,3 +1,4 @@
+import { estimateExerciseCalories } from "./energy";
 import { getMondayKey, getPlanForDate } from "./plan";
 import type { AdditionalExercise, AdditionalFood, DailyRecord, DayPlan } from "./types";
 
@@ -31,6 +32,8 @@ interface AnalyzeImpactInput {
   additionalExercises: AdditionalExercise[];
   previousWeekDeviation: number;
   futurePlans: DayPlan[];
+  /** 估算活動消耗用；沒有可用體重就傳 null，系統不會硬湊數字。 */
+  weightKg: number | null;
 }
 
 export function calculateWeekDeviation(
@@ -82,9 +85,9 @@ function buildAdjustments(weekDeviation: number, futurePlans: DayPlan[]): Propos
 
 function getRecoveryWarning(exercises: AdditionalExercise[]): string | null {
   const hasHighLoad = exercises.some((exercise) => (
-    exercise.intensity === "high"
-    || exercise.category === "hiit"
+    exercise.category === "hiit"
     || exercise.minutes >= 60
+    || (exercise.category === "run" && (exercise.distance ?? 0) >= 8)
   ));
 
   if (!hasHighLoad) return null;
@@ -103,7 +106,12 @@ export function analyzeImpact(input: AnalyzeImpactInput): ImpactResult {
   const intakeDeviation = intakeCalories - input.plan.targetCalories;
   const weekDeviation = input.previousWeekDeviation + intakeDeviation;
   const reportedExerciseCalories = input.additionalExercises.reduce(
-    (total, exercise) => total + (exercise.activeCalories ?? 0),
+    (total, exercise) => total + (exercise.activeCalories ?? estimateExerciseCalories({
+      category: exercise.category,
+      minutes: exercise.minutes,
+      km: exercise.distance,
+      weightKg: input.weightKg,
+    }) ?? 0),
     0,
   );
   const proposedAdjustments = hasUnknownFood ? [] : buildAdjustments(weekDeviation, input.futurePlans);

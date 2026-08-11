@@ -36,6 +36,7 @@ describe("額外飲食與運動影響", () => {
       additionalExercises: [],
       previousWeekDeviation: 0,
       futurePlans: [getPlanForDate("2026-08-11")],
+      weightKg: null,
     });
 
     expect(result.status).toBe("steady");
@@ -52,6 +53,7 @@ describe("額外飲食與運動影響", () => {
       additionalExercises: [],
       previousWeekDeviation: 0,
       futurePlans: [],
+      weightKg: null,
     });
 
     expect(result.status).toBe("needs-estimate");
@@ -69,6 +71,7 @@ describe("額外飲食與運動影響", () => {
       additionalExercises: [],
       previousWeekDeviation: 100,
       futurePlans,
+      weightKg: null,
     });
 
     expect(result.status).toBe("adjust");
@@ -86,11 +89,79 @@ describe("額外飲食與運動影響", () => {
       additionalExercises: [exercise()],
       previousWeekDeviation: 0,
       futurePlans: [getPlanForDate("2026-08-11")],
+      weightKg: null,
     });
 
     expect(result.intakeDeviation).toBe(400);
     expect(result.reportedExerciseCalories).toBe(500);
     expect(result.recoveryWarning).toContain("24 到 48 小時");
+  });
+
+  it("恢復提醒改看類型、時間與距離，舊資料的強度欄位不再左右判斷", () => {
+    const base = {
+      plan: getPlanForDate("2026-08-10"),
+      baseCalories: 2050,
+      additionalFoods: [],
+      previousWeekDeviation: 0,
+      futurePlans: [],
+      weightKg: null,
+    };
+
+    const legacyHighIntensityWalk = analyzeImpact({
+      ...base,
+      additionalExercises: [exercise({ category: "walk", minutes: 30, distance: 3, intensity: "high", activeCalories: null })],
+    });
+    expect(legacyHighIntensityWalk.recoveryWarning).toBeNull();
+
+    const longRun = analyzeImpact({
+      ...base,
+      additionalExercises: [exercise({ category: "run", minutes: 50, distance: 8, intensity: undefined, activeCalories: null })],
+    });
+    expect(longRun.recoveryWarning).toContain("24 到 48 小時");
+
+    const longSession = analyzeImpact({
+      ...base,
+      additionalExercises: [exercise({ category: "walk", minutes: 60, distance: null, intensity: undefined, activeCalories: null })],
+    });
+    expect(longSession.recoveryWarning).toContain("24 到 48 小時");
+
+    const hiit = analyzeImpact({
+      ...base,
+      additionalExercises: [exercise({ category: "hiit", minutes: 20, distance: null, intensity: undefined, activeCalories: null })],
+    });
+    expect(hiit.recoveryWarning).toContain("24 到 48 小時");
+  });
+
+  it("沒有手錶數值時，用體重估算補上活動消耗，手錶值優先", () => {
+    const withEstimate = analyzeImpact({
+      plan: getPlanForDate("2026-08-10"),
+      baseCalories: 2050,
+      additionalFoods: [],
+      additionalExercises: [
+        exercise({ id: "walk-1", category: "walk", minutes: 30, distance: null, intensity: undefined, activeCalories: null }),
+        exercise({ id: "run-1", category: "run", minutes: 60, distance: 10, intensity: undefined, activeCalories: 700 }),
+      ],
+      previousWeekDeviation: 0,
+      futurePlans: [],
+      weightKg: 74,
+    });
+
+    expect(withEstimate.reportedExerciseCalories).toBe(836);
+
+    const withoutWeight = analyzeImpact({
+      plan: getPlanForDate("2026-08-10"),
+      baseCalories: 2050,
+      additionalFoods: [],
+      additionalExercises: [
+        exercise({ id: "walk-1", category: "walk", minutes: 30, distance: null, intensity: undefined, activeCalories: null }),
+      ],
+      previousWeekDeviation: 0,
+      futurePlans: [],
+      weightKg: null,
+    });
+
+    expect(withoutWeight.reportedExerciseCalories).toBe(0);
+    expect(withEstimate.intakeDeviation).toBe(0);
   });
 
   it("本週偏差只計算有記錄的日子，並包含已套用的熱量調整", () => {

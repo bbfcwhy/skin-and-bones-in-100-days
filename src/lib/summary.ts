@@ -23,7 +23,10 @@ function exerciseLines(record: DailyRecord): string {
   return record.additionalExercises.map((exercise) => {
     const distance = exercise.distance === null ? "" : `，${exercise.distance} km`;
     const calories = exercise.activeCalories === null ? "" : `，裝置顯示 ${exercise.activeCalories} kcal`;
-    return `- ${exercise.name}：${exercise.minutes} 分鐘${distance}，${exercise.intensity === "high" ? "高" : exercise.intensity === "moderate" ? "中" : "低"}強度${calories}`;
+    const intensity = exercise.intensity
+      ? `，${exercise.intensity === "high" ? "高" : exercise.intensity === "moderate" ? "中" : "低"}強度`
+      : "";
+    return `- ${exercise.name}：${exercise.minutes} 分鐘${distance}${intensity}${calories}`;
   }).join("\n");
 }
 

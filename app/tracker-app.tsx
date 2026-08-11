@@ -9,6 +9,12 @@ import {
   useState,
 } from "react";
 import {
+  categoryForPlannedExercise,
+  compareToTarget,
+  estimateExerciseCalories,
+  resolveWeightKg,
+} from "@/src/lib/energy";
+import {
   analyzeImpact,
   calculateWeekDeviation,
   type ImpactResult,
@@ -36,9 +42,25 @@ import type {
   AppState,
   DailyRecord,
   DayPlan,
+  ExerciseCategory,
+  ExerciseDefinition,
+  TargetRange,
 } from "@/src/lib/types";
 
 type Tab = "today" | "week" | "trend" | "settings";
+
+const categoryLabel: Record<ExerciseCategory, string> = {
+  walk: "散步",
+  yoga: "瑜伽",
+  run: "跑步",
+  hiit: "HIIT",
+  strength: "肌力",
+  other: "其他運動",
+};
+
+function formatRange(range: TargetRange, unit: string): string {
+  return range[0] === range[1] ? `${range[0]} ${unit}` : `${range[0]}–${range[1]} ${unit}`;
+}
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
@@ -75,7 +97,7 @@ function randomId(prefix: string): string {
 }
 
 function completionForDate(state: AppState, dateKey: string): { completed: number; total: number; percent: number } {
-  const tasks = getChecklistForDate(dateKey);
+  const tasks = getChecklistForDate(dateKey, 0, { trackWaist: state.profile.trackWaist });
   const record = state.records[dateKey];
   const completed = tasks.filter((task) => record?.checks[task.id]).length;
   return {
@@ -113,6 +135,7 @@ export default function TrackerApp() {
   const [tab, setTab] = useState<Tab>("today");
   const [dateKey, setDateKey] = useState(CHALLENGE_START);
   const [toast, setToast] = useState("");
+  const [exerciseCategory, setExerciseCategory] = useState<ExerciseCategory>("walk");
 
   useEffect(() => {
     setState(loadState());
@@ -146,8 +169,12 @@ export default function TrackerApp() {
   );
   const plan = useMemo(() => effectivePlan(state, dateKey), [dateKey, state]);
   const checklist = useMemo(
-    () => getChecklistForDate(dateKey, record.calorieAdjustment),
-    [dateKey, record.calorieAdjustment],
+    () => getChecklistForDate(dateKey, record.calorieAdjustment, { trackWaist: state.profile.trackWaist }),
+    [dateKey, record.calorieAdjustment, state.profile.trackWaist],
+  );
+  const weightKg = useMemo(
+    () => resolveWeightKg(state.records, dateKey, state.profile),
+    [dateKey, state.profile, state.records],
   );
   const completion = useMemo(() => completionForDate(state, dateKey), [dateKey, state]);
   const progress = useMemo(() => getChallengeProgress(dateKey), [dateKey]);
@@ -163,7 +190,8 @@ export default function TrackerApp() {
     additionalExercises: record.additionalExercises,
     previousWeekDeviation: previousWeek.deviation,
     futurePlans,
-  }), [futurePlans, plan, previousWeek.deviation, record]);
+    weightKg,
+  }), [futurePlans, plan, previousWeek.deviation, record, weightKg]);
 
   const updateProfileNumber = (key: "startWeight" | "goalWeight", value: string) => {
     setState((current) => ({
@@ -194,6 +222,13 @@ export default function TrackerApp() {
     });
   };
 
+  const setExerciseActual = (exerciseId: string, key: "actualKm" | "actualMinutes", value: string) => {
+    updateRecord((current) => {
+      if (!current.exerciseResults[exerciseId]) current.exerciseResults[exerciseId] = { load: "", result: "" };
+      current.exerciseResults[exerciseId][key] = value === "" ? null : Number(value);
+    });
+  };
+
   const addFood = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -217,23 +252,22 @@ export default function TrackerApp() {
     event.preventDefault();
     const form = event.currentTarget;
     const values = new FormData(form);
-    const name = String(values.get("name") ?? "").trim();
     const minutes = Number(values.get("minutes"));
-    if (!name || !minutes) return;
+    if (!minutes) return;
+    const category = String(values.get("category")) as ExerciseCategory;
     const exercise: AdditionalExercise = {
       id: randomId("exercise"),
-      name,
-      category: String(values.get("category")) as AdditionalExercise["category"],
+      name: categoryLabel[category],
+      category,
       minutes,
       distance: optionalNumber(values.get("distance")),
-      intensity: String(values.get("intensity")) as AdditionalExercise["intensity"],
-      area: String(values.get("area")) as AdditionalExercise["area"],
       activeCalories: optionalNumber(values.get("activeCalories")),
       note: String(values.get("note") ?? "").trim(),
       createdAt: new Date().toISOString(),
     };
     updateRecord((current) => current.additionalExercises.push(exercise));
     form.reset();
+    setExerciseCategory("walk");
     showToast("額外運動已加入負荷判斷");
   };
 
@@ -307,6 +341,59 @@ export default function TrackerApp() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const renderPlannedExercise = (exercise: ExerciseDefinition) => {
+    const results = record.exerciseResults[exercise.id];
+    const target = exercise.target;
+
+    if (!target) {
+      return (
+        <article className="exercise-row" key={exercise.id}>
+          <div><strong>{exercise.name}</strong><small>{exercise.prescription}{exercise.note ? `，${exercise.note}` : ""}</small></div>
+          <div className="exercise-inputs">
+            <input aria-label={`${exercise.name} 重量`} placeholder="重量 kg" value={results?.load ?? ""} onChange={(event) => setExerciseResult(exercise.id, "load", event.target.value)} />
+            <input aria-label={`${exercise.name} 實做`} placeholder="實做，例 3×10" value={results?.result ?? ""} onChange={(event) => setExerciseResult(exercise.id, "result", event.target.value)} />
+          </div>
+        </article>
+      );
+    }
+
+    const actualKm = results?.actualKm ?? null;
+    const actualMinutes = results?.actualMinutes ?? null;
+    const estimated = estimateExerciseCalories({
+      category: categoryForPlannedExercise(exercise, plan.dayType),
+      minutes: actualMinutes,
+      km: actualKm,
+      weightKg,
+    });
+
+    const facts: string[] = [];
+    if (target.km) {
+      const comparison = compareToTarget(actualKm, target.km);
+      facts.push(`目標 ${formatRange(target.km, "km")}${comparison.label ? `，${comparison.label}` : ""}`);
+    }
+    if (target.minutes) {
+      const comparison = compareToTarget(actualMinutes, target.minutes);
+      facts.push(`目標 ${formatRange(target.minutes, "分鐘")}${comparison.label ? `，${comparison.label}` : ""}`);
+    }
+    if (estimated !== null) facts.push(`約 ${estimated} kcal`);
+
+    return (
+      <article className="exercise-row" key={exercise.id}>
+        <div>
+          <strong>{exercise.name}</strong>
+          <small>{exercise.prescription}{exercise.note ? `，${exercise.note}` : ""}</small>
+          <small>{facts.join(" · ")}</small>
+        </div>
+        <div className="exercise-inputs">
+          {target.km && (
+            <input type="number" inputMode="decimal" step="0.1" min="0" aria-label={`${exercise.name} 實際距離`} placeholder="實際 km" value={actualKm ?? ""} onChange={(event) => setExerciseActual(exercise.id, "actualKm", event.target.value)} />
+          )}
+          <input type="number" inputMode="numeric" step="1" min="0" aria-label={`${exercise.name} 實際分鐘`} placeholder="實際分鐘" value={actualMinutes ?? ""} onChange={(event) => setExerciseActual(exercise.id, "actualMinutes", event.target.value)} />
+        </div>
+      </article>
+    );
+  };
+
   const renderToday = () => (
     <>
       {(state.profile.startWeight === null || state.profile.goalWeight === null) && (
@@ -352,7 +439,9 @@ export default function TrackerApp() {
           <label>正常餐點熱量<input type="number" inputMode="numeric" step="10" placeholder={`不含臨時加餐，目標 ${plan.targetCalories}`} value={record.baseCalories ?? ""} onChange={(event) => setMetric("baseCalories", event.target.value)} /></label>
           <label>全天蛋白質<input type="number" inputMode="numeric" step="1" placeholder="g" value={record.protein ?? ""} onChange={(event) => setMetric("protein", event.target.value)} /></label>
           <label>步數<input type="number" inputMode="numeric" step="100" placeholder="步" value={record.steps ?? ""} onChange={(event) => setMetric("steps", event.target.value)} /></label>
-          <label>腰圍<input type="number" inputMode="decimal" step="0.1" placeholder="cm，週日量" value={record.waist ?? ""} onChange={(event) => setMetric("waist", event.target.value)} /></label>
+          {state.profile.trackWaist && (
+            <label>腰圍<input type="number" inputMode="decimal" step="0.1" placeholder="cm，週日量" value={record.waist ?? ""} onChange={(event) => setMetric("waist", event.target.value)} /></label>
+          )}
         </div>
       </section>
 
@@ -383,15 +472,7 @@ export default function TrackerApp() {
             <img src={`${basePath}/movements/${plan.workoutName.includes("B") ? "strength-b" : "strength-a"}.png`} alt={`${plan.workoutName} 動作圖解`} />
           )}
           <div className="exercise-list">
-            {plan.exercises.map((exercise) => (
-              <article className="exercise-row" key={exercise.id}>
-                <div><strong>{exercise.name}</strong><small>{exercise.prescription}{exercise.note ? `，${exercise.note}` : ""}</small></div>
-                <div className="exercise-inputs">
-                  <input aria-label={`${exercise.name} 重量`} placeholder="重量 kg" value={record.exerciseResults[exercise.id]?.load ?? ""} onChange={(event) => setExerciseResult(exercise.id, "load", event.target.value)} />
-                  <input aria-label={`${exercise.name} 實做`} placeholder="實做，例 3×10" value={record.exerciseResults[exercise.id]?.result ?? ""} onChange={(event) => setExerciseResult(exercise.id, "result", event.target.value)} />
-                </div>
-              </article>
-            ))}
+            {plan.exercises.map((exercise) => renderPlannedExercise(exercise))}
           </div>
           {plan.dayType === "strength" && (
             <a className="movement-link" href={`${basePath}/movements/pull-up-progression.png`} target="_blank" rel="noreferrer">開啟單槓進階圖解</a>
@@ -421,20 +502,41 @@ export default function TrackerApp() {
           <div className="addition-card exercise-card">
             <h3>加一筆額外運動</h3>
             <form onSubmit={addExercise}>
-              <label className="wide">做了什麼<input name="name" required placeholder="例：散步、籃球、額外 HIIT" /></label>
-              <label>類型<select name="category" defaultValue="walk"><option value="walk">散步</option><option value="yoga">瑜伽</option><option value="run">跑步</option><option value="hiit">HIIT</option><option value="strength">肌力</option><option value="other">其他</option></select></label>
+              <label>類型
+                <select name="category" value={exerciseCategory} onChange={(event) => setExerciseCategory(event.target.value as ExerciseCategory)}>
+                  {(Object.keys(categoryLabel) as ExerciseCategory[]).map((value) => (
+                    <option value={value} key={value}>{categoryLabel[value]}</option>
+                  ))}
+                </select>
+              </label>
               <label>時間<input name="minutes" type="number" inputMode="numeric" min="1" required /><span>分鐘</span></label>
-              <label>強度<select name="intensity" defaultValue="moderate"><option value="low">低</option><option value="moderate">中</option><option value="high">高</option></select></label>
-              <label>負荷部位<select name="area" defaultValue="full"><option value="lower">下肢</option><option value="upper">上肢</option><option value="full">全身</option></select></label>
-              <label>距離<input name="distance" type="number" inputMode="decimal" step="0.1" placeholder="選填" /><span>km</span></label>
-              <label>裝置顯示<input name="activeCalories" type="number" inputMode="numeric" placeholder="選填" /><span>kcal</span></label>
+              {(exerciseCategory === "run" || exerciseCategory === "walk") && (
+                <label>距離<input name="distance" type="number" inputMode="decimal" step="0.1" placeholder="選填" /><span>km</span></label>
+              )}
+              <label>手錶消耗<input name="activeCalories" type="number" inputMode="numeric" placeholder="選填，會蓋過估算" /><span>kcal</span></label>
               <label className="wide">備註<input name="note" placeholder="酸痛、疲勞或其他狀況" /></label>
               <button className="primary-button" type="submit">加入運動</button>
             </form>
             <div className="entry-list">
-              {record.additionalExercises.map((exercise) => (
-                <article key={exercise.id}><div><strong>{exercise.name}</strong><small>{exercise.minutes} 分鐘 · {exercise.intensity === "high" ? "高" : exercise.intensity === "moderate" ? "中" : "低"}強度{exercise.activeCalories !== null ? ` · 裝置 ${exercise.activeCalories} kcal` : ""}</small></div><button type="button" onClick={() => removeExercise(exercise.id)}>移除</button></article>
-              ))}
+              {record.additionalExercises.map((exercise) => {
+                const estimated = estimateExerciseCalories({
+                  category: exercise.category,
+                  minutes: exercise.minutes,
+                  km: exercise.distance,
+                  weightKg,
+                });
+                const calories = typeof exercise.activeCalories === "number"
+                  ? `${exercise.activeCalories} kcal（手錶）`
+                  : estimated !== null ? `約 ${estimated} kcal（估算）` : "";
+                const details = [
+                  `${exercise.minutes} 分鐘`,
+                  exercise.distance !== null ? `${exercise.distance} km` : "",
+                  calories,
+                ].filter(Boolean).join(" · ");
+                return (
+                  <article key={exercise.id}><div><strong>{exercise.name || categoryLabel[exercise.category]}</strong><small>{details}</small></div><button type="button" onClick={() => removeExercise(exercise.id)}>移除</button></article>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -446,7 +548,7 @@ export default function TrackerApp() {
           <article><small>已知當日攝取</small><strong>{impact.intakeCalories.toLocaleString("en-US")} kcal</strong>{impact.usedTargetAsBase && <em>正常餐點未填，先用目標估算</em>}</article>
           <article><small>當日與目標差</small><strong>{impact.intakeDeviation >= 0 ? "+" : ""}{impact.intakeDeviation} kcal</strong></article>
           <article><small>本週累積差</small><strong>{impact.weekDeviation >= 0 ? "+" : ""}{impact.weekDeviation} kcal</strong></article>
-          <article><small>額外運動裝置值</small><strong>{impact.reportedExerciseCalories || 0} kcal</strong><em>只顯示，不 1 比 1 抵消</em></article>
+          <article><small>額外運動活動消耗</small><strong>{impact.reportedExerciseCalories || 0} kcal</strong><em>只顯示，不 1 比 1 抵消</em></article>
         </div>
         <p className="impact-message">{impact.message}</p>
         {impact.recoveryWarning && <p className="recovery-warning"><strong>恢復提醒：</strong>{impact.recoveryWarning}</p>}
@@ -504,8 +606,9 @@ export default function TrackerApp() {
   };
 
   const renderTrend = () => {
+    const trackWaist = state.profile.trackWaist;
     const records = Object.values(state.records)
-      .filter((item) => item.weight !== null || item.waist !== null || item.steps !== null)
+      .filter((item) => item.weight !== null || (trackWaist && item.waist !== null) || item.steps !== null)
       .sort((a, b) => b.dateKey.localeCompare(a.dateKey))
       .slice(0, 30);
     const weights = records.filter((item) => item.weight !== null);
@@ -527,9 +630,9 @@ export default function TrackerApp() {
           <article><small>目前紀錄區間變化</small><strong>{weightChange === null ? "資料不足" : `${weightChange > 0 ? "+" : ""}${weightChange.toFixed(1)} kg`}</strong></article>
         </div>
         <div className="history-list">
-          {records.length === 0 && <p className="empty-state">開始記錄晨重、腰圍或步數後，這裡會自動形成時間線。</p>}
+          {records.length === 0 && <p className="empty-state">開始記錄晨重{trackWaist ? "、腰圍" : ""}或步數後，這裡會自動形成時間線。</p>}
           {records.map((item) => (
-            <article key={item.dateKey}><time>{dateLabel(item.dateKey)}</time><div>{item.weight !== null && <span><small>體重</small><strong>{item.weight.toFixed(1)} kg</strong></span>}{item.waist !== null && <span><small>腰圍</small><strong>{item.waist.toFixed(1)} cm</strong></span>}{item.steps !== null && <span><small>步數</small><strong>{item.steps.toLocaleString("en-US")}</strong></span>}</div></article>
+            <article key={item.dateKey}><time>{dateLabel(item.dateKey)}</time><div>{item.weight !== null && <span><small>體重</small><strong>{item.weight.toFixed(1)} kg</strong></span>}{trackWaist && item.waist !== null && <span><small>腰圍</small><strong>{item.waist.toFixed(1)} cm</strong></span>}{item.steps !== null && <span><small>步數</small><strong>{item.steps.toLocaleString("en-US")}</strong></span>}</div></article>
           ))}
         </div>
       </section>
@@ -546,6 +649,21 @@ export default function TrackerApp() {
           <label>目標體重<input type="number" step="0.1" value={state.profile.goalWeight ?? ""} onChange={(event) => updateProfileNumber("goalWeight", event.target.value)} /><span>kg</span></label>
           <label>水杯容量<input type="number" step="50" value={state.profile.cupSizeMl} onChange={(event) => setState((current) => ({ ...current, profile: { ...current.profile, cupSizeMl: Number(event.target.value) } }))} /><span>ml</span></label>
           <label>開始空腹時間<input type="time" value={state.profile.fastingStart} onChange={(event) => setState((current) => ({ ...current, profile: { ...current.profile, fastingStart: event.target.value } }))} /></label>
+        </article>
+        <article>
+          <h3>追蹤項目</h3>
+          <p>只留下你真的會記錄的欄位，關掉的項目不會出現在清單與輸入區。</p>
+          <label className="check-row">
+            <input
+              type="checkbox"
+              checked={Boolean(state.profile.trackWaist)}
+              onChange={(event) => setState((current) => ({
+                ...current,
+                profile: { ...current.profile, trackWaist: event.target.checked },
+              }))}
+            />
+            <span><strong>追蹤腰圍</strong><small>關掉時，今天頁不顯示腰圍欄位，週日清單也不會出現量腰圍。已經記錄過的腰圍資料一律保留，打開就看得到。</small></span>
+          </label>
         </article>
         <article>
           <h3>備份與還原</h3>

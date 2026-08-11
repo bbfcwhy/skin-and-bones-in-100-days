@@ -4,11 +4,19 @@ export type ExerciseIntensity = "low" | "moderate" | "high";
 
 export type ExerciseArea = "lower" | "upper" | "full";
 
+export type TargetRange = [number, number];
+
+export interface ExerciseTarget {
+  km?: TargetRange;
+  minutes?: TargetRange;
+}
+
 export interface ExerciseDefinition {
   id: string;
   name: string;
   prescription: string;
   note?: string;
+  target?: ExerciseTarget;
 }
 
 export interface DayPlan {
@@ -40,14 +48,19 @@ export interface AdditionalFood {
   createdAt: string;
 }
 
+export type ExerciseCategory = "walk" | "yoga" | "run" | "hiit" | "strength" | "other";
+
 export interface AdditionalExercise {
   id: string;
-  name: string;
-  category: "walk" | "yoga" | "run" | "hiit" | "strength" | "other";
+  /** 新記錄一律寫入類型中文名，舊資料可能是自訂名稱。 */
+  name?: string;
+  category: ExerciseCategory;
   minutes: number;
   distance: number | null;
-  intensity: ExerciseIntensity;
-  area: ExerciseArea;
+  /** 舊資料保留，新記錄不再寫入，也不再參與任何判斷。 */
+  intensity?: ExerciseIntensity;
+  /** 舊資料保留，新記錄不再寫入，也不再參與任何判斷。 */
+  area?: ExerciseArea;
   activeCalories: number | null;
   note: string;
   createdAt: string;
@@ -56,6 +69,8 @@ export interface AdditionalExercise {
 export interface ExerciseResult {
   load: string;
   result: string;
+  actualMinutes?: number | null;
+  actualKm?: number | null;
 }
 
 export interface DailyRecord {
@@ -81,6 +96,7 @@ export interface Profile {
   goalWeight: number | null;
   fastingStart: string;
   cupSizeMl: number;
+  trackWaist: boolean;
 }
 
 export interface AppState {

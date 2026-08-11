@@ -30,8 +30,32 @@ export function createInitialState(): AppState {
       goalWeight: null,
       fastingStart: "20:00",
       cupSizeMl: 700,
+      trackWaist: false,
     },
     records: {},
+  };
+}
+
+/**
+ * 只補值、不刪值：舊備份缺少後來才加的欄位時填上預設值，
+ * 已經存在的資料一律原封不動保留。加新欄位時只要改
+ * createInitialState 與 defaultRecord，這裡就會自動接住舊資料。
+ */
+export function normalizeState(input: AppState): AppState {
+  const fallback = createInitialState();
+  const state = structuredClone(input);
+  const records: AppState["records"] = {};
+
+  Object.entries(state.records ?? {}).forEach(([dateKey, saved]) => {
+    const record = (saved ?? {}) as Partial<DailyRecord>;
+    records[dateKey] = { ...defaultRecord(record.dateKey ?? dateKey), ...record };
+  });
+
+  return {
+    ...fallback,
+    ...state,
+    profile: { ...fallback.profile, ...state.profile },
+    records,
   };
 }
 
@@ -119,13 +143,13 @@ export function parseImportedState(json: string): AppState {
     throw new Error("無法辨識這份備份，檔案不是有效 JSON。");
   }
 
-  if (isCurrentState(input)) return structuredClone(input);
+  if (isCurrentState(input)) return normalizeState(input);
   if (
     input
     && typeof input === "object"
     && (input as Record<string, unknown>).exportVersion === "daily-checklist-export-v1"
   ) {
-    return importLegacyState(input as Record<string, unknown>);
+    return normalizeState(importLegacyState(input as Record<string, unknown>));
   }
   throw new Error("無法辨識這份備份的版本。");
 }

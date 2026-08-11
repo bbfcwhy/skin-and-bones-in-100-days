@@ -29,31 +29,31 @@ const specialWeek: Record<string, Pick<DayPlan, "dayType" | "workoutName" | "wor
     dayType: "run",
     workoutName: "富士山半馬累積跑 8 km",
     workoutNote: "輕鬆配速，完成後確認 TATTA 入帳",
-    exercises: [{ id: "fuji-run", name: "輕鬆跑", prescription: "8 km" }],
+    exercises: [{ id: "fuji-run", name: "輕鬆跑", prescription: "8 km", target: { km: [8, 8] } }],
   },
   "2026-08-11": {
     dayType: "recovery",
     workoutName: "跑後恢復瑜伽",
     workoutNote: "30 分鐘低強度恢復",
-    exercises: [{ id: "recovery-yoga", name: "Gentle、Hatha 或 Yin yoga", prescription: "30 分鐘" }],
+    exercises: [{ id: "recovery-yoga", name: "Gentle、Hatha 或 Yin yoga", prescription: "30 分鐘", target: { minutes: [30, 30] } }],
   },
   "2026-08-12": {
     dayType: "run",
     workoutName: "富士山半馬累積跑 7 km",
     workoutNote: "輕鬆配速，完成後確認 TATTA 入帳",
-    exercises: [{ id: "fuji-run", name: "輕鬆跑", prescription: "7 km" }],
+    exercises: [{ id: "fuji-run", name: "輕鬆跑", prescription: "7 km", target: { km: [7, 7] } }],
   },
   "2026-08-13": {
     dayType: "run",
     workoutName: "富士山半馬累積跑 6.1 km",
     workoutNote: "目標提前完成 21.0975 km",
-    exercises: [{ id: "fuji-run", name: "輕鬆跑", prescription: "6.1 km" }],
+    exercises: [{ id: "fuji-run", name: "輕鬆跑", prescription: "6.1 km", target: { km: [6.1, 6.1] } }],
   },
   "2026-08-14": {
     dayType: "recovery",
     workoutName: "半馬里程完成後恢復",
     workoutNote: "瑜伽 30 分鐘，不追求高心率",
-    exercises: [{ id: "recovery-yoga", name: "恢復瑜伽", prescription: "30 分鐘" }],
+    exercises: [{ id: "recovery-yoga", name: "恢復瑜伽", prescription: "30 分鐘", target: { minutes: [30, 30] } }],
   },
   "2026-08-15": {
     dayType: "strength",
@@ -65,7 +65,7 @@ const specialWeek: Record<string, Pick<DayPlan, "dayType" | "workoutName" | "wor
     dayType: "recovery",
     workoutName: "週末恢復瑜伽",
     workoutNote: "30 分鐘低強度恢復",
-    exercises: [{ id: "recovery-yoga", name: "恢復瑜伽", prescription: "30 分鐘" }],
+    exercises: [{ id: "recovery-yoga", name: "恢復瑜伽", prescription: "30 分鐘", target: { minutes: [30, 30] } }],
   },
 };
 
@@ -111,12 +111,12 @@ function standardWorkout(dateKey: string): Pick<DayPlan, "dayType" | "workoutNam
 
   const workouts: Array<Pick<DayPlan, "dayType" | "workoutName" | "workoutNote" | "exercises">> = [
     { dayType: "strength", workoutName: "肌力 A", workoutNote: "50 到 60 分鐘，保留 1 到 2 下餘力", exercises: strengthA },
-    { dayType: "run", workoutName: "輕鬆跑", workoutNote: "5 到 7 km，維持可講完整句子的速度", exercises: [{ id: "easy-run", name: "輕鬆跑", prescription: "5 到 7 km" }] },
+    { dayType: "run", workoutName: "輕鬆跑", workoutNote: "5 到 7 km，維持可講完整句子的速度", exercises: [{ id: "easy-run", name: "輕鬆跑", prescription: "5 到 7 km", target: { km: [5, 7] } }] },
     { dayType: "strength", workoutName: "肌力 B", workoutNote: "50 到 60 分鐘，保留 1 到 2 下餘力", exercises: strengthB },
-    { dayType: "recovery", workoutName: "恢復瑜伽", workoutNote: "30 分鐘低強度恢復", exercises: [{ id: "recovery-yoga", name: "Gentle、Hatha 或 Yin yoga", prescription: "30 分鐘" }] },
+    { dayType: "recovery", workoutName: "恢復瑜伽", workoutNote: "30 分鐘低強度恢復", exercises: [{ id: "recovery-yoga", name: "Gentle、Hatha 或 Yin yoga", prescription: "30 分鐘", target: { minutes: [30, 30] } }] },
     { dayType: "strength", workoutName: fridayName, workoutNote: "50 到 60 分鐘，A / B 每週交替", exercises: fridayPlan },
-    { dayType: "run", workoutName: "長跑或 HIIT", workoutNote: "輕鬆跑 7 到 10 km，或隔週 HIIT 20 到 30 分鐘", exercises: [{ id: "long-run-or-hiit", name: "長跑或 HIIT", prescription: "二選一" }] },
-    { dayType: "recovery", workoutName: "恢復瑜伽或散步", workoutNote: "瑜伽 20 分鐘加散步 10 分鐘也可以", exercises: [{ id: "recovery-session", name: "恢復活動", prescription: "30 分鐘" }] },
+    { dayType: "run", workoutName: "長跑或 HIIT", workoutNote: "輕鬆跑 7 到 10 km，或隔週 HIIT 20 到 30 分鐘", exercises: [{ id: "long-run-or-hiit", name: "長跑或 HIIT", prescription: "二選一", target: { km: [7, 10] } }] },
+    { dayType: "recovery", workoutName: "恢復瑜伽或散步", workoutNote: "瑜伽 20 分鐘加散步 10 分鐘也可以", exercises: [{ id: "recovery-session", name: "恢復活動", prescription: "30 分鐘", target: { minutes: [30, 30] } }] },
   ];
 
   return workouts[mondayIndex];
@@ -138,7 +138,15 @@ export function getChallengeProgress(dateKey: string): { day: number; status: "u
   return { day: Math.min(difference + 1, 100), status: "active" };
 }
 
-export function getChecklistForDate(dateKey: string, calorieAdjustment = 0): ChecklistTask[] {
+export interface ChecklistOptions {
+  trackWaist?: boolean;
+}
+
+export function getChecklistForDate(
+  dateKey: string,
+  calorieAdjustment = 0,
+  options: ChecklistOptions = {},
+): ChecklistTask[] {
   const plan = getPlanForDate(dateKey);
   const effectiveCalories = plan.targetCalories + calorieAdjustment;
   const tasks: ChecklistTask[] = [
@@ -166,10 +174,12 @@ export function getChecklistForDate(dateKey: string, calorieAdjustment = 0): Che
   ];
 
   if (parseDateKey(dateKey).getUTCDay() === 0) {
-    tasks.splice(1, 0,
-      { id: "weekly-waist", group: "早晨", label: "量腰圍 2 次並取平均", detail: "正常吐氣結束時量測" },
-      { id: "weekly-trend-review", group: "早晨", label: "檢查 7 天平均體重", detail: "連續 2 週後才決定是否以 150 kcal 為單位調整" },
-    );
+    const sundayTasks: ChecklistTask[] = [];
+    if (options.trackWaist) {
+      sundayTasks.push({ id: "weekly-waist", group: "早晨", label: "量腰圍 2 次並取平均", detail: "正常吐氣結束時量測" });
+    }
+    sundayTasks.push({ id: "weekly-trend-review", group: "早晨", label: "檢查 7 天平均體重", detail: "連續 2 週後才決定是否以 150 kcal 為單位調整" });
+    tasks.splice(1, 0, ...sundayTasks);
   }
 
   return tasks;

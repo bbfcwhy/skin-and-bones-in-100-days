@@ -12,3 +12,4 @@ coverage/
 .setup-result.json
 public/og-image-source.png
 public/icon-master.png
+.claude/

@@ -36,12 +36,43 @@ describe("複製回 session 詢問的摘要", () => {
       additionalExercises: record.additionalExercises,
       previousWeekDeviation: 0,
       futurePlans: [],
+      weightKg: null,
     });
 
     const summary = buildConsultationSummary({ dateKey, plan, record, impact });
     expect(summary).toContain("當日目標：2,050 kcal");
     expect(summary).toContain("額外布丁：熱量待估");
     expect(summary).toContain("額外 HIIT：30 分鐘");
+    expect(summary).toContain("高強度");
     expect(summary).toContain("不會把運動熱量 1 比 1 抵消飲食");
+  });
+
+  it("新版運動記錄沒有強度欄位時，摘要不標示強度", () => {
+    const dateKey = "2026-08-18";
+    const plan = getPlanForDate(dateKey);
+    const { record } = ensureDailyRecord(createInitialState(), dateKey);
+    record.additionalExercises.push({
+      id: "exercise-2",
+      name: "跑步",
+      category: "run",
+      minutes: 40,
+      distance: 6,
+      activeCalories: 320,
+      note: "",
+      createdAt: "2026-08-18T18:00:00.000Z",
+    });
+    const impact = analyzeImpact({
+      plan,
+      baseCalories: null,
+      additionalFoods: [],
+      additionalExercises: record.additionalExercises,
+      previousWeekDeviation: 0,
+      futurePlans: [],
+      weightKg: null,
+    });
+
+    const summary = buildConsultationSummary({ dateKey, plan, record, impact });
+    expect(summary).toContain("跑步：40 分鐘，6 km");
+    expect(summary).not.toContain("強度");
   });
 });
