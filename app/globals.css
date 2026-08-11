@@ -679,6 +679,83 @@ select:focus {
   font-weight: 800;
 }
 
+/* 建議清單走版面內（不浮在上層）：浮層會蓋住下面的熱量欄，手機上很容易誤點成選食物。 */
+.food-suggestions {
+  max-height: 264px;
+  margin-top: 8px;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.food-suggestions button {
+  display: block;
+  width: 100%;
+  padding: 11px 14px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: transparent;
+  text-align: left;
+}
+
+.food-suggestions button:first-child {
+  border-top: 0;
+}
+
+.food-suggestions button.active {
+  background: var(--mint);
+}
+
+.food-suggestions strong {
+  display: block;
+  font-size: 0.88rem;
+}
+
+.food-suggestions small {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.food-portion {
+  display: grid;
+  gap: 10px;
+}
+
+.portion-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.portion-buttons button {
+  min-height: 38px;
+  padding: 7px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.portion-buttons button.active {
+  border-color: var(--mint-strong);
+  background: var(--mint);
+}
+
+.food-note {
+  margin: 0;
+  padding: 11px 13px;
+  border-radius: 12px;
+  color: #6d3a0e;
+  background: #fff1d2;
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
 .impact-panel {
   padding: clamp(22px, 5vw, 38px);
   border-top: 8px solid var(--mint-strong);

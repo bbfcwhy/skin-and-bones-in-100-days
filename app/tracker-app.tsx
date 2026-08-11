@@ -4,6 +4,7 @@ import {
   type CSSProperties,
   type ChangeEvent,
   type FormEvent,
+  type KeyboardEvent,
   useEffect,
   useMemo,
   useState,
@@ -14,6 +15,7 @@ import {
   estimateExerciseCalories,
   resolveWeightKg,
 } from "@/src/lib/energy";
+import { computeNutrition, searchFoods, type FoodItem } from "@/src/lib/food";
 import {
   analyzeImpact,
   calculateWeekDeviation,
@@ -136,6 +138,13 @@ export default function TrackerApp() {
   const [dateKey, setDateKey] = useState(CHALLENGE_START);
   const [toast, setToast] = useState("");
   const [exerciseCategory, setExerciseCategory] = useState<ExerciseCategory>("walk");
+  const [foodQuery, setFoodQuery] = useState("");
+  const [foodChoice, setFoodChoice] = useState<FoodItem | null>(null);
+  const [foodGrams, setFoodGrams] = useState("");
+  const [foodCalories, setFoodCalories] = useState("");
+  const [foodProtein, setFoodProtein] = useState("");
+  const [foodListOpen, setFoodListOpen] = useState(false);
+  const [foodHighlight, setFoodHighlight] = useState(0);
 
   useEffect(() => {
     setState(loadState());
@@ -229,6 +238,71 @@ export default function TrackerApp() {
     });
   };
 
+  const foodSuggestions = useMemo(
+    () => (foodListOpen ? searchFoods(foodQuery) : []),
+    [foodListOpen, foodQuery],
+  );
+
+  const resetFoodPicker = () => {
+    setFoodQuery("");
+    setFoodChoice(null);
+    setFoodGrams("");
+    setFoodCalories("");
+    setFoodProtein("");
+    setFoodListOpen(false);
+    setFoodHighlight(0);
+  };
+
+  /** 克數一變就重算熱量與蛋白質；算出來只是預設值，使用者還是能自己覆寫。 */
+  const setGramsAndNutrition = (value: string) => {
+    setFoodGrams(value);
+    if (!foodChoice) return;
+    const grams = Number(value);
+    if (value.trim() === "" || !Number.isFinite(grams) || grams <= 0) {
+      setFoodCalories("");
+      setFoodProtein("");
+      return;
+    }
+    const nutrition = computeNutrition(foodChoice, grams);
+    setFoodCalories(String(nutrition.calories));
+    setFoodProtein(String(nutrition.protein));
+  };
+
+  const chooseFood = (food: FoodItem) => {
+    setFoodChoice(food);
+    setFoodQuery(food.name);
+    setFoodListOpen(false);
+    setFoodHighlight(0);
+    setFoodGrams("");
+    setFoodCalories("");
+    setFoodProtein("");
+  };
+
+  /** 自己改名字＝不再跟著資料庫走，但已經填好的數字留著讓使用者自己調。 */
+  const typeFoodName = (value: string) => {
+    setFoodQuery(value);
+    setFoodListOpen(true);
+    setFoodHighlight(0);
+    setFoodChoice(null);
+    setFoodGrams("");
+  };
+
+  const onFoodNameKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (!foodSuggestions.length) return;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setFoodHighlight((index) => (index + 1) % foodSuggestions.length);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setFoodHighlight((index) => (index - 1 + foodSuggestions.length) % foodSuggestions.length);
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+      chooseFood(foodSuggestions[foodHighlight] ?? foodSuggestions[0]);
+    } else if (event.key === "Escape") {
+      setFoodListOpen(false);
+    }
+  };
+
   const addFood = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -245,6 +319,7 @@ export default function TrackerApp() {
     };
     updateRecord((current) => current.additionalFoods.push(food));
     form.reset();
+    resetFoodPicker();
     showToast("額外飲食已加入影響計算");
   };
 
@@ -485,10 +560,61 @@ export default function TrackerApp() {
         <div className="addition-grid">
           <div className="addition-card food-card">
             <h3>加一筆額外飲食</h3>
-            <form onSubmit={addFood}>
-              <label className="wide">吃了什麼<input name="name" required placeholder="例：布丁、鹽酥雞或半根香蕉" /></label>
-              <label>熱量<input name="calories" type="number" inputMode="numeric" placeholder="不知道可留空" /><span>kcal</span></label>
-              <label>蛋白質<input name="protein" type="number" inputMode="decimal" step="0.1" placeholder="選填" /><span>g</span></label>
+            <form onSubmit={addFood} autoComplete="off">
+              <div className="wide food-search">
+                <label>吃了什麼
+                  <input
+                    name="name"
+                    required
+                    autoComplete="off"
+                    placeholder="例：雞胸肉、地瓜、珍奶"
+                    value={foodQuery}
+                    onChange={(event) => typeFoodName(event.target.value)}
+                    onKeyDown={onFoodNameKeyDown}
+                    role="combobox"
+                    aria-expanded={foodSuggestions.length > 0}
+                    aria-controls="food-suggestions"
+                  />
+                </label>
+                {foodSuggestions.length > 0 && (
+                  <div className="food-suggestions" id="food-suggestions" role="listbox" onMouseDown={(event) => event.preventDefault()}>
+                    {foodSuggestions.map((food, index) => (
+                      <button
+                        type="button"
+                        key={food.id}
+                        role="option"
+                        aria-selected={index === foodHighlight}
+                        className={index === foodHighlight ? "active" : ""}
+                        onMouseEnter={() => setFoodHighlight(index)}
+                        onClick={() => chooseFood(food)}
+                      >
+                        <strong>{food.name}</strong>
+                        <small>每 100g {food.kcalPer100g} kcal · 蛋白質 {food.proteinPer100g} g</small>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              {foodChoice && (
+                <div className="wide food-portion">
+                  <label>吃了多少<input type="number" inputMode="decimal" min="1" step="1" placeholder="輸入克數，下面數字會自動算" value={foodGrams} onChange={(event) => setGramsAndNutrition(event.target.value)} /><span>g</span></label>
+                  {foodChoice.units.length > 0 && (
+                    <div className="portion-buttons">
+                      {foodChoice.units.map((unit) => (
+                        <button
+                          type="button"
+                          key={unit.label}
+                          className={foodGrams !== "" && Number(foodGrams) === unit.grams ? "active" : ""}
+                          onClick={() => setGramsAndNutrition(String(unit.grams))}
+                        >{unit.label}</button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+              <label>熱量<input name="calories" type="number" inputMode="numeric" placeholder="不知道可留空" value={foodCalories} onChange={(event) => setFoodCalories(event.target.value)} /><span>kcal</span></label>
+              <label>蛋白質<input name="protein" type="number" inputMode="decimal" step="0.1" placeholder="選填" value={foodProtein} onChange={(event) => setFoodProtein(event.target.value)} /><span>g</span></label>
+              {foodChoice && foodChoice.note !== "" && <p className="wide food-note">提醒：{foodChoice.note}</p>}
               <label className="wide">備註<input name="note" placeholder="份量、照片特徵或品牌" /></label>
               <button className="primary-button" type="submit">加入飲食</button>
             </form>
@@ -565,7 +691,7 @@ export default function TrackerApp() {
             <button className="primary-button" type="button" onClick={applyAdjustments}>我確認，套用到未來日期</button>
           </div>
         )}
-        <div className="consult-box"><div><strong>還是拿不準？</strong><small>把當天紀錄、影響與問題整理成一段文字。</small></div><button type="button" onClick={copySummary}>複製摘要回 session 問閆多比</button></div>
+        <div className="consult-box"><div><strong>還是拿不準？</strong><small>把當天紀錄、影響與問題整理成一段文字。</small></div><button type="button" onClick={copySummary}>複製摘要回 session 問閻多比</button></div>
       </section>
     </>
   );

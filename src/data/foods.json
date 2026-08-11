@@ -1,0 +1,4229 @@
+[
+  {
+    "id": "chicken-breast-cooked",
+    "name": "雞胸肉（熟）",
+    "aliases": [
+      "雞胸",
+      "水煮雞胸肉",
+      "舒肥雞胸",
+      "去皮雞胸"
+    ],
+    "category": "protein",
+    "kcalPer100g": 165,
+    "proteinPer100g": 31.0,
+    "units": [
+      {
+        "label": "1 片（約 150g）",
+        "grams": 150
+      },
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "去皮、烤或水煮後的數值；生重 150g 煮熟後約 110g",
+    "source": "usda"
+  },
+  {
+    "id": "chicken-breast-raw",
+    "name": "雞胸肉（生，去皮）",
+    "aliases": [
+      "生雞胸",
+      "雞胸肉生重"
+    ],
+    "category": "protein",
+    "kcalPer100g": 117,
+    "proteinPer100g": 23.3,
+    "units": [
+      {
+        "label": "1 片（約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "生重；煮熟後重量約剩 7 成，熱量密度會變高",
+    "source": "tfnd"
+  },
+  {
+    "id": "chicken-thigh-cooked",
+    "name": "雞腿肉（熟，去皮去骨）",
+    "aliases": [
+      "去骨雞腿排",
+      "雞腿排"
+    ],
+    "category": "protein",
+    "kcalPer100g": 209,
+    "proteinPer100g": 26.0,
+    "units": [
+      {
+        "label": "1 片腿排（約 150g）",
+        "grams": 150
+      }
+    ],
+    "note": "去皮烤熟",
+    "source": "usda"
+  },
+  {
+    "id": "chicken-thigh-raw",
+    "name": "雞腿肉（生，去皮去骨）",
+    "aliases": [
+      "生雞腿肉"
+    ],
+    "category": "protein",
+    "kcalPer100g": 165,
+    "proteinPer100g": 19.8,
+    "units": [
+      {
+        "label": "1 片（約 150g）",
+        "grams": 150
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "chicken-drumstick",
+    "name": "棒棒腿（生，帶皮）",
+    "aliases": [
+      "雞腿",
+      "小腿"
+    ],
+    "category": "protein",
+    "kcalPer100g": 159,
+    "proteinPer100g": 16.8,
+    "units": [
+      {
+        "label": "1 隻（可食約 90g）",
+        "grams": 90
+      }
+    ],
+    "note": "生重、帶皮",
+    "source": "tfnd"
+  },
+  {
+    "id": "chicken-wing-baked",
+    "name": "烤雞翅",
+    "aliases": [
+      "雞翅"
+    ],
+    "category": "protein",
+    "kcalPer100g": 217,
+    "proteinPer100g": 18.8,
+    "units": [
+      {
+        "label": "1 隻（約 45g）",
+        "grams": 45
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "chicken-ground",
+    "name": "雞絞肉",
+    "aliases": [
+      "雞肉泥"
+    ],
+    "category": "protein",
+    "kcalPer100g": 131,
+    "proteinPer100g": 27.4,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "chicken-gizzard",
+    "name": "雞胗",
+    "aliases": [
+      "雞肫"
+    ],
+    "category": "protein",
+    "kcalPer100g": 89,
+    "proteinPer100g": 16.6,
+    "units": [
+      {
+        "label": "1 個（約 30g）",
+        "grams": 30
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "chicken-tenderloin",
+    "name": "雞里肌（生）",
+    "aliases": [
+      "雞柳條",
+      "腓力"
+    ],
+    "category": "protein",
+    "kcalPer100g": 106,
+    "proteinPer100g": 23.7,
+    "units": [
+      {
+        "label": "1 條（約 45g）",
+        "grams": 45
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "pork-loin",
+    "name": "豬大里肌",
+    "aliases": [
+      "里肌肉",
+      "豬排肉",
+      "背脊肉"
+    ],
+    "category": "protein",
+    "kcalPer100g": 212,
+    "proteinPer100g": 19.2,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "pork-tenderloin",
+    "name": "豬小里肌（腰內肉）",
+    "aliases": [
+      "腰內肉",
+      "豬菲力"
+    ],
+    "category": "protein",
+    "kcalPer100g": 139,
+    "proteinPer100g": 21.1,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "pork-shoulder",
+    "name": "豬梅花肉（上肩）",
+    "aliases": [
+      "梅花肉",
+      "胛心肉"
+    ],
+    "category": "protein",
+    "kcalPer100g": 207,
+    "proteinPer100g": 18.9,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "pork-belly",
+    "name": "豬五花（腹脇肉）",
+    "aliases": [
+      "三層肉",
+      "五花肉"
+    ],
+    "category": "protein",
+    "kcalPer100g": 368,
+    "proteinPer100g": 14.5,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重、高脂肪",
+    "source": "tfnd"
+  },
+  {
+    "id": "pork-ground",
+    "name": "豬絞肉",
+    "aliases": [
+      "絞肉"
+    ],
+    "category": "protein",
+    "kcalPer100g": 212,
+    "proteinPer100g": 18.7,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "pork-rib",
+    "name": "豬小排",
+    "aliases": [
+      "肋排",
+      "小排"
+    ],
+    "category": "protein",
+    "kcalPer100g": 287,
+    "proteinPer100g": 18.0,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "beef-shank",
+    "name": "牛腱",
+    "aliases": [
+      "腱子心",
+      "牛腱心"
+    ],
+    "category": "protein",
+    "kcalPer100g": 151,
+    "proteinPer100g": 23.7,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "beef-sirloin",
+    "name": "沙朗牛排",
+    "aliases": [
+      "肋眼",
+      "牛排"
+    ],
+    "category": "protein",
+    "kcalPer100g": 162,
+    "proteinPer100g": 20.4,
+    "units": [
+      {
+        "label": "1 片（約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "beef-filet",
+    "name": "腓力牛排",
+    "aliases": [
+      "菲力",
+      "牛柳"
+    ],
+    "category": "protein",
+    "kcalPer100g": 184,
+    "proteinPer100g": 20.6,
+    "units": [
+      {
+        "label": "1 片（約 150g）",
+        "grams": 150
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "beef-chuck-slice",
+    "name": "牛梅花火鍋片",
+    "aliases": [
+      "火鍋牛肉片",
+      "牛肉片"
+    ],
+    "category": "protein",
+    "kcalPer100g": 120,
+    "proteinPer100g": 20.3,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "beef-shortplate-slice",
+    "name": "牛五花火鍋片",
+    "aliases": [
+      "雪花牛",
+      "牛小排片"
+    ],
+    "category": "protein",
+    "kcalPer100g": 430,
+    "proteinPer100g": 15.7,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重、高脂肪",
+    "source": "tfnd"
+  },
+  {
+    "id": "salmon-fillet",
+    "name": "鮭魚排（中段）",
+    "aliases": [
+      "鮭魚",
+      "大西洋鮭魚"
+    ],
+    "category": "protein",
+    "kcalPer100g": 174,
+    "proteinPer100g": 20.7,
+    "units": [
+      {
+        "label": "1 片（約 120g）",
+        "grams": 120
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "salmon-sashimi",
+    "name": "鮭魚生魚片",
+    "aliases": [
+      "生鮭魚",
+      "鮭魚刺身"
+    ],
+    "category": "protein",
+    "kcalPer100g": 222,
+    "proteinPer100g": 19.6,
+    "units": [
+      {
+        "label": "1 片（約 15g）",
+        "grams": 15
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "tilapia-raw",
+    "name": "台灣鯛魚片（生）",
+    "aliases": [
+      "吳郭魚",
+      "鯛魚片"
+    ],
+    "category": "protein",
+    "kcalPer100g": 110,
+    "proteinPer100g": 18.2,
+    "units": [
+      {
+        "label": "1 片（約 130g）",
+        "grams": 130
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "tilapia-cooked",
+    "name": "台灣鯛魚片（水煮）",
+    "aliases": [
+      "鯛魚熟",
+      "水煮鯛魚"
+    ],
+    "category": "protein",
+    "kcalPer100g": 130,
+    "proteinPer100g": 23.4,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "mackerel-grilled",
+    "name": "烤鯖魚",
+    "aliases": [
+      "薄鹽鯖魚",
+      "鯖魚"
+    ],
+    "category": "protein",
+    "kcalPer100g": 373,
+    "proteinPer100g": 20.2,
+    "units": [
+      {
+        "label": "1 片（約 120g）",
+        "grams": 120
+      }
+    ],
+    "note": "挪威鯖魚脂肪含量高，熱量遠高於一般白肉魚",
+    "source": "tfnd"
+  },
+  {
+    "id": "saury",
+    "name": "秋刀魚",
+    "aliases": [
+      "竹刀魚"
+    ],
+    "category": "protein",
+    "kcalPer100g": 277,
+    "proteinPer100g": 18.8,
+    "units": [
+      {
+        "label": "1 尾（可食約 90g）",
+        "grams": 90
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "milkfish",
+    "name": "虱目魚",
+    "aliases": [
+      "麻虱目"
+    ],
+    "category": "protein",
+    "kcalPer100g": 189,
+    "proteinPer100g": 22.3,
+    "units": [
+      {
+        "label": "1 片肚（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "seabass",
+    "name": "鱸魚",
+    "aliases": [
+      "日本花鱸",
+      "海鱸"
+    ],
+    "category": "protein",
+    "kcalPer100g": 95,
+    "proteinPer100g": 20.1,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "tuna-sashimi",
+    "name": "鮪魚生魚片",
+    "aliases": [
+      "鮪魚",
+      "黑鮪"
+    ],
+    "category": "protein",
+    "kcalPer100g": 100,
+    "proteinPer100g": 23.3,
+    "units": [
+      {
+        "label": "1 片（約 15g）",
+        "grams": 15
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "tuna-can",
+    "name": "鮪魚罐頭（油漬）",
+    "aliases": [
+      "鮪魚罐"
+    ],
+    "category": "protein",
+    "kcalPer100g": 261,
+    "proteinPer100g": 10.0,
+    "units": [
+      {
+        "label": "1 罐（約 150g）",
+        "grams": 150
+      }
+    ],
+    "note": "油漬版本熱量高；水煮版約 110 kcal/100g",
+    "source": "tfnd"
+  },
+  {
+    "id": "shrimp-white",
+    "name": "白蝦（生）",
+    "aliases": [
+      "蝦子",
+      "南美白蝦",
+      "蝦"
+    ],
+    "category": "protein",
+    "kcalPer100g": 96,
+    "proteinPer100g": 21.4,
+    "units": [
+      {
+        "label": "1 隻（可食約 12g）",
+        "grams": 12
+      }
+    ],
+    "note": "帶殼重需再打折",
+    "source": "tfnd"
+  },
+  {
+    "id": "shrimp-cooked",
+    "name": "蝦仁（熟）",
+    "aliases": [
+      "熟蝦仁",
+      "燙蝦仁"
+    ],
+    "category": "protein",
+    "kcalPer100g": 99,
+    "proteinPer100g": 24.0,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "usda"
+  },
+  {
+    "id": "squid",
+    "name": "花枝（真烏賊）",
+    "aliases": [
+      "墨魚",
+      "烏賊",
+      "透抽"
+    ],
+    "category": "protein",
+    "kcalPer100g": 57,
+    "proteinPer100g": 12.2,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "clam",
+    "name": "文蛤",
+    "aliases": [
+      "蛤蜊",
+      "蛤仔"
+    ],
+    "category": "protein",
+    "kcalPer100g": 37,
+    "proteinPer100g": 7.6,
+    "units": [
+      {
+        "label": "可食部 1 份（約 60g）",
+        "grams": 60
+      }
+    ],
+    "note": "已去殼可食部",
+    "source": "tfnd"
+  },
+  {
+    "id": "oyster",
+    "name": "牡蠣（蚵仔）",
+    "aliases": [
+      "蚵仔",
+      "生蠔"
+    ],
+    "category": "protein",
+    "kcalPer100g": 49,
+    "proteinPer100g": 9.0,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "egg-whole",
+    "name": "雞蛋（全蛋）",
+    "aliases": [
+      "蛋",
+      "水煮蛋",
+      "白煮蛋",
+      "全蛋"
+    ],
+    "category": "protein",
+    "kcalPer100g": 135,
+    "proteinPer100g": 12.7,
+    "units": [
+      {
+        "label": "1 顆（去殼約 55g）",
+        "grams": 55
+      }
+    ],
+    "note": "1 顆約 74 kcal、7g 蛋白質",
+    "source": "tfnd"
+  },
+  {
+    "id": "egg-white",
+    "name": "蛋白",
+    "aliases": [
+      "雞蛋白"
+    ],
+    "category": "protein",
+    "kcalPer100g": 52,
+    "proteinPer100g": 11.6,
+    "units": [
+      {
+        "label": "1 顆份（約 33g）",
+        "grams": 33
+      }
+    ],
+    "note": "減脂常用；1 顆蛋白約 17 kcal、3.8g 蛋白質",
+    "source": "tfnd"
+  },
+  {
+    "id": "egg-yolk",
+    "name": "蛋黃",
+    "aliases": [
+      "雞蛋黃"
+    ],
+    "category": "protein",
+    "kcalPer100g": 286,
+    "proteinPer100g": 14.5,
+    "units": [
+      {
+        "label": "1 顆份（約 18g）",
+        "grams": 18
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "egg-tea",
+    "name": "茶葉蛋",
+    "aliases": [
+      "超商茶葉蛋"
+    ],
+    "category": "protein",
+    "kcalPer100g": 145,
+    "proteinPer100g": 13.7,
+    "units": [
+      {
+        "label": "1 顆（可食約 50g）",
+        "grams": 50
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "egg-braised",
+    "name": "滷蛋",
+    "aliases": [
+      "醬油蛋"
+    ],
+    "category": "protein",
+    "kcalPer100g": 184,
+    "proteinPer100g": 16.4,
+    "units": [
+      {
+        "label": "1 顆（可食約 50g）",
+        "grams": 50
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "tofu-firm",
+    "name": "傳統豆腐（板豆腐）",
+    "aliases": [
+      "板豆腐",
+      "豆腐"
+    ],
+    "category": "protein",
+    "kcalPer100g": 96,
+    "proteinPer100g": 9.6,
+    "units": [
+      {
+        "label": "1 塊（約 80g）",
+        "grams": 80
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "tofu-silken",
+    "name": "嫩豆腐",
+    "aliases": [
+      "盒裝豆腐",
+      "水豆腐"
+    ],
+    "category": "protein",
+    "kcalPer100g": 53,
+    "proteinPer100g": 4.9,
+    "units": [
+      {
+        "label": "1 盒（約 300g）",
+        "grams": 300
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "dried-tofu",
+    "name": "五香豆干",
+    "aliases": [
+      "豆干",
+      "豆乾"
+    ],
+    "category": "protein",
+    "kcalPer100g": 197,
+    "proteinPer100g": 19.3,
+    "units": [
+      {
+        "label": "1 塊（約 35g）",
+        "grams": 35
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "dried-tofu-strip",
+    "name": "豆干絲",
+    "aliases": [
+      "干絲",
+      "豆乾絲"
+    ],
+    "category": "protein",
+    "kcalPer100g": 170,
+    "proteinPer100g": 18.3,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "black-dried-tofu",
+    "name": "黑豆干",
+    "aliases": [
+      "黑豆乾"
+    ],
+    "category": "protein",
+    "kcalPer100g": 197,
+    "proteinPer100g": 19.0,
+    "units": [
+      {
+        "label": "1 塊（約 35g）",
+        "grams": 35
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "soymilk-unsweet",
+    "name": "無糖豆漿",
+    "aliases": [
+      "豆漿無糖",
+      "清漿"
+    ],
+    "category": "protein",
+    "kcalPer100g": 35,
+    "proteinPer100g": 3.6,
+    "units": [
+      {
+        "label": "1 杯（450ml）",
+        "grams": 450
+      },
+      {
+        "label": "1 瓶（400ml）",
+        "grams": 400
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "soymilk-sweet",
+    "name": "有糖豆漿",
+    "aliases": [
+      "甜豆漿",
+      "豆奶"
+    ],
+    "category": "protein",
+    "kcalPer100g": 60,
+    "proteinPer100g": 3.2,
+    "units": [
+      {
+        "label": "1 杯（450ml）",
+        "grams": 450
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "edamame",
+    "name": "毛豆仁",
+    "aliases": [
+      "毛豆"
+    ],
+    "category": "protein",
+    "kcalPer100g": 129,
+    "proteinPer100g": 14.6,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "greek-yogurt",
+    "name": "希臘優格（無糖脫脂）",
+    "aliases": [
+      "希臘優格",
+      "無糖優格"
+    ],
+    "category": "protein",
+    "kcalPer100g": 59,
+    "proteinPer100g": 10.3,
+    "units": [
+      {
+        "label": "1 杯（約 170g）",
+        "grams": 170
+      }
+    ],
+    "note": "無糖脫脂版本；含糖版熱量會多一倍",
+    "source": "usda"
+  },
+  {
+    "id": "yogurt-plain",
+    "name": "凝態發酵乳（全脂優格）",
+    "aliases": [
+      "優格",
+      "養樂多多"
+    ],
+    "category": "protein",
+    "kcalPer100g": 97,
+    "proteinPer100g": 3.1,
+    "units": [
+      {
+        "label": "1 杯（約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "市售一般含糖",
+    "source": "tfnd"
+  },
+  {
+    "id": "whey-protein",
+    "name": "乳清蛋白粉",
+    "aliases": [
+      "高蛋白粉",
+      "乳清",
+      "蛋白粉"
+    ],
+    "category": "protein",
+    "kcalPer100g": 390,
+    "proteinPer100g": 78.0,
+    "units": [
+      {
+        "label": "1 匙（約 30g）",
+        "grams": 30
+      }
+    ],
+    "note": "以常見濃縮乳清（WPC）為準；各品牌差異大，建議依包裝標示",
+    "source": "estimate"
+  },
+  {
+    "id": "milk-whole",
+    "name": "全脂鮮乳",
+    "aliases": [
+      "鮮奶",
+      "牛奶",
+      "全脂牛奶"
+    ],
+    "category": "protein",
+    "kcalPer100g": 63,
+    "proteinPer100g": 3.1,
+    "units": [
+      {
+        "label": "1 杯（240ml）",
+        "grams": 240
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "milk-lowfat",
+    "name": "低脂鮮乳",
+    "aliases": [
+      "低脂牛奶",
+      "低脂奶"
+    ],
+    "category": "protein",
+    "kcalPer100g": 43,
+    "proteinPer100g": 3.3,
+    "units": [
+      {
+        "label": "1 杯（240ml）",
+        "grams": 240
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "cheese-slice",
+    "name": "起司片",
+    "aliases": [
+      "乳酪片",
+      "芝士片"
+    ],
+    "category": "protein",
+    "kcalPer100g": 309,
+    "proteinPer100g": 18.3,
+    "units": [
+      {
+        "label": "1 片（約 20g）",
+        "grams": 20
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "cheese-slice-lowfat",
+    "name": "低脂起司片",
+    "aliases": [
+      "低脂乳酪片"
+    ],
+    "category": "protein",
+    "kcalPer100g": 241,
+    "proteinPer100g": 21.7,
+    "units": [
+      {
+        "label": "1 片（約 20g）",
+        "grams": 20
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "ham-slice",
+    "name": "火腿片",
+    "aliases": [
+      "三明治火腿"
+    ],
+    "category": "protein",
+    "kcalPer100g": 147,
+    "proteinPer100g": 16.5,
+    "units": [
+      {
+        "label": "1 片（約 20g）",
+        "grams": 20
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "bacon",
+    "name": "培根",
+    "aliases": [
+      "三層煙肉"
+    ],
+    "category": "protein",
+    "kcalPer100g": 372,
+    "proteinPer100g": 13.5,
+    "units": [
+      {
+        "label": "1 片（約 20g）",
+        "grams": 20
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "sausage",
+    "name": "香腸",
+    "aliases": [
+      "台式香腸"
+    ],
+    "category": "protein",
+    "kcalPer100g": 354,
+    "proteinPer100g": 17.0,
+    "units": [
+      {
+        "label": "1 條（約 50g）",
+        "grams": 50
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "hotdog-small",
+    "name": "小熱狗",
+    "aliases": [
+      "小香腸",
+      "熱狗"
+    ],
+    "category": "protein",
+    "kcalPer100g": 362,
+    "proteinPer100g": 15.1,
+    "units": [
+      {
+        "label": "1 條（約 25g）",
+        "grams": 25
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "pork-jerky",
+    "name": "豬肉乾",
+    "aliases": [
+      "肉乾",
+      "肉條"
+    ],
+    "category": "protein",
+    "kcalPer100g": 345,
+    "proteinPer100g": 43.2,
+    "units": [
+      {
+        "label": "1 片（約 20g）",
+        "grams": 20
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "chicken-nugget",
+    "name": "冷凍雞塊",
+    "aliases": [
+      "雞塊",
+      "雞米花"
+    ],
+    "category": "protein",
+    "kcalPer100g": 228,
+    "proteinPer100g": 15.3,
+    "units": [
+      {
+        "label": "1 塊（約 20g）",
+        "grams": 20
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "meatball-pork",
+    "name": "貢丸",
+    "aliases": [
+      "摃丸"
+    ],
+    "category": "protein",
+    "kcalPer100g": 244,
+    "proteinPer100g": 16.6,
+    "units": [
+      {
+        "label": "1 顆（約 25g）",
+        "grams": 25
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "fishball-marlin",
+    "name": "旗魚丸",
+    "aliases": [
+      "魚丸"
+    ],
+    "category": "protein",
+    "kcalPer100g": 160,
+    "proteinPer100g": 12.8,
+    "units": [
+      {
+        "label": "1 顆（約 25g）",
+        "grams": 25
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "tempura-taiwan",
+    "name": "甜不辣（天婦羅）",
+    "aliases": [
+      "天婦羅",
+      "黑輪"
+    ],
+    "category": "protein",
+    "kcalPer100g": 176,
+    "proteinPer100g": 12.4,
+    "units": [
+      {
+        "label": "1 片（約 30g）",
+        "grams": 30
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "chickpea-dry",
+    "name": "鷹嘴豆（乾）",
+    "aliases": [
+      "雪蓮子",
+      "埃及豆"
+    ],
+    "category": "protein",
+    "kcalPer100g": 364,
+    "proteinPer100g": 19.4,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生豆乾重；煮熟後重量約 2.4 倍",
+    "source": "tfnd"
+  },
+  {
+    "id": "mungbean-dry",
+    "name": "綠豆（乾）",
+    "aliases": [
+      "綠豆"
+    ],
+    "category": "protein",
+    "kcalPer100g": 344,
+    "proteinPer100g": 22.8,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生豆乾重",
+    "source": "tfnd"
+  },
+  {
+    "id": "redbean-dry",
+    "name": "紅豆（乾）",
+    "aliases": [
+      "紅豆",
+      "赤小豆"
+    ],
+    "category": "protein",
+    "kcalPer100g": 328,
+    "proteinPer100g": 20.9,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生豆乾重",
+    "source": "tfnd"
+  },
+  {
+    "id": "white-rice-cooked",
+    "name": "白飯（熟）",
+    "aliases": [
+      "飯",
+      "白米飯",
+      "米飯"
+    ],
+    "category": "staple",
+    "kcalPer100g": 183,
+    "proteinPer100g": 3.1,
+    "units": [
+      {
+        "label": "1 碗（約 200g）",
+        "grams": 200
+      },
+      {
+        "label": "半碗（約 100g）",
+        "grams": 100
+      },
+      {
+        "label": "便當飯（約 250g）",
+        "grams": 250
+      }
+    ],
+    "note": "1 碗約 366 kcal",
+    "source": "tfnd"
+  },
+  {
+    "id": "brown-rice-cooked",
+    "name": "糙米飯（熟）",
+    "aliases": [
+      "糙米",
+      "五穀飯"
+    ],
+    "category": "staple",
+    "kcalPer100g": 178,
+    "proteinPer100g": 3.7,
+    "units": [
+      {
+        "label": "1 碗（約 200g）",
+        "grams": 200
+      },
+      {
+        "label": "半碗（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "由 TFND 糙米生重與白米生熟比推算；纖維較高但熱量與白飯接近",
+    "source": "estimate"
+  },
+  {
+    "id": "white-rice-raw",
+    "name": "白米（生）",
+    "aliases": [
+      "蓬萊米",
+      "稉米",
+      "生米"
+    ],
+    "category": "staple",
+    "kcalPer100g": 354,
+    "proteinPer100g": 7.0,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重；煮熟後約 2 倍重",
+    "source": "tfnd"
+  },
+  {
+    "id": "brown-rice-raw",
+    "name": "糙米（生）",
+    "aliases": [
+      "生糙米"
+    ],
+    "category": "staple",
+    "kcalPer100g": 364,
+    "proteinPer100g": 7.4,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "sweet-potato-yellow",
+    "name": "地瓜（黃肉）",
+    "aliases": [
+      "番薯",
+      "甘藷",
+      "蕃薯"
+    ],
+    "category": "staple",
+    "kcalPer100g": 121,
+    "proteinPer100g": 1.3,
+    "units": [
+      {
+        "label": "1 條（約 150g）",
+        "grams": 150
+      },
+      {
+        "label": "超商烤地瓜 1 條（約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "sweet-potato-red",
+    "name": "地瓜（紅肉）",
+    "aliases": [
+      "紅心地瓜",
+      "紅肉番薯"
+    ],
+    "category": "staple",
+    "kcalPer100g": 114,
+    "proteinPer100g": 1.8,
+    "units": [
+      {
+        "label": "1 條（約 150g）",
+        "grams": 150
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "potato",
+    "name": "馬鈴薯",
+    "aliases": [
+      "洋芋",
+      "土豆"
+    ],
+    "category": "staple",
+    "kcalPer100g": 77,
+    "proteinPer100g": 2.6,
+    "units": [
+      {
+        "label": "1 顆（約 150g）",
+        "grams": 150
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "taro",
+    "name": "芋頭",
+    "aliases": [
+      "芋仔"
+    ],
+    "category": "staple",
+    "kcalPer100g": 128,
+    "proteinPer100g": 2.5,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "pumpkin",
+    "name": "南瓜",
+    "aliases": [
+      "金瓜"
+    ],
+    "category": "staple",
+    "kcalPer100g": 74,
+    "proteinPer100g": 1.9,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "yam",
+    "name": "山藥",
+    "aliases": [
+      "淮山",
+      "山薯"
+    ],
+    "category": "staple",
+    "kcalPer100g": 93,
+    "proteinPer100g": 2.6,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "corn-sweet",
+    "name": "甜玉米",
+    "aliases": [
+      "玉米",
+      "黃玉米"
+    ],
+    "category": "staple",
+    "kcalPer100g": 107,
+    "proteinPer100g": 3.3,
+    "units": [
+      {
+        "label": "1 根（可食約 130g）",
+        "grams": 130
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "oats",
+    "name": "燕麥片",
+    "aliases": [
+      "大燕麥片",
+      "傳統燕麥"
+    ],
+    "category": "staple",
+    "kcalPer100g": 393,
+    "proteinPer100g": 12.3,
+    "units": [
+      {
+        "label": "1 份（約 40g）",
+        "grams": 40
+      }
+    ],
+    "note": "乾重",
+    "source": "tfnd"
+  },
+  {
+    "id": "instant-oats",
+    "name": "即食燕麥片",
+    "aliases": [
+      "快煮燕麥"
+    ],
+    "category": "staple",
+    "kcalPer100g": 406,
+    "proteinPer100g": 11.9,
+    "units": [
+      {
+        "label": "1 份（約 40g）",
+        "grams": 40
+      }
+    ],
+    "note": "乾重",
+    "source": "tfnd"
+  },
+  {
+    "id": "toast-white",
+    "name": "白土司",
+    "aliases": [
+      "吐司",
+      "土司",
+      "白吐司"
+    ],
+    "category": "staple",
+    "kcalPer100g": 289,
+    "proteinPer100g": 9.5,
+    "units": [
+      {
+        "label": "1 片（約 30g）",
+        "grams": 30
+      },
+      {
+        "label": "厚片 1 片（約 50g）",
+        "grams": 50
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "toast-wholewheat",
+    "name": "全麥土司",
+    "aliases": [
+      "全麥吐司"
+    ],
+    "category": "staple",
+    "kcalPer100g": 292,
+    "proteinPer100g": 10.0,
+    "units": [
+      {
+        "label": "1 片（約 30g）",
+        "grams": 30
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "mantou",
+    "name": "白饅頭",
+    "aliases": [
+      "饅頭"
+    ],
+    "category": "staple",
+    "kcalPer100g": 248,
+    "proteinPer100g": 8.1,
+    "units": [
+      {
+        "label": "1 個（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "mantou-brownsugar",
+    "name": "黑糖饅頭",
+    "aliases": [
+      "黑糖包"
+    ],
+    "category": "staple",
+    "kcalPer100g": 235,
+    "proteinPer100g": 6.8,
+    "units": [
+      {
+        "label": "1 個（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "noodle-dry-raw",
+    "name": "乾麵條（生）",
+    "aliases": [
+      "麵條",
+      "陽春麵條"
+    ],
+    "category": "staple",
+    "kcalPer100g": 350,
+    "proteinPer100g": 11.6,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重；煮熟後約 2.5 倍重",
+    "source": "tfnd"
+  },
+  {
+    "id": "oil-noodle",
+    "name": "油麵",
+    "aliases": [
+      "黃油麵",
+      "熟麵"
+    ],
+    "category": "staple",
+    "kcalPer100g": 361,
+    "proteinPer100g": 11.4,
+    "units": [
+      {
+        "label": "1 份（約 150g）",
+        "grams": 150
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "misua",
+    "name": "麵線",
+    "aliases": [
+      "白麵線"
+    ],
+    "category": "staple",
+    "kcalPer100g": 350,
+    "proteinPer100g": 11.7,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "red-misua",
+    "name": "紅麵線",
+    "aliases": [
+      "大腸麵線用麵線"
+    ],
+    "category": "staple",
+    "kcalPer100g": 307,
+    "proteinPer100g": 11.3,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "yi-mein",
+    "name": "意麵",
+    "aliases": [
+      "鹽水意麵"
+    ],
+    "category": "staple",
+    "kcalPer100g": 290,
+    "proteinPer100g": 10.1,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "vermicelli",
+    "name": "冬粉",
+    "aliases": [
+      "粉絲"
+    ],
+    "category": "staple",
+    "kcalPer100g": 351,
+    "proteinPer100g": 0.1,
+    "units": [
+      {
+        "label": "1 把（乾重約 30g）",
+        "grams": 30
+      }
+    ],
+    "note": "乾重；幾乎沒有蛋白質，是純澱粉",
+    "source": "tfnd"
+  },
+  {
+    "id": "rice-noodle",
+    "name": "米粉",
+    "aliases": [
+      "新竹米粉",
+      "秈米粉"
+    ],
+    "category": "staple",
+    "kcalPer100g": 363,
+    "proteinPer100g": 4.2,
+    "units": [
+      {
+        "label": "1 份（乾重約 60g）",
+        "grams": 60
+      }
+    ],
+    "note": "乾重",
+    "source": "tfnd"
+  },
+  {
+    "id": "dumpling-frozen",
+    "name": "冷凍豬肉水餃（生）",
+    "aliases": [
+      "水餃",
+      "冷凍水餃"
+    ],
+    "category": "staple",
+    "kcalPer100g": 208,
+    "proteinPer100g": 8.1,
+    "units": [
+      {
+        "label": "1 顆（約 20g）",
+        "grams": 20
+      },
+      {
+        "label": "10 顆（約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "生重",
+    "source": "tfnd"
+  },
+  {
+    "id": "dumpling-cooked",
+    "name": "熟水餃（高麗菜）",
+    "aliases": [
+      "煮好的水餃"
+    ],
+    "category": "staple",
+    "kcalPer100g": 199,
+    "proteinPer100g": 7.4,
+    "units": [
+      {
+        "label": "1 顆（約 25g）",
+        "grams": 25
+      },
+      {
+        "label": "10 顆（約 250g）",
+        "grams": 250
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "instant-noodle",
+    "name": "泡麵（含調味包）",
+    "aliases": [
+      "王子麵",
+      "科學麵",
+      "速食麵"
+    ],
+    "category": "staple",
+    "kcalPer100g": 473,
+    "proteinPer100g": 9.6,
+    "units": [
+      {
+        "label": "1 包（約 85g）",
+        "grams": 85
+      }
+    ],
+    "note": "油炸麵體，熱量密度高",
+    "source": "tfnd"
+  },
+  {
+    "id": "congee-cantonese",
+    "name": "廣東粥",
+    "aliases": [
+      "粥",
+      "稀飯"
+    ],
+    "category": "staple",
+    "kcalPer100g": 81,
+    "proteinPer100g": 4.9,
+    "units": [
+      {
+        "label": "1 碗（約 400g）",
+        "grams": 400
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "rice-ball-triangle",
+    "name": "三角飯糰（肉鬆）",
+    "aliases": [
+      "御飯糰",
+      "超商飯糰"
+    ],
+    "category": "staple",
+    "kcalPer100g": 219,
+    "proteinPer100g": 5.8,
+    "units": [
+      {
+        "label": "1 個（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "rice-ball-glutinous",
+    "name": "糯米飯糰",
+    "aliases": [
+      "飯糰",
+      "傳統飯糰"
+    ],
+    "category": "staple",
+    "kcalPer100g": 335,
+    "proteinPer100g": 5.9,
+    "units": [
+      {
+        "label": "1 個（約 180g）",
+        "grams": 180
+      }
+    ],
+    "note": "早餐店飯糰通常還會夾油條、肉鬆，熱量再往上加",
+    "source": "tfnd"
+  },
+  {
+    "id": "pastry-shaobing",
+    "name": "燒餅",
+    "aliases": [
+      "燒餅"
+    ],
+    "category": "staple",
+    "kcalPer100g": 323,
+    "proteinPer100g": 9.1,
+    "units": [
+      {
+        "label": "1 個（約 60g）",
+        "grams": 60
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "youtiao",
+    "name": "油條",
+    "aliases": [
+      "油炸鬼"
+    ],
+    "category": "staple",
+    "kcalPer100g": 551,
+    "proteinPer100g": 10.1,
+    "units": [
+      {
+        "label": "1 根（約 40g）",
+        "grams": 40
+      }
+    ],
+    "note": "油炸，熱量密度極高",
+    "source": "tfnd"
+  },
+  {
+    "id": "radish-cake",
+    "name": "蘿蔔糕（未煎）",
+    "aliases": [
+      "菜頭粿"
+    ],
+    "category": "staple",
+    "kcalPer100g": 111,
+    "proteinPer100g": 2.2,
+    "units": [
+      {
+        "label": "1 片（約 60g）",
+        "grams": 60
+      }
+    ],
+    "note": "未下鍋煎的原始重量",
+    "source": "tfnd"
+  },
+  {
+    "id": "broccoli",
+    "name": "青花菜",
+    "aliases": [
+      "綠花椰菜",
+      "花椰菜",
+      "綠花椰"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 38,
+    "proteinPer100g": 3.4,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "cauliflower",
+    "name": "白花椰菜",
+    "aliases": [
+      "花椰菜",
+      "白花菜"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 23,
+    "proteinPer100g": 1.8,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "cabbage",
+    "name": "高麗菜",
+    "aliases": [
+      "甘藍",
+      "包心菜"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 23,
+    "proteinPer100g": 1.3,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "bokchoy",
+    "name": "青江菜",
+    "aliases": [
+      "青江白菜",
+      "湯匙菜"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 15,
+    "proteinPer100g": 1.5,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "babybokchoy",
+    "name": "小白菜",
+    "aliases": [
+      "青菜"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 14,
+    "proteinPer100g": 1.2,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "water-spinach",
+    "name": "空心菜",
+    "aliases": [
+      "蕹菜",
+      "應菜"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 20,
+    "proteinPer100g": 1.7,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "spinach",
+    "name": "菠菜",
+    "aliases": [
+      "菠菱菜"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 18,
+    "proteinPer100g": 2.2,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "sweet-potato-leaf",
+    "name": "地瓜葉",
+    "aliases": [
+      "番薯葉",
+      "甘藷葉"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 28,
+    "proteinPer100g": 3.2,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "romaine",
+    "name": "蘿美萵苣（大陸妹）",
+    "aliases": [
+      "大陸妹",
+      "蘿蔓",
+      "羅美生菜"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 13,
+    "proteinPer100g": 1.0,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "okra",
+    "name": "秋葵",
+    "aliases": [
+      "黃秋葵"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 36,
+    "proteinPer100g": 2.1,
+    "units": [
+      {
+        "label": "1 根（約 12g）",
+        "grams": 12
+      },
+      {
+        "label": "1 份（100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "green-bean",
+    "name": "四季豆",
+    "aliases": [
+      "敏豆",
+      "菜豆"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 30,
+    "proteinPer100g": 1.7,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "onion-yellow",
+    "name": "洋蔥",
+    "aliases": [
+      "黃洋蔥"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 42,
+    "proteinPer100g": 1.0,
+    "units": [
+      {
+        "label": "半顆（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "carrot",
+    "name": "胡蘿蔔",
+    "aliases": [
+      "紅蘿蔔"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 39,
+    "proteinPer100g": 1.1,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "daikon",
+    "name": "白蘿蔔",
+    "aliases": [
+      "菜頭"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 18,
+    "proteinPer100g": 0.5,
+    "units": [
+      {
+        "label": "關東煮 1 塊（約 80g）",
+        "grams": 80
+      },
+      {
+        "label": "1 份（100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "cucumber",
+    "name": "小黃瓜",
+    "aliases": [
+      "花胡瓜"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 15,
+    "proteinPer100g": 0.8,
+    "units": [
+      {
+        "label": "1 條（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "bittergourd",
+    "name": "苦瓜",
+    "aliases": [
+      "白玉苦瓜"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 20,
+    "proteinPer100g": 0.9,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "eggplant",
+    "name": "茄子",
+    "aliases": [
+      "長茄"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 25,
+    "proteinPer100g": 1.2,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "tomato-large",
+    "name": "牛番茄",
+    "aliases": [
+      "大番茄",
+      "番茄"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 19,
+    "proteinPer100g": 0.7,
+    "units": [
+      {
+        "label": "1 顆（約 150g）",
+        "grams": 150
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "tomato-cherry",
+    "name": "小番茄",
+    "aliases": [
+      "聖女番茄",
+      "櫻桃番茄"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 33,
+    "proteinPer100g": 0.9,
+    "units": [
+      {
+        "label": "1 顆（約 12g）",
+        "grams": 12
+      },
+      {
+        "label": "1 份（100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "shiitake",
+    "name": "香菇",
+    "aliases": [
+      "冬菇"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 39,
+    "proteinPer100g": 3.0,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "enoki",
+    "name": "金針菇",
+    "aliases": [
+      "金菇"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 37,
+    "proteinPer100g": 2.6,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "king-oyster",
+    "name": "杏鮑菇",
+    "aliases": [
+      "杏包菇"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 41,
+    "proteinPer100g": 2.7,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "woodear",
+    "name": "黑木耳",
+    "aliases": [
+      "木耳",
+      "雲耳"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 38,
+    "proteinPer100g": 0.9,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "kelp",
+    "name": "海帶",
+    "aliases": [
+      "昆布"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 19,
+    "proteinPer100g": 0.7,
+    "units": [
+      {
+        "label": "滷味 1 份（約 50g）",
+        "grams": 50
+      },
+      {
+        "label": "1 份（100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "mungbean-sprout",
+    "name": "綠豆芽",
+    "aliases": [
+      "豆芽菜"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 24,
+    "proteinPer100g": 2.3,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "baby-corn",
+    "name": "玉米筍",
+    "aliases": [
+      "珍珠筍"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 33,
+    "proteinPer100g": 1.8,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "chayote",
+    "name": "隼人瓜",
+    "aliases": [
+      "佛手瓜",
+      "龍鬚菜果實"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 23,
+    "proteinPer100g": 0.7,
+    "units": [
+      {
+        "label": "1 份（煮熟約半碗，100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "banana",
+    "name": "香蕉",
+    "aliases": [
+      "芎蕉",
+      "弓蕉"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 85,
+    "proteinPer100g": 1.5,
+    "units": [
+      {
+        "label": "1 根（去皮約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "apple-fuji",
+    "name": "蘋果（富士）",
+    "aliases": [
+      "蘋果"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 49,
+    "proteinPer100g": 0.2,
+    "units": [
+      {
+        "label": "1 顆（可食約 180g）",
+        "grams": 180
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "guava",
+    "name": "芭樂（珍珠拔）",
+    "aliases": [
+      "芭樂",
+      "番石榴",
+      "拔仔"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 42,
+    "proteinPer100g": 0.7,
+    "units": [
+      {
+        "label": "1 顆（可食約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "papaya",
+    "name": "木瓜",
+    "aliases": [
+      "番木瓜"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 38,
+    "proteinPer100g": 0.6,
+    "units": [
+      {
+        "label": "半顆（可食約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "orange",
+    "name": "柳橙",
+    "aliases": [
+      "柳丁",
+      "甜橙"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 44,
+    "proteinPer100g": 0.8,
+    "units": [
+      {
+        "label": "1 顆（可食約 130g）",
+        "grams": 130
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "kiwi",
+    "name": "奇異果",
+    "aliases": [
+      "獼猴桃"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 56,
+    "proteinPer100g": 1.1,
+    "units": [
+      {
+        "label": "1 顆（可食約 90g）",
+        "grams": 90
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "pineapple",
+    "name": "鳳梨",
+    "aliases": [
+      "旺來"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 53,
+    "proteinPer100g": 0.7,
+    "units": [
+      {
+        "label": "1 份（約 130g）",
+        "grams": 130
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "watermelon",
+    "name": "西瓜",
+    "aliases": [
+      "小玉西瓜"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 33,
+    "proteinPer100g": 0.8,
+    "units": [
+      {
+        "label": "1 份（可食約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "dragonfruit",
+    "name": "火龍果（紅肉）",
+    "aliases": [
+      "火龍果",
+      "紅龍果"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 50,
+    "proteinPer100g": 1.1,
+    "units": [
+      {
+        "label": "1 顆（可食約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "waxapple",
+    "name": "蓮霧",
+    "aliases": [
+      "黑珍珠蓮霧"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 39,
+    "proteinPer100g": 0.4,
+    "units": [
+      {
+        "label": "1 顆（可食約 80g）",
+        "grams": 80
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "mango-irwin",
+    "name": "愛文芒果",
+    "aliases": [
+      "芒果",
+      "檨仔"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 42,
+    "proteinPer100g": 0.4,
+    "units": [
+      {
+        "label": "1 顆（可食約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "blueberry",
+    "name": "藍莓",
+    "aliases": [
+      "藍梅"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 53,
+    "proteinPer100g": 0.5,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "avocado",
+    "name": "酪梨",
+    "aliases": [
+      "牛油果"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 65,
+    "proteinPer100g": 1.6,
+    "units": [
+      {
+        "label": "半顆（可食約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "脂肪含量高，屬油脂類",
+    "source": "tfnd"
+  },
+  {
+    "id": "grape-kyoho",
+    "name": "巨峰葡萄",
+    "aliases": [
+      "葡萄"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 64,
+    "proteinPer100g": 0.5,
+    "units": [
+      {
+        "label": "1 份（可食約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "pear-western",
+    "name": "西洋梨",
+    "aliases": [
+      "梨子",
+      "水梨"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 53,
+    "proteinPer100g": 0.3,
+    "units": [
+      {
+        "label": "1 顆（可食約 150g）",
+        "grams": 150
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "tangerine",
+    "name": "桶柑",
+    "aliases": [
+      "橘子",
+      "海梨"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 44,
+    "proteinPer100g": 0.9,
+    "units": [
+      {
+        "label": "1 顆（可食約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "strawberry",
+    "name": "草莓",
+    "aliases": [
+      "士多啤梨"
+    ],
+    "category": "vegfruit",
+    "kcalPer100g": 32,
+    "proteinPer100g": 0.7,
+    "units": [
+      {
+        "label": "1 顆（約 15g）",
+        "grams": 15
+      },
+      {
+        "label": "1 份（100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "usda"
+  },
+  {
+    "id": "braised-egg-eatery",
+    "name": "滷味滷蛋",
+    "aliases": [
+      "滷味的滷蛋"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 184,
+    "proteinPer100g": 16.4,
+    "units": [
+      {
+        "label": "1 顆（約 50g）",
+        "grams": 50
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "pork-blood-cake",
+    "name": "豬血糕（米血）",
+    "aliases": [
+      "米血",
+      "米血糕"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 194,
+    "proteinPer100g": 8.6,
+    "units": [
+      {
+        "label": "1 支（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "oyster-omelette",
+    "name": "蚵仔煎",
+    "aliases": [
+      "蚵仔煎"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 192,
+    "proteinPer100g": 4.9,
+    "units": [
+      {
+        "label": "1 份（約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "braised-pork-knuckle",
+    "name": "滷豬腳",
+    "aliases": [
+      "豬腳"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 237,
+    "proteinPer100g": 28.4,
+    "units": [
+      {
+        "label": "1 塊（約 120g）",
+        "grams": 120
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "braised-beef-tendon",
+    "name": "滷牛筋",
+    "aliases": [
+      "牛筋",
+      "蹄筋"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 119,
+    "proteinPer100g": 21.1,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "ham-egg-sandwich",
+    "name": "火腿蛋三明治",
+    "aliases": [
+      "早餐店三明治",
+      "三明治"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 275,
+    "proteinPer100g": 10.9,
+    "units": [
+      {
+        "label": "1 份（約 130g）",
+        "grams": 130
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "guodong-noodle",
+    "name": "鍋燒意麵（麵體）",
+    "aliases": [
+      "鍋燒麵"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 479,
+    "proteinPer100g": 10.0,
+    "units": [
+      {
+        "label": "1 份麵體（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "此為油炸麵體本身；整碗連湯料另計約 550-650 kcal",
+    "source": "tfnd"
+  },
+  {
+    "id": "braised-chicken-leg",
+    "name": "滷雞腿（便當店）",
+    "aliases": [
+      "便當雞腿",
+      "雞腿"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 200,
+    "proteinPer100g": 22.0,
+    "units": [
+      {
+        "label": "1 隻（去骨約 150g）",
+        "grams": 150
+      }
+    ],
+    "note": "估計值，各店做法差異大；1 隻約 300 kcal、33g 蛋白質",
+    "source": "estimate"
+  },
+  {
+    "id": "fried-pork-chop",
+    "name": "炸排骨（便當店）",
+    "aliases": [
+      "排骨",
+      "便當排骨"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 300,
+    "proteinPer100g": 18.0,
+    "units": [
+      {
+        "label": "1 片（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "估計值，各店做法差異大",
+    "source": "estimate"
+  },
+  {
+    "id": "braised-pork-belly",
+    "name": "控肉（滷五花）",
+    "aliases": [
+      "爌肉",
+      "焢肉",
+      "滷肉塊"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 330,
+    "proteinPer100g": 17.0,
+    "units": [
+      {
+        "label": "1 塊（約 80g）",
+        "grams": 80
+      }
+    ],
+    "note": "估計值，各店做法差異大；油脂含量高",
+    "source": "estimate"
+  },
+  {
+    "id": "minced-pork-rice-sauce",
+    "name": "滷肉燥（淋飯用）",
+    "aliases": [
+      "肉燥",
+      "滷肉汁"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 350,
+    "proteinPer100g": 12.0,
+    "units": [
+      {
+        "label": "1 匙（約 25g）",
+        "grams": 25
+      }
+    ],
+    "note": "估計值，各店做法差異大；主要是油脂",
+    "source": "estimate"
+  },
+  {
+    "id": "bento-chicken-leg",
+    "name": "雞腿便當（整份）",
+    "aliases": [
+      "雞腿飯",
+      "便當"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 170,
+    "proteinPer100g": 9.0,
+    "units": [
+      {
+        "label": "1 個便當（約 500g）",
+        "grams": 500
+      }
+    ],
+    "note": "估計值，各店做法差異大；整份約 850 kcal、45g 蛋白質",
+    "source": "estimate"
+  },
+  {
+    "id": "bento-pork-chop",
+    "name": "排骨便當（整份）",
+    "aliases": [
+      "排骨飯",
+      "排骨便當"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 175,
+    "proteinPer100g": 6.5,
+    "units": [
+      {
+        "label": "1 個便當（約 520g）",
+        "grams": 520
+      }
+    ],
+    "note": "估計值，各店做法差異大；整份約 910 kcal、34g 蛋白質",
+    "source": "estimate"
+  },
+  {
+    "id": "minced-pork-rice",
+    "name": "滷肉飯（小碗）",
+    "aliases": [
+      "魯肉飯",
+      "肉燥飯"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 200,
+    "proteinPer100g": 5.5,
+    "units": [
+      {
+        "label": "小碗（約 180g）",
+        "grams": 180
+      }
+    ],
+    "note": "估計值，各店做法差異大",
+    "source": "estimate"
+  },
+  {
+    "id": "egg-crepe",
+    "name": "蛋餅（原味）",
+    "aliases": [
+      "原味蛋餅",
+      "蛋餅"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 190,
+    "proteinPer100g": 8.0,
+    "units": [
+      {
+        "label": "1 份（約 120g）",
+        "grams": 120
+      }
+    ],
+    "note": "估計值，各店做法差異大；加起司或肉鬆再加 60-120 kcal",
+    "source": "estimate"
+  },
+  {
+    "id": "radish-cake-fried",
+    "name": "煎蘿蔔糕（早餐店）",
+    "aliases": [
+      "蘿蔔糕",
+      "菜頭粿"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 155,
+    "proteinPer100g": 2.2,
+    "units": [
+      {
+        "label": "1 片（約 60g）",
+        "grams": 60
+      },
+      {
+        "label": "1 份 3 片（約 180g）",
+        "grams": 180
+      }
+    ],
+    "note": "估計值，各店做法差異大；已含煎的油",
+    "source": "estimate"
+  },
+  {
+    "id": "iron-plate-noodle",
+    "name": "鐵板麵（黑胡椒）",
+    "aliases": [
+      "鐵板麵"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 170,
+    "proteinPer100g": 6.0,
+    "units": [
+      {
+        "label": "1 份（約 350g）",
+        "grams": 350
+      }
+    ],
+    "note": "估計值，各店做法差異大；1 份約 600 kcal",
+    "source": "estimate"
+  },
+  {
+    "id": "plain-noodle-soup",
+    "name": "陽春麵（1 碗）",
+    "aliases": [
+      "陽春麵",
+      "清湯麵"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 110,
+    "proteinPer100g": 4.0,
+    "units": [
+      {
+        "label": "1 碗（約 350g）",
+        "grams": 350
+      }
+    ],
+    "note": "估計值，各店做法差異大；含湯；1 碗約 385 kcal",
+    "source": "estimate"
+  },
+  {
+    "id": "dry-noodle",
+    "name": "乾麵（麻醬／油蔥）",
+    "aliases": [
+      "乾麵",
+      "麻醬麵"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 250,
+    "proteinPer100g": 8.0,
+    "units": [
+      {
+        "label": "1 碗（約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "估計值，各店做法差異大；1 碗約 500 kcal，醬料是熱量大宗",
+    "source": "estimate"
+  },
+  {
+    "id": "beef-noodle-soup",
+    "name": "牛肉麵（1 碗）",
+    "aliases": [
+      "牛肉麵",
+      "半筋半肉麵"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 90,
+    "proteinPer100g": 4.0,
+    "units": [
+      {
+        "label": "1 碗連湯（約 700g）",
+        "grams": 700
+      }
+    ],
+    "note": "估計值，各店做法差異大；1 碗約 630 kcal、28g 蛋白質",
+    "source": "estimate"
+  },
+  {
+    "id": "wonton-soup",
+    "name": "餛飩湯",
+    "aliases": [
+      "扁食湯",
+      "餛飩"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 75,
+    "proteinPer100g": 4.5,
+    "units": [
+      {
+        "label": "1 碗（約 300g）",
+        "grams": 300
+      }
+    ],
+    "note": "估計值，各店做法差異大",
+    "source": "estimate"
+  },
+  {
+    "id": "fried-chicken-popcorn",
+    "name": "鹽酥雞",
+    "aliases": [
+      "雞排酥",
+      "炸雞塊"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 300,
+    "proteinPer100g": 20.0,
+    "units": [
+      {
+        "label": "1 份（約 120g）",
+        "grams": 120
+      }
+    ],
+    "note": "估計值，各店做法差異大；1 份約 360 kcal",
+    "source": "estimate"
+  },
+  {
+    "id": "fried-chicken-cutlet",
+    "name": "炸雞排",
+    "aliases": [
+      "雞排",
+      "大雞排"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 290,
+    "proteinPer100g": 20.0,
+    "units": [
+      {
+        "label": "1 片（約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "估計值，各店做法差異大；1 片約 580 kcal",
+    "source": "estimate"
+  },
+  {
+    "id": "braised-dried-tofu",
+    "name": "滷豆干（滷味）",
+    "aliases": [
+      "滷豆干"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 210,
+    "proteinPer100g": 19.0,
+    "units": [
+      {
+        "label": "1 塊（約 35g）",
+        "grams": 35
+      }
+    ],
+    "note": "估計值，各店做法差異大；滷汁會加一點糖與鹽",
+    "source": "estimate"
+  },
+  {
+    "id": "braised-kelp",
+    "name": "滷海帶（滷味）",
+    "aliases": [
+      "滷海帶"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 40,
+    "proteinPer100g": 1.0,
+    "units": [
+      {
+        "label": "1 份（約 50g）",
+        "grams": 50
+      }
+    ],
+    "note": "估計值，各店做法差異大",
+    "source": "estimate"
+  },
+  {
+    "id": "braised-gizzard",
+    "name": "滷雞胗（滷味）",
+    "aliases": [
+      "滷雞胗"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 110,
+    "proteinPer100g": 17.0,
+    "units": [
+      {
+        "label": "1 份（約 60g）",
+        "grams": 60
+      }
+    ],
+    "note": "估計值，各店做法差異大；滷味裡少數高蛋白低脂選項",
+    "source": "estimate"
+  },
+  {
+    "id": "cvs-chicken-breast",
+    "name": "超商即食雞胸肉",
+    "aliases": [
+      "舒肥雞胸",
+      "超商雞胸",
+      "即食雞胸"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 120,
+    "proteinPer100g": 23.0,
+    "units": [
+      {
+        "label": "1 包（約 110g）",
+        "grams": 110
+      }
+    ],
+    "note": "以常見品牌標示中位數估算；口味不同差異在 100-160 kcal",
+    "source": "estimate"
+  },
+  {
+    "id": "cvs-sweet-potato",
+    "name": "超商烤地瓜",
+    "aliases": [
+      "烤地瓜"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 130,
+    "proteinPer100g": 1.4,
+    "units": [
+      {
+        "label": "1 條（約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "烤過水分蒸發，熱量密度略高於生地瓜",
+    "source": "estimate"
+  },
+  {
+    "id": "cvs-onigiri-tuna",
+    "name": "御飯糰（鮪魚）",
+    "aliases": [
+      "鮪魚飯糰",
+      "御飯糰"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 185,
+    "proteinPer100g": 5.0,
+    "units": [
+      {
+        "label": "1 個（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "以超商標示中位數估算；口味不同差異在 170-230 kcal",
+    "source": "estimate"
+  },
+  {
+    "id": "cvs-salad-chicken",
+    "name": "超商雞肉沙拉盒",
+    "aliases": [
+      "生菜沙拉",
+      "沙拉盒"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 75,
+    "proteinPer100g": 7.0,
+    "units": [
+      {
+        "label": "1 盒（約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "未含沙拉醬；一包和風醬再加 30-80 kcal",
+    "source": "estimate"
+  },
+  {
+    "id": "oden-set",
+    "name": "關東煮（綜合 3 樣）",
+    "aliases": [
+      "黑輪",
+      "關東煮"
+    ],
+    "category": "eatery",
+    "kcalPer100g": 120,
+    "proteinPer100g": 8.0,
+    "units": [
+      {
+        "label": "3 樣（約 150g）",
+        "grams": 150
+      }
+    ],
+    "note": "估計值，各店做法差異大；不含湯",
+    "source": "estimate"
+  },
+  {
+    "id": "bubble-tea-full",
+    "name": "珍珠奶茶（全糖，去冰）",
+    "aliases": [
+      "珍奶",
+      "波霸奶茶",
+      "珍珠奶茶"
+    ],
+    "category": "drink",
+    "kcalPer100g": 94,
+    "proteinPer100g": 0.2,
+    "units": [
+      {
+        "label": "大杯（700ml）",
+        "grams": 700
+      },
+      {
+        "label": "中杯（500ml）",
+        "grams": 500
+      }
+    ],
+    "note": "以 ml 當 g 計算。注意：TFND 只取上層茶湯分析，這個數字不含珍珠；大杯的珍珠要再加約 150-200 kcal；大杯茶湯約 658 kcal，連珍珠約 830 kcal",
+    "source": "tfnd"
+  },
+  {
+    "id": "bubble-tea-half",
+    "name": "珍珠奶茶（半糖，去冰）",
+    "aliases": [
+      "半糖珍奶"
+    ],
+    "category": "drink",
+    "kcalPer100g": 84,
+    "proteinPer100g": 0.2,
+    "units": [
+      {
+        "label": "大杯（700ml）",
+        "grams": 700
+      },
+      {
+        "label": "中杯（500ml）",
+        "grams": 500
+      }
+    ],
+    "note": "以 ml 當 g 計算。注意：TFND 只取上層茶湯分析，這個數字不含珍珠；大杯的珍珠要再加約 150-200 kcal",
+    "source": "tfnd"
+  },
+  {
+    "id": "bubble-tea-light",
+    "name": "珍珠奶茶（微糖，去冰）",
+    "aliases": [
+      "微糖珍奶"
+    ],
+    "category": "drink",
+    "kcalPer100g": 75,
+    "proteinPer100g": 0.2,
+    "units": [
+      {
+        "label": "大杯（700ml）",
+        "grams": 700
+      },
+      {
+        "label": "中杯（500ml）",
+        "grams": 500
+      }
+    ],
+    "note": "以 ml 當 g 計算。注意：TFND 只取上層茶湯分析，這個數字不含珍珠；大杯的珍珠要再加約 150-200 kcal",
+    "source": "tfnd"
+  },
+  {
+    "id": "oolong-milk-tea-full",
+    "name": "烏龍奶茶（全糖，去冰）",
+    "aliases": [
+      "烏龍拿鐵",
+      "奶茶"
+    ],
+    "category": "drink",
+    "kcalPer100g": 75,
+    "proteinPer100g": 0.2,
+    "units": [
+      {
+        "label": "大杯（700ml）",
+        "grams": 700
+      },
+      {
+        "label": "中杯（500ml）",
+        "grams": 500
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "oolong-milk-tea-half",
+    "name": "烏龍奶茶（半糖，去冰）",
+    "aliases": [
+      "半糖奶茶"
+    ],
+    "category": "drink",
+    "kcalPer100g": 62,
+    "proteinPer100g": 0.2,
+    "units": [
+      {
+        "label": "大杯（700ml）",
+        "grams": 700
+      },
+      {
+        "label": "中杯（500ml）",
+        "grams": 500
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "milk-tea-unsweet",
+    "name": "無糖鮮奶茶",
+    "aliases": [
+      "紅茶拿鐵",
+      "無糖奶茶"
+    ],
+    "category": "drink",
+    "kcalPer100g": 27,
+    "proteinPer100g": 2.0,
+    "units": [
+      {
+        "label": "中杯（500ml）",
+        "grams": 500
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "yakult-green-tea",
+    "name": "多多綠茶（全糖）",
+    "aliases": [
+      "多多綠"
+    ],
+    "category": "drink",
+    "kcalPer100g": 49,
+    "proteinPer100g": 1.1,
+    "units": [
+      {
+        "label": "大杯（700ml）",
+        "grams": 700
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "americano",
+    "name": "美式咖啡（無糖）",
+    "aliases": [
+      "黑咖啡",
+      "美式"
+    ],
+    "category": "drink",
+    "kcalPer100g": 2,
+    "proteinPer100g": 0.2,
+    "units": [
+      {
+        "label": "中杯（360ml）",
+        "grams": 360
+      }
+    ],
+    "note": "以 ml 當 g 計算；幾乎零熱量",
+    "source": "tfnd"
+  },
+  {
+    "id": "latte-unsweet",
+    "name": "拿鐵咖啡（無糖）",
+    "aliases": [
+      "拿鐵",
+      "咖啡牛奶"
+    ],
+    "category": "drink",
+    "kcalPer100g": 43,
+    "proteinPer100g": 3.0,
+    "units": [
+      {
+        "label": "中杯（360ml）",
+        "grams": 360
+      }
+    ],
+    "note": "以 ml 當 g 計算；中杯約 155 kcal，多數熱量來自牛奶",
+    "source": "tfnd"
+  },
+  {
+    "id": "coffee-3in1",
+    "name": "三合一咖啡（沖泡好）",
+    "aliases": [
+      "即溶咖啡"
+    ],
+    "category": "drink",
+    "kcalPer100g": 39,
+    "proteinPer100g": 0.9,
+    "units": [
+      {
+        "label": "1 杯（200ml）",
+        "grams": 200
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "green-tea-bottled",
+    "name": "市售綠茶飲料（含糖）",
+    "aliases": [
+      "瓶裝綠茶"
+    ],
+    "category": "drink",
+    "kcalPer100g": 22,
+    "proteinPer100g": 0.0,
+    "units": [
+      {
+        "label": "1 瓶（600ml）",
+        "grams": 600
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "oat-milk",
+    "name": "燕麥奶",
+    "aliases": [
+      "燕麥飲"
+    ],
+    "category": "drink",
+    "kcalPer100g": 44,
+    "proteinPer100g": 1.0,
+    "units": [
+      {
+        "label": "1 杯（240ml）",
+        "grams": 240
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "cola",
+    "name": "可樂",
+    "aliases": [
+      "汽水",
+      "可口可樂"
+    ],
+    "category": "drink",
+    "kcalPer100g": 51,
+    "proteinPer100g": 0.0,
+    "units": [
+      {
+        "label": "1 罐（330ml）",
+        "grams": 330
+      }
+    ],
+    "note": "以 ml 當 g 計算；1 罐約 168 kcal，全部來自糖",
+    "source": "tfnd"
+  },
+  {
+    "id": "cola-zero",
+    "name": "零卡可樂",
+    "aliases": [
+      "無糖可樂",
+      "健怡"
+    ],
+    "category": "drink",
+    "kcalPer100g": 1,
+    "proteinPer100g": 0.0,
+    "units": [
+      {
+        "label": "1 罐（330ml）",
+        "grams": 330
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "sports-drink",
+    "name": "運動飲料",
+    "aliases": [
+      "寶礦力",
+      "舒跑"
+    ],
+    "category": "drink",
+    "kcalPer100g": 28,
+    "proteinPer100g": 0.1,
+    "units": [
+      {
+        "label": "1 瓶（600ml）",
+        "grams": 600
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "beer-draft",
+    "name": "生啤酒",
+    "aliases": [
+      "啤酒",
+      "生啤"
+    ],
+    "category": "drink",
+    "kcalPer100g": 50,
+    "proteinPer100g": 0.4,
+    "units": [
+      {
+        "label": "1 罐（330ml）",
+        "grams": 330
+      },
+      {
+        "label": "1 大瓶（600ml）",
+        "grams": 600
+      }
+    ],
+    "note": "以 ml 當 g 計算；1 罐約 165 kcal",
+    "source": "tfnd"
+  },
+  {
+    "id": "red-wine",
+    "name": "紅葡萄酒",
+    "aliases": [
+      "紅酒"
+    ],
+    "category": "drink",
+    "kcalPer100g": 93,
+    "proteinPer100g": 0.1,
+    "units": [
+      {
+        "label": "1 杯（150ml）",
+        "grams": 150
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "white-wine",
+    "name": "白葡萄酒",
+    "aliases": [
+      "白酒"
+    ],
+    "category": "drink",
+    "kcalPer100g": 90,
+    "proteinPer100g": 0.1,
+    "units": [
+      {
+        "label": "1 杯（150ml）",
+        "grams": 150
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "soymilk-salty",
+    "name": "鹹豆漿",
+    "aliases": [
+      "鹹漿"
+    ],
+    "category": "drink",
+    "kcalPer100g": 37,
+    "proteinPer100g": 3.5,
+    "units": [
+      {
+        "label": "1 碗（350ml）",
+        "grams": 350
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "papaya-milk",
+    "name": "木瓜牛奶",
+    "aliases": [
+      "木瓜牛乳"
+    ],
+    "category": "drink",
+    "kcalPer100g": 42,
+    "proteinPer100g": 1.7,
+    "units": [
+      {
+        "label": "1 杯（500ml）",
+        "grams": 500
+      }
+    ],
+    "note": "以 ml 當 g 計算",
+    "source": "tfnd"
+  },
+  {
+    "id": "green-tea-unsweet",
+    "name": "無糖綠茶（現泡／無糖茶飲）",
+    "aliases": [
+      "無糖茶",
+      "綠茶",
+      "無糖綠"
+    ],
+    "category": "drink",
+    "kcalPer100g": 1,
+    "proteinPer100g": 0.0,
+    "units": [
+      {
+        "label": "大杯（700ml）",
+        "grams": 700
+      }
+    ],
+    "note": "TFND 綠茶茶湯實測近乎 0 kcal；減脂期最安全的飲料",
+    "source": "tfnd"
+  },
+  {
+    "id": "green-tea-shop-full",
+    "name": "手搖綠茶（全糖）",
+    "aliases": [
+      "全糖綠茶",
+      "冰綠茶"
+    ],
+    "category": "drink",
+    "kcalPer100g": 40,
+    "proteinPer100g": 0.0,
+    "units": [
+      {
+        "label": "大杯（700ml）",
+        "grams": 700
+      },
+      {
+        "label": "中杯（500ml）",
+        "grams": 500
+      }
+    ],
+    "note": "估計值，各店做法差異大；全糖 700ml 約 280 kcal，糖幾乎是全部熱量來源",
+    "source": "estimate"
+  },
+  {
+    "id": "green-tea-shop-half",
+    "name": "手搖綠茶（半糖）",
+    "aliases": [
+      "半糖綠茶"
+    ],
+    "category": "drink",
+    "kcalPer100g": 22,
+    "proteinPer100g": 0.0,
+    "units": [
+      {
+        "label": "大杯（700ml）",
+        "grams": 700
+      }
+    ],
+    "note": "估計值，各店做法差異大；半糖 700ml 約 154 kcal",
+    "source": "estimate"
+  },
+  {
+    "id": "potato-chips",
+    "name": "洋芋片",
+    "aliases": [
+      "薯片"
+    ],
+    "category": "snack",
+    "kcalPer100g": 553,
+    "proteinPer100g": 5.2,
+    "units": [
+      {
+        "label": "1 小包（約 40g）",
+        "grams": 40
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "pineapple-cake",
+    "name": "鳳梨酥",
+    "aliases": [
+      "鳳梨酥"
+    ],
+    "category": "snack",
+    "kcalPer100g": 484,
+    "proteinPer100g": 4.2,
+    "units": [
+      {
+        "label": "1 個（約 50g）",
+        "grams": 50
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "ice-cream-choco",
+    "name": "巧克力冰淇淋",
+    "aliases": [
+      "冰淇淋"
+    ],
+    "category": "snack",
+    "kcalPer100g": 192,
+    "proteinPer100g": 4.2,
+    "units": [
+      {
+        "label": "1 球（約 60g）",
+        "grams": 60
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "ice-cream-vanilla",
+    "name": "香草冰淇淋",
+    "aliases": [
+      "冰淇淋"
+    ],
+    "category": "snack",
+    "kcalPer100g": 182,
+    "proteinPer100g": 2.5,
+    "units": [
+      {
+        "label": "1 球（約 60g）",
+        "grams": 60
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "milk-pudding",
+    "name": "鮮奶布丁",
+    "aliases": [
+      "布丁"
+    ],
+    "category": "snack",
+    "kcalPer100g": 110,
+    "proteinPer100g": 3.0,
+    "units": [
+      {
+        "label": "1 個（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "wheel-cake-redbean",
+    "name": "車輪餅（紅豆）",
+    "aliases": [
+      "紅豆餅",
+      "車輪餅"
+    ],
+    "category": "snack",
+    "kcalPer100g": 187,
+    "proteinPer100g": 2.1,
+    "units": [
+      {
+        "label": "1 個（約 80g）",
+        "grams": 80
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "castella",
+    "name": "蜂蜜蛋糕",
+    "aliases": [
+      "長崎蛋糕"
+    ],
+    "category": "snack",
+    "kcalPer100g": 346,
+    "proteinPer100g": 6.5,
+    "units": [
+      {
+        "label": "1 片（約 50g）",
+        "grams": 50
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "cheesecake",
+    "name": "乳酪蛋糕",
+    "aliases": [
+      "起司蛋糕"
+    ],
+    "category": "snack",
+    "kcalPer100g": 296,
+    "proteinPer100g": 7.0,
+    "units": [
+      {
+        "label": "1 片（約 90g）",
+        "grams": 90
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "sandwich-cookie",
+    "name": "夾心餅乾",
+    "aliases": [
+      "餅乾"
+    ],
+    "category": "snack",
+    "kcalPer100g": 517,
+    "proteinPer100g": 4.8,
+    "units": [
+      {
+        "label": "1 片（約 12g）",
+        "grams": 12
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "pineapple-bun",
+    "name": "菠蘿麵包",
+    "aliases": [
+      "波蘿麵包"
+    ],
+    "category": "snack",
+    "kcalPer100g": 378,
+    "proteinPer100g": 9.2,
+    "units": [
+      {
+        "label": "1 個（約 90g）",
+        "grams": 90
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "butter-bun",
+    "name": "奶酥麵包",
+    "aliases": [
+      "奶酥"
+    ],
+    "category": "snack",
+    "kcalPer100g": 377,
+    "proteinPer100g": 9.1,
+    "units": [
+      {
+        "label": "1 個（約 90g）",
+        "grams": 90
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "pork-floss-bun",
+    "name": "肉鬆麵包",
+    "aliases": [
+      "肉鬆麵包"
+    ],
+    "category": "snack",
+    "kcalPer100g": 429,
+    "proteinPer100g": 8.1,
+    "units": [
+      {
+        "label": "1 個（約 90g）",
+        "grams": 90
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "dark-chocolate",
+    "name": "黑巧克力（85%）",
+    "aliases": [
+      "黑巧克力"
+    ],
+    "category": "snack",
+    "kcalPer100g": 613,
+    "proteinPer100g": 10.9,
+    "units": [
+      {
+        "label": "1 片（約 10g）",
+        "grams": 10
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "cashew",
+    "name": "腰果（原味）",
+    "aliases": [
+      "腰果"
+    ],
+    "category": "snack",
+    "kcalPer100g": 566,
+    "proteinPer100g": 16.4,
+    "units": [
+      {
+        "label": "1 小把（約 25g）",
+        "grams": 25
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "almond",
+    "name": "杏仁果（熟）",
+    "aliases": [
+      "杏仁",
+      "扁桃仁"
+    ],
+    "category": "snack",
+    "kcalPer100g": 588,
+    "proteinPer100g": 21.9,
+    "units": [
+      {
+        "label": "1 小把（約 25g）",
+        "grams": 25
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "walnut",
+    "name": "核桃（生）",
+    "aliases": [
+      "核桃"
+    ],
+    "category": "snack",
+    "kcalPer100g": 667,
+    "proteinPer100g": 15.4,
+    "units": [
+      {
+        "label": "1 小把（約 25g）",
+        "grams": 25
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "peanut-fried",
+    "name": "鹽酥花生",
+    "aliases": [
+      "花生",
+      "花生米"
+    ],
+    "category": "snack",
+    "kcalPer100g": 557,
+    "proteinPer100g": 28.8,
+    "units": [
+      {
+        "label": "1 小把（約 25g）",
+        "grams": 25
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "pumpkin-seed",
+    "name": "南瓜子（去殼）",
+    "aliases": [
+      "南瓜籽",
+      "白瓜子"
+    ],
+    "category": "snack",
+    "kcalPer100g": 607,
+    "proteinPer100g": 30.4,
+    "units": [
+      {
+        "label": "1 小把（約 25g）",
+        "grams": 25
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "tapioca-pearl",
+    "name": "粉圓（珍珠，乾）",
+    "aliases": [
+      "珍珠",
+      "波霸"
+    ],
+    "category": "snack",
+    "kcalPer100g": 346,
+    "proteinPer100g": 0.2,
+    "units": [
+      {
+        "label": "1 份乾重（約 30g）",
+        "grams": 30
+      }
+    ],
+    "note": "乾重；煮熟後會膨脹，一杯珍奶的珍珠約乾重 40-60g",
+    "source": "tfnd"
+  },
+  {
+    "id": "honey",
+    "name": "蜂蜜",
+    "aliases": [
+      "蜜"
+    ],
+    "category": "snack",
+    "kcalPer100g": 308,
+    "proteinPer100g": 0.2,
+    "units": [
+      {
+        "label": "1 匙（約 20g）",
+        "grams": 20
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "brown-sugar",
+    "name": "紅砂糖",
+    "aliases": [
+      "砂糖",
+      "糖"
+    ],
+    "category": "snack",
+    "kcalPer100g": 384,
+    "proteinPer100g": 0.0,
+    "units": [
+      {
+        "label": "1 匙（約 12g）",
+        "grams": 12
+      }
+    ],
+    "note": "",
+    "source": "tfnd"
+  },
+  {
+    "id": "satay-sauce",
+    "name": "沙茶醬",
+    "aliases": [
+      "沙茶"
+    ],
+    "category": "snack",
+    "kcalPer100g": 729,
+    "proteinPer100g": 10.2,
+    "units": [
+      {
+        "label": "1 匙（約 15g）",
+        "grams": 15
+      }
+    ],
+    "note": "幾乎純油脂，火鍋沾醬要小心",
+    "source": "tfnd"
+  },
+  {
+    "id": "douhua-plain",
+    "name": "傳統豆花（未加糖）",
+    "aliases": [
+      "豆花"
+    ],
+    "category": "snack",
+    "kcalPer100g": 39,
+    "proteinPer100g": 3.2,
+    "units": [
+      {
+        "label": "1 碗（約 200g）",
+        "grams": 200
+      }
+    ],
+    "note": "加糖水與配料後熱量會翻倍",
+    "source": "tfnd"
+  },
+  {
+    "id": "french-fries-frozen",
+    "name": "冷凍薯條（未炸）",
+    "aliases": [
+      "薯條"
+    ],
+    "category": "snack",
+    "kcalPer100g": 151,
+    "proteinPer100g": 2.2,
+    "units": [
+      {
+        "label": "1 份（約 100g）",
+        "grams": 100
+      }
+    ],
+    "note": "未油炸的重量；炸過約 300 kcal/100g",
+    "source": "tfnd"
+  }
+]
