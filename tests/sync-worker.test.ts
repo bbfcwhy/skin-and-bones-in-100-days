@@ -19,8 +19,10 @@ import {
 const SECRET = "test-secret-do-not-use-in-production";
 
 describe("同步 Worker 的密碼雜湊", () => {
-  it("使用 PBKDF2-SHA256 且迭代次數不低於 210000", () => {
-    expect(PBKDF2_ITERATIONS).toBeGreaterThanOrEqual(210_000);
+  it("使用 PBKDF2-SHA256，迭代次數固定在 Cloudflare Workers 的上限 100000", () => {
+    // Workers 的 WebCrypto 實測拒絕 >100000 次迭代（NotSupportedError），
+    // 這裡用 toBe 釘死：調低會弱化強度、調高會讓正式環境 500。
+    expect(PBKDF2_ITERATIONS).toBe(100_000);
   });
 
   it("同一組密碼每次的 salt 與 hash 都不同", async () => {

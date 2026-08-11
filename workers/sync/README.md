@@ -98,7 +98,7 @@ curl https://skin-bones-sync.<你的帳號>.workers.dev/health
 
 Worker 本身是無狀態的，要自己數「這個 IP 這分鐘打了幾次」得再開 KV 或 Durable Objects，對一個人自己用的站來說成本大於收益。**比較划算的做法是用 Cloudflare 內建的 Rate Limiting rule**，免費方案就有，不用改任何程式碼。
 
-> 這步是選用的。不做也能正常運作——密碼是 PBKDF2 210,000 次迭代，暴力破解本來就慢；加了只是讓人連試都試不動。
+> 這步是選用的。不做也能正常運作——密碼是 PBKDF2 100,000 次迭代（Workers WebCrypto 的上限），暴力破解本來就慢；加了只是讓人連試都試不動。
 
 1. 進 [Cloudflare Dashboard](https://dash.cloudflare.com)，左邊選 **Compute (Workers)** → **Workers & Pages** → 點進 `skin-bones-sync`。
 2. 上方分頁選 **Settings** → 左邊選 **Security**（或在網域層級進 **Security** → **WAF** → **Rate limiting rules**）。
@@ -179,7 +179,7 @@ const ALLOWED_ORIGINS = new Set(["https://bbfcwhy.github.io", "http://localhost:
 
 ## 安全性
 
-- 密碼用 PBKDF2-SHA256、210,000 次迭代、每個帳號一組隨機 salt，比對時用定時比較。
+- 密碼用 PBKDF2-SHA256、100,000 次迭代（Cloudflare Workers WebCrypto 上限，超過會拋錯）、每個帳號一組隨機 salt，比對時用定時比較。
 - token 是 HMAC-SHA256 簽名的 `payload.signature`，內容只有 userId 與到期時間，改一個位元就驗不過。
 - 登入失敗的訊息永遠一樣，查無帳號時也照樣跑一次 PBKDF2，不讓人用回應時間問出某個 email 有沒有註冊。
 - 密碼長度限制在 8 到 256 個字元，register 與 login 兩條路都先過這關才碰 PBKDF2，避免有人用超大字串灌 CPU。

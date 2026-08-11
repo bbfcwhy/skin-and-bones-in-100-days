@@ -36,6 +36,10 @@ jobs:
 
       - name: Build static site
         run: npm run build
+        env:
+          # 跨瀏覽器同步服務的網址（Cloudflare Worker，2026-08-11 部署）。
+          # 這不是機密——本來就會出現在前端程式碼裡。
+          NEXT_PUBLIC_SYNC_URL: https://skin-bones-sync.lazzymerlin.workers.dev
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5

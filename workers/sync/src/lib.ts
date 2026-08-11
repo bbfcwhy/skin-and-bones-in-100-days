@@ -6,8 +6,13 @@
  * 所有安全相關的判斷都寫在這裡，index.ts 只負責路由與資料庫存取。
  */
 
-/** PBKDF2 迭代次數。OWASP 2023 對 PBKDF2-HMAC-SHA256 的建議下限。 */
-export const PBKDF2_ITERATIONS = 210_000;
+/**
+ * PBKDF2 迭代次數。Cloudflare Workers 的 WebCrypto 硬上限是 100000
+ * （2026-08-11 實測，超過會拋 NotSupportedError），所以釘在上限值。
+ * 低於 OWASP 2023 建議的 210000，但配合單人站、密碼長度 8-256 與
+ * README 的登入限速加固，威脅模型下仍屬可接受強度。
+ */
+export const PBKDF2_ITERATIONS = 100_000;
 
 /** 衍生金鑰長度（bit）。 */
 const PBKDF2_KEY_BITS = 256;

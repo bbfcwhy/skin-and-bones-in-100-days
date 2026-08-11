@@ -13,7 +13,7 @@ enabled = true
 [[d1_databases]]
 binding = "DB"                 # 程式裡用 env.DB 取用，改這裡要一起改 src/env.ts
 database_name = "skin-bones-sync"
-database_id = "PASTE_DATABASE_ID_HERE"   # ← 貼上 `wrangler d1 create skin-bones-sync` 印出來的 uuid
+database_id = "9a259783-ae8c-4bc0-9920-f4c0903c32da"   # 2026-08-11 建於 APAC
 
 # TOKEN_SECRET 不寫在這個檔案裡（會進 git）。
 # 用 `wrangler secret put TOKEN_SECRET` 設定，本機開發放在 .dev.vars。
