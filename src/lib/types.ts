@@ -75,6 +75,11 @@ export interface ExerciseResult {
 
 export interface DailyRecord {
   dateKey: string;
+  /**
+   * 這筆紀錄最後一次被修改的 ISO 時間（跨瀏覽器同步用）。
+   * 舊資料沒有這個欄位，一律視為「最舊」，同步時會被有時間戳的版本蓋過。
+   */
+  updatedAt?: string;
   checks: Record<string, boolean>;
   weight: number | null;
   waist: number | null;
@@ -91,6 +96,11 @@ export interface DailyRecord {
 }
 
 export interface Profile {
+  /**
+   * 個人設定最後一次被修改的 ISO 時間（跨瀏覽器同步用）。
+   * 舊資料沒有這個欄位，一律視為「最舊」，同步時會被有時間戳的版本蓋過。
+   */
+  updatedAt?: string;
   challengeStart: string;
   startWeight: number | null;
   goalWeight: number | null;

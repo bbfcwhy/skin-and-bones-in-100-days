@@ -1,0 +1,18 @@
+{
+  "name": "skin-bones-sync-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "「百日剩皮包骨」跨瀏覽器同步 Worker（單人版登入 + D1）",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "db:init:local": "wrangler d1 execute skin-bones-sync --local --file=./schema.sql",
+    "db:init:remote": "wrangler d1 execute skin-bones-sync --remote --file=./schema.sql",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

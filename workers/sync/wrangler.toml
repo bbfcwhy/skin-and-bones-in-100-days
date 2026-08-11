@@ -1,0 +1,19 @@
+# 「百日剩皮包骨」同步 Worker 的部署設定。
+# 完整步驟見 README.md。這個檔案本身不會建立任何 Cloudflare 資源，
+# 要先跑過 `wrangler d1 create skin-bones-sync` 才會拿到下面的 database_id。
+
+name = "skin-bones-sync"
+main = "src/index.ts"
+compatibility_date = "2026-08-01"
+
+# 觀測：出事時用 `wrangler tail` 看 console.error 的內容。
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB"                 # 程式裡用 env.DB 取用，改這裡要一起改 src/env.ts
+database_name = "skin-bones-sync"
+database_id = "PASTE_DATABASE_ID_HERE"   # ← 貼上 `wrangler d1 create skin-bones-sync` 印出來的 uuid
+
+# TOKEN_SECRET 不寫在這個檔案裡（會進 git）。
+# 用 `wrangler secret put TOKEN_SECRET` 設定，本機開發放在 .dev.vars。

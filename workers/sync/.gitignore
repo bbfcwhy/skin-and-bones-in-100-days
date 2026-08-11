@@ -1,0 +1,6 @@
+node_modules/
+.wrangler/
+# 本機開發用的 TOKEN_SECRET，絕對不要進 git
+.dev.vars
+*.log
+backup.sql
