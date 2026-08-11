@@ -575,6 +575,48 @@ select:focus {
   text-decoration: line-through;
 }
 
+/* 自動判定的列：沒有勾選框（記錄本身就是證明），改成標記＋現值，點了只跳說明。 */
+.check-row.is-auto {
+  cursor: default;
+}
+
+.auto-mark {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  background: #efece3;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.check-row.is-auto.done .auto-mark {
+  border-color: var(--mint-strong);
+  color: #326250;
+  background: var(--mint);
+}
+
+.check-row em.auto-current {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 9px;
+  border-radius: 99px;
+  color: var(--muted);
+  background: #efece3;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.check-row.done em.auto-current {
+  color: #326250;
+  background: var(--mint);
+}
+
 .workout-details {
   overflow: hidden;
   margin-top: 18px;

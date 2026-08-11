@@ -14,6 +14,7 @@ import {
   estimateExerciseCalories,
   resolveWeightKg,
 } from "@/src/lib/energy";
+import { autoCheckStatus, countCompletedTasks } from "@/src/lib/auto-check";
 import {
   analyzeImpact,
   calculateWeekDeviation,
@@ -54,6 +55,7 @@ import type {
   AdditionalExercise,
   AdditionalFood,
   AppState,
+  ChecklistTask,
   DailyRecord,
   DayPlan,
   ExerciseCategory,
@@ -126,10 +128,15 @@ function randomId(prefix: string): string {
   return `${prefix}-${typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : Date.now()}`;
 }
 
+/**
+ * 一天完成幾項。自動判定的項目看記錄、其餘看手動勾選——今日頁的完成度圈圈與
+ * 本週檢視的進度條都走這裡，兩處不會各算各的。
+ * plan 用未加調整的原始計畫，calorieAdjustment 由 auto-check 自己加（別重複加）。
+ */
 function completionForDate(state: AppState, dateKey: string): { completed: number; total: number; percent: number } {
   const tasks = getChecklistForDate(dateKey, 0, { trackWaist: state.profile.trackWaist });
   const record = state.records[dateKey];
-  const completed = tasks.filter((task) => record?.checks[task.id]).length;
+  const completed = countCompletedTasks(tasks, record, getPlanForDate(dateKey));
   return {
     completed,
     total: tasks.length,
@@ -230,6 +237,9 @@ export default function TrackerApp() {
     [dateKey, state],
   );
   const plan = useMemo(() => effectivePlan(state, dateKey), [dateKey, state]);
+  // 自動判定專用：未加 calorieAdjustment 的原始計畫。上面的 plan 已經把調整加進去了，
+  // 傳給 autoCheckStatus 會重複計算（它自己會加一次），所以兩份分開放。
+  const basePlan = useMemo(() => getPlanForDate(dateKey), [dateKey]);
   const checklist = useMemo(
     () => getChecklistForDate(dateKey, record.calorieAdjustment, { trackWaist: state.profile.trackWaist }),
     [dateKey, record.calorieAdjustment, state.profile.trackWaist],
@@ -536,6 +546,47 @@ export default function TrackerApp() {
     );
   };
 
+  /**
+   * 一列清單項目。能從當日記錄推導的（規則見 src/lib/auto-check.ts）改成自動判定：
+   * 不給勾選框、直接顯示現值與目標；點下去只說明為什麼不能勾。
+   * 資料不足的項目原封不動，還是原本的勾選框。
+   */
+  const renderChecklistRow = (task: ChecklistTask) => {
+    const status = autoCheckStatus(task.id, record, basePlan);
+
+    if (!status.auto) {
+      return (
+        <label className={`check-row ${record.checks[task.id] ? "done" : ""}`} key={task.id}>
+          <input type="checkbox" checked={Boolean(record.checks[task.id])} onChange={() => toggleTask(task.id)} />
+          <span><strong>{task.label}</strong><small>{task.detail}</small></span>
+        </label>
+      );
+    }
+
+    const explain = () => showToast("這項由記錄自動判定");
+    return (
+      <div
+        className={`check-row is-auto ${status.done ? "done" : ""}`}
+        key={task.id}
+        role="button"
+        tabIndex={0}
+        onClick={explain}
+        onKeyDown={(event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          explain();
+        }}
+      >
+        <span className="auto-mark" aria-hidden="true">{status.done ? "✓" : "–"}</span>
+        <span>
+          <strong>{task.label}</strong>
+          <small>{task.detail}</small>
+          <em className="auto-current">{status.done ? status.current : status.progress}</em>
+        </span>
+      </div>
+    );
+  };
+
   const renderToday = () => (
     <>
       {(state.profile.startWeight === null || state.profile.goalWeight === null) && (
@@ -653,12 +704,7 @@ export default function TrackerApp() {
           {groupChecklist(checklist).map(([group, tasks]) => (
             <div className="checklist-group" key={group}>
               <h3>{group}</h3>
-              {tasks.map((task) => (
-                <label className={`check-row ${record.checks[task.id] ? "done" : ""}`} key={task.id}>
-                  <input type="checkbox" checked={Boolean(record.checks[task.id])} onChange={() => toggleTask(task.id)} />
-                  <span><strong>{task.label}</strong><small>{task.detail}</small></span>
-                </label>
-              ))}
+              {tasks.map((task) => renderChecklistRow(task))}
             </div>
           ))}
         </div>
