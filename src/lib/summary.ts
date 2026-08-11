@@ -1,4 +1,12 @@
 import type { ImpactResult } from "./impact";
+import {
+  MEAL_SLOTS,
+  MEAL_SLOT_LABEL,
+  effectiveBaseCalories,
+  effectiveProtein,
+  mealTotalsBySlot,
+  mealsInSlot,
+} from "./meals";
 import type { DailyRecord, DayPlan } from "./types";
 
 interface SummaryInput {
@@ -6,6 +14,27 @@ interface SummaryInput {
   plan: DayPlan;
   record: DailyRecord;
   impact: ImpactResult;
+}
+
+/** 正餐分餐明細。沒記錄的餐別不列，免得摘要塞滿「沒有」。 */
+function mealSection(record: DailyRecord): string {
+  const totals = mealTotalsBySlot(record);
+  const blocks = MEAL_SLOTS.flatMap((slot) => {
+    const entries = mealsInSlot(record, slot);
+    if (!entries.length) return [];
+    const header = `${MEAL_SLOT_LABEL[slot]}（${totals[slot].calories} kcal，蛋白質 ${totals[slot].protein} g）`;
+    const lines = entries.map((meal) => {
+      const portion = meal.grams === null ? "" : ` ${meal.grams} g`;
+      const calories = meal.calories === null ? "熱量待估" : `${meal.calories} kcal`;
+      const protein = meal.protein === null ? "" : `，蛋白質 ${meal.protein} g`;
+      const note = meal.note ? `，備註：${meal.note}` : "";
+      return `- ${meal.name}${portion}：${calories}${protein}${note}`;
+    });
+    return [`${header}\n${lines.join("\n")}`];
+  });
+
+  if (!blocks.length) return "";
+  return `\n正餐逐筆記錄：\n${blocks.join("\n")}\n`;
 }
 
 function foodLines(record: DailyRecord): string {
@@ -31,9 +60,12 @@ function exerciseLines(record: DailyRecord): string {
 }
 
 export function buildConsultationSummary({ dateKey, plan, record, impact }: SummaryInput): string {
-  const baseCalories = record.baseCalories === null
+  const recordedBase = effectiveBaseCalories(record);
+  const baseCalories = recordedBase === null
     ? `未填，目前先以目標 ${plan.targetCalories.toLocaleString("en-US")} kcal 估算`
-    : `${record.baseCalories.toLocaleString("en-US")} kcal`;
+    : `${recordedBase.toLocaleString("en-US")} kcal`;
+  const recordedProtein = effectiveProtein(record);
+  const protein = recordedProtein === null ? "未填" : `${recordedProtein} g`;
   const deviation = impact.intakeDeviation >= 0
     ? `+${impact.intakeDeviation}`
     : String(impact.intakeDeviation);
@@ -44,7 +76,8 @@ export function buildConsultationSummary({ dateKey, plan, record, impact }: Summ
 原定運動：${plan.workoutName}
 當日目標：${plan.targetCalories.toLocaleString("en-US")} kcal，蛋白質 ${plan.proteinTarget}
 正常餐點熱量：${baseCalories}
-
+全天蛋白質：${protein}
+${mealSection(record)}
 額外飲食：
 ${foodLines(record)}
 

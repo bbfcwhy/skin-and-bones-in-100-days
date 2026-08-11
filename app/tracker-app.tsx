@@ -4,7 +4,6 @@ import {
   type CSSProperties,
   type ChangeEvent,
   type FormEvent,
-  type KeyboardEvent,
   useEffect,
   useMemo,
   useState,
@@ -15,12 +14,24 @@ import {
   estimateExerciseCalories,
   resolveWeightKg,
 } from "@/src/lib/energy";
-import { computeNutrition, searchFoods, type FoodItem } from "@/src/lib/food";
 import {
   analyzeImpact,
   calculateWeekDeviation,
   type ImpactResult,
 } from "@/src/lib/impact";
+import {
+  MEAL_SLOTS,
+  MEAL_SLOT_LABEL,
+  PROTEIN_TARGET_BY_SLOT,
+  defaultSlotForHour,
+  effectiveBaseCalories,
+  effectiveProtein,
+  isProteinOnTarget,
+  mealTotalsBySlot,
+  mealsInSlot,
+  mealsWithCalories,
+  mealsWithProtein,
+} from "@/src/lib/meals";
 import {
   addDays,
   CHALLENGE_START,
@@ -47,9 +58,12 @@ import type {
   DayPlan,
   ExerciseCategory,
   ExerciseDefinition,
+  MealEntry,
+  MealSlot,
   Profile,
   TargetRange,
 } from "@/src/lib/types";
+import FoodPicker from "./food-picker";
 import { useSync, type SyncPhase } from "./use-sync";
 
 type Tab = "today" | "week" | "trend" | "settings";
@@ -68,6 +82,17 @@ function formatRange(range: TargetRange, unit: string): string {
 }
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+/** 台北時間的「現在幾點」，只用來猜這筆正餐預設記到哪一餐。 */
+function hourInTaipei(): number {
+  const value = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Taipei",
+    hour: "2-digit",
+    hourCycle: "h23",
+  }).format(new Date());
+  const hour = Number(value);
+  return Number.isFinite(hour) ? hour % 24 : 12;
+}
 
 function todayInTaipei(): string {
   const parts = new Intl.DateTimeFormat("en-CA", {
@@ -151,13 +176,10 @@ export default function TrackerApp() {
   const [dateKey, setDateKey] = useState(CHALLENGE_START);
   const [toast, setToast] = useState("");
   const [exerciseCategory, setExerciseCategory] = useState<ExerciseCategory>("walk");
-  const [foodQuery, setFoodQuery] = useState("");
-  const [foodChoice, setFoodChoice] = useState<FoodItem | null>(null);
-  const [foodGrams, setFoodGrams] = useState("");
-  const [foodCalories, setFoodCalories] = useState("");
-  const [foodProtein, setFoodProtein] = useState("");
-  const [foodListOpen, setFoodListOpen] = useState(false);
-  const [foodHighlight, setFoodHighlight] = useState(0);
+  // 送出後把 key 加一，讓食物選擇器重新掛載＝欄位清空。
+  const [foodFormKey, setFoodFormKey] = useState(0);
+  const [mealFormKey, setMealFormKey] = useState(0);
+  const [mealSlot, setMealSlot] = useState<MealSlot>("first");
   const [syncEmail, setSyncEmail] = useState("");
   const [syncPassword, setSyncPassword] = useState("");
 
@@ -170,6 +192,7 @@ export default function TrackerApp() {
   useEffect(() => {
     setState(loadState());
     setDateKey(todayInTaipei());
+    setMealSlot(defaultSlotForHour(hourInTaipei()));
     setHydrated(true);
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register(`${basePath}/sw.js`).catch(() => undefined);
@@ -222,15 +245,25 @@ export default function TrackerApp() {
     () => Array.from({ length: 5 }, (_, index) => effectivePlan(state, addDays(dateKey, index + 1))),
     [dateKey, state],
   );
+  // 有逐筆記錄就以明細加總為準，手填的總數讓位（規則見 src/lib/meals.ts）。
+  const mealCalories = useMemo(() => effectiveBaseCalories(record), [record]);
+  const mealProtein = useMemo(() => effectiveProtein(record), [record]);
+  const mealTotals = useMemo(() => mealTotalsBySlot(record), [record]);
+  const calorieDetailCount = useMemo(() => mealsWithCalories(record).length, [record]);
+  const proteinDetailCount = useMemo(() => mealsWithProtein(record).length, [record]);
+  const extraProtein = useMemo(
+    () => Math.round(record.additionalFoods.reduce((total, food) => total + (food.protein ?? 0), 0) * 10) / 10,
+    [record.additionalFoods],
+  );
   const impact = useMemo(() => analyzeImpact({
     plan,
-    baseCalories: record.baseCalories,
+    baseCalories: mealCalories,
     additionalFoods: record.additionalFoods,
     additionalExercises: record.additionalExercises,
     previousWeekDeviation: previousWeek.deviation,
     futurePlans,
     weightKg,
-  }), [futurePlans, plan, previousWeek.deviation, record, weightKg]);
+  }), [futurePlans, mealCalories, plan, previousWeek.deviation, record, weightKg]);
 
   const updateProfileNumber = (key: "startWeight" | "goalWeight", value: string) => {
     updateProfile({ [key]: value === "" ? null : Number(value) });
@@ -265,69 +298,35 @@ export default function TrackerApp() {
     });
   };
 
-  const foodSuggestions = useMemo(
-    () => (foodListOpen ? searchFoods(foodQuery) : []),
-    [foodListOpen, foodQuery],
-  );
-
-  const resetFoodPicker = () => {
-    setFoodQuery("");
-    setFoodChoice(null);
-    setFoodGrams("");
-    setFoodCalories("");
-    setFoodProtein("");
-    setFoodListOpen(false);
-    setFoodHighlight(0);
+  const addMeal = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const values = new FormData(form);
+    const name = String(values.get("name") ?? "").trim();
+    if (!name) return;
+    const meal: MealEntry = {
+      id: randomId("meal"),
+      slot: String(values.get("slot") ?? "first") as MealSlot,
+      name,
+      grams: optionalNumber(values.get("grams")),
+      calories: optionalNumber(values.get("calories")),
+      protein: optionalNumber(values.get("protein")),
+      note: String(values.get("note") ?? "").trim(),
+      createdAt: new Date().toISOString(),
+    };
+    updateRecord((current) => {
+      current.meals = [...(current.meals ?? []), meal];
+    });
+    form.reset();
+    setMealFormKey((key) => key + 1);
+    showToast("已記錄，上面的熱量與蛋白質自動更新");
   };
 
-  /** 克數一變就重算熱量與蛋白質；算出來只是預設值，使用者還是能自己覆寫。 */
-  const setGramsAndNutrition = (value: string) => {
-    setFoodGrams(value);
-    if (!foodChoice) return;
-    const grams = Number(value);
-    if (value.trim() === "" || !Number.isFinite(grams) || grams <= 0) {
-      setFoodCalories("");
-      setFoodProtein("");
-      return;
-    }
-    const nutrition = computeNutrition(foodChoice, grams);
-    setFoodCalories(String(nutrition.calories));
-    setFoodProtein(String(nutrition.protein));
-  };
-
-  const chooseFood = (food: FoodItem) => {
-    setFoodChoice(food);
-    setFoodQuery(food.name);
-    setFoodListOpen(false);
-    setFoodHighlight(0);
-    setFoodGrams("");
-    setFoodCalories("");
-    setFoodProtein("");
-  };
-
-  /** 自己改名字＝不再跟著資料庫走，但已經填好的數字留著讓使用者自己調。 */
-  const typeFoodName = (value: string) => {
-    setFoodQuery(value);
-    setFoodListOpen(true);
-    setFoodHighlight(0);
-    setFoodChoice(null);
-    setFoodGrams("");
-  };
-
-  const onFoodNameKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (!foodSuggestions.length) return;
-    if (event.key === "ArrowDown") {
-      event.preventDefault();
-      setFoodHighlight((index) => (index + 1) % foodSuggestions.length);
-    } else if (event.key === "ArrowUp") {
-      event.preventDefault();
-      setFoodHighlight((index) => (index - 1 + foodSuggestions.length) % foodSuggestions.length);
-    } else if (event.key === "Enter") {
-      event.preventDefault();
-      chooseFood(foodSuggestions[foodHighlight] ?? foodSuggestions[0]);
-    } else if (event.key === "Escape") {
-      setFoodListOpen(false);
-    }
+  const removeMeal = (mealId: string) => {
+    if (!window.confirm("移除這筆正餐紀錄？")) return;
+    updateRecord((current) => {
+      current.meals = (current.meals ?? []).filter((meal) => meal.id !== mealId);
+    });
   };
 
   const addFood = (event: FormEvent<HTMLFormElement>) => {
@@ -346,7 +345,7 @@ export default function TrackerApp() {
     };
     updateRecord((current) => current.additionalFoods.push(food));
     form.reset();
-    resetFoodPicker();
+    setFoodFormKey((key) => key + 1);
     showToast("額外飲食已加入影響計算");
   };
 
@@ -497,6 +496,46 @@ export default function TrackerApp() {
     );
   };
 
+  /** 一個分餐格子：品項清單＋該餐的蛋白質進度。「其他」沒記錄就不佔版面。 */
+  const renderMealGroup = (slot: MealSlot) => {
+    const entries = mealsInSlot(record, slot);
+    if (slot === "other" && entries.length === 0) return null;
+    const totals = mealTotals[slot];
+    const target = PROTEIN_TARGET_BY_SLOT[slot];
+    const onTarget = isProteinOnTarget(slot, totals.protein);
+
+    return (
+      <article className={`meal-group ${onTarget ? "on-target" : ""}`} key={slot}>
+        <div className="meal-head">
+          <h3>{MEAL_SLOT_LABEL[slot]}</h3>
+          <span className={`meal-progress ${onTarget ? "is-hit" : ""}`}>
+            {target ? `蛋白質 ${totals.protein} / ${formatRange(target, "g")}` : `蛋白質 ${totals.protein} g`}
+          </span>
+        </div>
+        {entries.length === 0
+          ? <p className="meal-empty">還沒記錄</p>
+          : (
+            <div className="entry-list">
+              {entries.map((meal) => (
+                <article key={meal.id}>
+                  <div>
+                    <strong>{meal.name}{meal.grams === null ? "" : ` ${meal.grams} g`}</strong>
+                    <small>
+                      {meal.calories === null ? "熱量待估" : `${meal.calories} kcal`}
+                      {meal.protein === null ? "" : ` · 蛋白質 ${meal.protein} g`}
+                      {meal.note ? ` · ${meal.note}` : ""}
+                    </small>
+                  </div>
+                  <button type="button" onClick={() => removeMeal(meal.id)}>移除</button>
+                </article>
+              ))}
+            </div>
+          )}
+        <p className="meal-sum">這一餐 {totals.calories.toLocaleString("en-US")} kcal</p>
+      </article>
+    );
+  };
+
   const renderToday = () => (
     <>
       {(state.profile.startWeight === null || state.profile.goalWeight === null) && (
@@ -539,12 +578,67 @@ export default function TrackerApp() {
         <div className="metric-form-grid">
           <label>晨重<input type="number" inputMode="decimal" step="0.1" placeholder="kg" value={record.weight ?? ""} onChange={(event) => setMetric("weight", event.target.value)} /></label>
           <label>睡眠<input type="number" inputMode="decimal" step="0.1" placeholder="小時" value={record.sleepHours ?? ""} onChange={(event) => setMetric("sleepHours", event.target.value)} /></label>
-          <label>正常餐點熱量<input type="number" inputMode="numeric" step="10" placeholder={`不含臨時加餐，目標 ${plan.targetCalories}`} value={record.baseCalories ?? ""} onChange={(event) => setMetric("baseCalories", event.target.value)} /></label>
-          <label>全天蛋白質<input type="number" inputMode="numeric" step="1" placeholder="g" value={record.protein ?? ""} onChange={(event) => setMetric("protein", event.target.value)} /></label>
+          {calorieDetailCount > 0 ? (
+            <div className="metric-derived">
+              <span>正常餐點熱量</span>
+              <strong>{(mealCalories ?? 0).toLocaleString("en-US")} kcal</strong>
+              <small>由 {calorieDetailCount} 筆正餐記錄算出</small>
+            </div>
+          ) : (
+            <label>正常餐點熱量<input type="number" inputMode="numeric" step="10" placeholder={`不含臨時加餐，目標 ${plan.targetCalories}`} value={record.baseCalories ?? ""} onChange={(event) => setMetric("baseCalories", event.target.value)} /></label>
+          )}
+          {proteinDetailCount > 0 ? (
+            <div className="metric-derived">
+              <span>全天蛋白質</span>
+              <strong>{mealProtein ?? 0} g</strong>
+              <small>由 {proteinDetailCount} 筆正餐記錄算出</small>
+            </div>
+          ) : (
+            <label>全天蛋白質<input type="number" inputMode="numeric" step="1" placeholder="g" value={record.protein ?? ""} onChange={(event) => setMetric("protein", event.target.value)} /></label>
+          )}
           <label>步數<input type="number" inputMode="numeric" step="100" placeholder="步" value={record.steps ?? ""} onChange={(event) => setMetric("steps", event.target.value)} /></label>
           {state.profile.trackWaist && (
             <label>腰圍<input type="number" inputMode="decimal" step="0.1" placeholder="cm，週日量" value={record.waist ?? ""} onChange={(event) => setMetric("waist", event.target.value)} /></label>
           )}
+        </div>
+      </section>
+
+      <section id="meals">
+        <div className="section-heading">
+          <p className="section-kicker">正餐紀錄</p>
+          <h2>今天吃了什麼？</h2>
+          <p>一筆一筆記下來，上面的「正常餐點熱量」與「全天蛋白質」就會自己算好，不必再自己查表加總。</p>
+        </div>
+        <div className="meal-groups">
+          {MEAL_SLOTS.map((slot) => renderMealGroup(slot))}
+        </div>
+
+        <div className="addition-card meal-form">
+          <h3>加一筆正餐</h3>
+          <form onSubmit={addMeal} autoComplete="off">
+            <label className="wide">記到哪一餐
+              <select name="slot" value={mealSlot} onChange={(event) => setMealSlot(event.target.value as MealSlot)}>
+                {MEAL_SLOTS.map((slot) => (
+                  <option value={slot} key={slot}>{MEAL_SLOT_LABEL[slot]}</option>
+                ))}
+              </select>
+            </label>
+            <FoodPicker
+              key={mealFormKey}
+              idPrefix="meal"
+              nameLabel="吃了什麼"
+              namePlaceholder="例：雞胸肉、白飯、地瓜"
+              allowCustom
+            />
+            <label className="wide">備註<input name="note" placeholder="做法、店家或其他狀況" /></label>
+            <button className="primary-button" type="submit">加入正餐</button>
+          </form>
+        </div>
+
+        <div className="meal-total">
+          <article><small>今天正餐熱量</small><strong>{(mealCalories ?? 0).toLocaleString("en-US")} kcal</strong><em>目標 {plan.targetCalories.toLocaleString("en-US")} kcal</em></article>
+          <article><small>今天正餐蛋白質</small><strong>{mealProtein ?? 0} g</strong><em>目標 {plan.proteinTarget}</em></article>
+          {extraProtein > 0 && <p className="meal-total-note">臨時加餐另計 +{extraProtein} g 蛋白質，不算在上面的正餐加總裡。</p>}
         </div>
       </section>
 
@@ -589,60 +683,12 @@ export default function TrackerApp() {
           <div className="addition-card food-card">
             <h3>加一筆額外飲食</h3>
             <form onSubmit={addFood} autoComplete="off">
-              <div className="wide food-search">
-                <label>吃了什麼
-                  <input
-                    name="name"
-                    required
-                    autoComplete="off"
-                    placeholder="例：雞胸肉、地瓜、珍奶"
-                    value={foodQuery}
-                    onChange={(event) => typeFoodName(event.target.value)}
-                    onKeyDown={onFoodNameKeyDown}
-                    role="combobox"
-                    aria-expanded={foodSuggestions.length > 0}
-                    aria-controls="food-suggestions"
-                  />
-                </label>
-                {foodSuggestions.length > 0 && (
-                  <div className="food-suggestions" id="food-suggestions" role="listbox" onMouseDown={(event) => event.preventDefault()}>
-                    {foodSuggestions.map((food, index) => (
-                      <button
-                        type="button"
-                        key={food.id}
-                        role="option"
-                        aria-selected={index === foodHighlight}
-                        className={index === foodHighlight ? "active" : ""}
-                        onMouseEnter={() => setFoodHighlight(index)}
-                        onClick={() => chooseFood(food)}
-                      >
-                        <strong>{food.name}</strong>
-                        <small>每 100g {food.kcalPer100g} kcal · 蛋白質 {food.proteinPer100g} g</small>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-              {foodChoice && (
-                <div className="wide food-portion">
-                  <label>吃了多少<input type="number" inputMode="decimal" min="1" step="1" placeholder="輸入克數，下面數字會自動算" value={foodGrams} onChange={(event) => setGramsAndNutrition(event.target.value)} /><span>g</span></label>
-                  {foodChoice.units.length > 0 && (
-                    <div className="portion-buttons">
-                      {foodChoice.units.map((unit) => (
-                        <button
-                          type="button"
-                          key={unit.label}
-                          className={foodGrams !== "" && Number(foodGrams) === unit.grams ? "active" : ""}
-                          onClick={() => setGramsAndNutrition(String(unit.grams))}
-                        >{unit.label}</button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-              <label>熱量<input name="calories" type="number" inputMode="numeric" placeholder="不知道可留空" value={foodCalories} onChange={(event) => setFoodCalories(event.target.value)} /><span>kcal</span></label>
-              <label>蛋白質<input name="protein" type="number" inputMode="decimal" step="0.1" placeholder="選填" value={foodProtein} onChange={(event) => setFoodProtein(event.target.value)} /><span>g</span></label>
-              {foodChoice && foodChoice.note !== "" && <p className="wide food-note">提醒：{foodChoice.note}</p>}
+              <FoodPicker
+                key={foodFormKey}
+                idPrefix="extra"
+                nameLabel="吃了什麼"
+                namePlaceholder="例：雞胸肉、地瓜、珍奶"
+              />
               <label className="wide">備註<input name="note" placeholder="份量、照片特徵或品牌" /></label>
               <button className="primary-button" type="submit">加入飲食</button>
             </form>

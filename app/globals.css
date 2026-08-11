@@ -428,6 +428,36 @@ select:focus {
   background: #ece8dc;
 }
 
+/* 有逐筆記錄時，總數欄位改成唯讀顯示：不能編輯就不該長得像輸入框。 */
+.metric-derived {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 12px;
+  border: 1px dashed #b4bdb5;
+  border-radius: 12px;
+  background: #f7f5ee;
+}
+
+.metric-derived span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.metric-derived strong {
+  margin-top: 3px;
+  font-size: 1.06rem;
+  letter-spacing: -0.02em;
+}
+
+.metric-derived small {
+  margin-top: 2px;
+  color: var(--mint-strong);
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
 .privacy-chip {
   flex: 0 0 auto;
   padding: 7px 10px;
@@ -605,6 +635,142 @@ select:focus {
   margin: 16px 20px 22px;
   color: var(--dark);
   font-weight: 800;
+}
+
+.meal-groups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.meal-group {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.meal-group.on-target {
+  border-color: var(--mint-strong);
+}
+
+.meal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.meal-group h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.meal-progress {
+  flex: 0 0 auto;
+  padding: 5px 9px;
+  border-radius: 99px;
+  color: var(--muted);
+  background: #efece3;
+  font-size: 0.7rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.meal-progress.is-hit {
+  color: #326250;
+  background: var(--mint);
+}
+
+.meal-empty {
+  margin: 14px 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.meal-group .entry-list {
+  flex: 1 1 auto;
+  margin-top: 6px;
+}
+
+.meal-sum {
+  margin: 12px 0 0;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* 查資料庫／自訂項目的切換。自訂＝直接填名稱與熱量，適合外食便當。 */
+.picker-mode {
+  display: flex;
+  gap: 8px;
+}
+
+.picker-mode button {
+  flex: 1 1 0;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #c7ccc6;
+  border-radius: 99px;
+  color: var(--muted);
+  background: #fff;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.picker-mode button.active {
+  border-color: var(--dark);
+  color: #fff;
+  background: var(--dark);
+}
+
+.meal-total {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #ece8dc;
+}
+
+.meal-total article {
+  display: flex;
+  flex-direction: column;
+}
+
+.meal-total small {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.meal-total strong {
+  margin-top: 4px;
+  font-size: 1.4rem;
+  letter-spacing: -0.03em;
+}
+
+.meal-total em {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-style: normal;
+}
+
+.meal-total-note {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.74rem;
 }
 
 .addition-grid {
@@ -1154,6 +1320,10 @@ footer strong {
     opacity: 0.45;
   }
 
+  .meal-groups {
+    grid-template-columns: 1fr;
+  }
+
   .target-grid,
   .impact-metrics {
     grid-template-columns: repeat(2, 1fr);
@@ -1333,6 +1503,7 @@ footer strong {
 @media (max-width: 390px) {
   .metric-form-grid,
   .addition-card form,
+  .meal-total,
   .exercise-inputs {
     grid-template-columns: 1fr;
   }

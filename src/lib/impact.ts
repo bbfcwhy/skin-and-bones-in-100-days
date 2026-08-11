@@ -1,4 +1,5 @@
 import { estimateExerciseCalories } from "./energy";
+import { effectiveBaseCalories } from "./meals";
 import { getMondayKey, getPlanForDate } from "./plan";
 import type { AdditionalExercise, AdditionalFood, DailyRecord, DayPlan } from "./types";
 
@@ -47,10 +48,12 @@ export function calculateWeekDeviation(
   Object.values(records)
     .filter((record) => record.dateKey >= mondayKey && record.dateKey < throughDateExclusive)
     .forEach((record) => {
-      if (record.baseCalories === null && record.additionalFoods.length === 0) return;
+      // 正餐逐筆記錄的日子沒有手填總數也算數，所以判斷要看加總後的結果而不是原欄位。
+      const recordedBase = effectiveBaseCalories(record);
+      if (recordedBase === null && record.additionalFoods.length === 0) return;
       const plan = getPlanForDate(record.dateKey);
       const effectiveTarget = plan.targetCalories + record.calorieAdjustment;
-      const baseCalories = record.baseCalories ?? effectiveTarget;
+      const baseCalories = recordedBase ?? effectiveTarget;
       const extraCalories = record.additionalFoods.reduce(
         (total, food) => total + (food.calories ?? 0),
         0,

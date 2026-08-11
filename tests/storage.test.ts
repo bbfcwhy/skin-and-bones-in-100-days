@@ -188,6 +188,7 @@ describe("本機資料與備份", () => {
     expect(record.exerciseResults).toEqual({});
     expect(record.additionalFoods).toEqual([]);
     expect(record.additionalExercises).toEqual([]);
+    expect(record.meals).toEqual([]);
     expect(record.calorieAdjustment).toBe(0);
     expect(record.waist).toBeNull();
   });

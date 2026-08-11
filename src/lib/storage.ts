@@ -15,6 +15,7 @@ function defaultRecord(dateKey: string): DailyRecord {
     protein: null,
     waterCups: [false, false, false],
     exerciseResults: {},
+    meals: [],
     additionalFoods: [],
     additionalExercises: [],
     note: "",

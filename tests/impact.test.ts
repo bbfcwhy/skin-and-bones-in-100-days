@@ -176,4 +176,34 @@ describe("額外飲食與運動影響", () => {
     expect(result.deviation).toBe(120);
     expect(result.hasUnknownFood).toBe(false);
   });
+
+  it("正餐逐筆記錄的日子也算進本週偏差，不會因為沒手填總數就被跳過", () => {
+    const day = ensureDailyRecord(createInitialState(), "2026-08-10");
+    day.record.baseCalories = null;
+    day.record.meals = [
+      {
+        id: "meal-1",
+        slot: "first",
+        name: "雞胸肉",
+        grams: 150,
+        calories: 1200,
+        protein: 46.5,
+        note: "",
+        createdAt: "2026-08-10T12:00:00.000+08:00",
+      },
+      {
+        id: "meal-2",
+        slot: "dinner",
+        name: "雞腿便當",
+        grams: null,
+        calories: 1000,
+        protein: null,
+        note: "",
+        createdAt: "2026-08-10T19:00:00.000+08:00",
+      },
+    ];
+
+    const result = calculateWeekDeviation(day.state.records, "2026-08-11");
+    expect(result.deviation).toBe(150);
+  });
 });
