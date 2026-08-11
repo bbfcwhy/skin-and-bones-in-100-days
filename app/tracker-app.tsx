@@ -30,6 +30,7 @@ import {
   getPlanForDate,
 } from "@/src/lib/plan";
 import { buildConsultationSummary } from "@/src/lib/summary";
+import { applyProfileUpdate, applyRecordUpdate } from "@/src/lib/record-updates";
 import {
   createInitialState,
   ensureDailyRecord,
@@ -46,8 +47,10 @@ import type {
   DayPlan,
   ExerciseCategory,
   ExerciseDefinition,
+  Profile,
   TargetRange,
 } from "@/src/lib/types";
+import { useSync, type SyncPhase } from "./use-sync";
 
 type Tab = "today" | "week" | "trend" | "settings";
 
@@ -131,6 +134,16 @@ const statusLabel: Record<ImpactResult["status"], string> = {
   "under-fueled": "不要再減",
 };
 
+/** 頭部那顆小徽章。沒開同步（或還沒登入）時維持原本的「本機儲存」。 */
+const syncBadge: Record<SyncPhase, { label: string; tone: string }> = {
+  disabled: { label: "● 本機儲存", tone: "" },
+  "signed-out": { label: "● 本機儲存", tone: "" },
+  syncing: { label: "● 同步中…", tone: "is-syncing" },
+  synced: { label: "● 已同步", tone: "is-synced" },
+  pending: { label: "● 有變更待同步", tone: "is-pending" },
+  offline: { label: "● 離線，稍後重試", tone: "is-offline" },
+};
+
 export default function TrackerApp() {
   const [state, setState] = useState<AppState>(() => createInitialState());
   const [hydrated, setHydrated] = useState(false);
@@ -145,6 +158,14 @@ export default function TrackerApp() {
   const [foodProtein, setFoodProtein] = useState("");
   const [foodListOpen, setFoodListOpen] = useState(false);
   const [foodHighlight, setFoodHighlight] = useState(0);
+  const [syncEmail, setSyncEmail] = useState("");
+  const [syncPassword, setSyncPassword] = useState("");
+
+  const sync = useSync({ hydrated, onMerged: setState });
+
+  useEffect(() => {
+    if (sync.signedIn) setSyncPassword("");
+  }, [sync.signedIn]);
 
   useEffect(() => {
     setState(loadState());
@@ -164,12 +185,21 @@ export default function TrackerApp() {
     window.setTimeout(() => setToast(""), 2200);
   };
 
-  const updateRecord = (updater: (record: DailyRecord) => void) => {
-    setState((current) => {
-      const ensured = ensureDailyRecord(current, dateKey);
-      updater(ensured.record);
-      return ensured.state;
-    });
+  /**
+   * 改紀錄的唯一入口。所有修改都從這裡走，蓋時間戳與標記待同步才不會有漏網之魚。
+   * applyRecordUpdate 會回傳新的 state（不就地修改），也會蓋上 updatedAt。
+   */
+  const updateRecordOn = (targetDateKey: string, updater: (record: DailyRecord) => void) => {
+    setState((current) => applyRecordUpdate(current, targetDateKey, updater));
+    sync.markRecordChanged(targetDateKey);
+  };
+
+  const updateRecord = (updater: (record: DailyRecord) => void) => updateRecordOn(dateKey, updater);
+
+  /** 改個人設定的唯一入口，同樣負責蓋章與標記待同步。 */
+  const updateProfile = (patch: Partial<Profile>) => {
+    setState((current) => applyProfileUpdate(current, patch));
+    sync.markProfileChanged();
   };
 
   const record = useMemo(
@@ -203,10 +233,7 @@ export default function TrackerApp() {
   }), [futurePlans, plan, previousWeek.deviation, record, weightKg]);
 
   const updateProfileNumber = (key: "startWeight" | "goalWeight", value: string) => {
-    setState((current) => ({
-      ...current,
-      profile: { ...current.profile, [key]: value === "" ? null : Number(value) },
-    }));
+    updateProfile({ [key]: value === "" ? null : Number(value) });
   };
 
   const toggleTask = (taskId: string) => {
@@ -363,14 +390,15 @@ export default function TrackerApp() {
   const applyAdjustments = () => {
     if (!impact.proposedAdjustments.length) return;
     setState((current) => {
-      let next = structuredClone(current);
+      let next = current;
       impact.proposedAdjustments.forEach((adjustment) => {
-        const ensured = ensureDailyRecord(next, adjustment.dateKey);
-        ensured.record.calorieAdjustment = adjustment.caloriesDelta;
-        next = ensured.state;
+        next = applyRecordUpdate(next, adjustment.dateKey, (record) => {
+          record.calorieAdjustment = adjustment.caloriesDelta;
+        });
       });
       return next;
     });
+    impact.proposedAdjustments.forEach((adjustment) => sync.markRecordChanged(adjustment.dateKey));
     showToast("已套用到未來日期，可在本週頁取消");
   };
 
@@ -717,10 +745,8 @@ export default function TrackerApp() {
                   <em>{itemCompletion.completed} / {itemCompletion.total} 完成</em>
                 </button>
                 {itemRecord?.calorieAdjustment !== 0 && itemRecord?.calorieAdjustment !== undefined && (
-                  <div className="applied-adjustment"><span>已調整 {itemRecord.calorieAdjustment} kcal</span><button type="button" onClick={() => setState((current) => {
-                    const ensured = ensureDailyRecord(current, key);
-                    ensured.record.calorieAdjustment = 0;
-                    return ensured.state;
+                  <div className="applied-adjustment"><span>已調整 {itemRecord.calorieAdjustment} kcal</span><button type="button" onClick={() => updateRecordOn(key, (record) => {
+                    record.calorieAdjustment = 0;
                   })}>取消</button></div>
                 )}
               </article>
@@ -765,6 +791,79 @@ export default function TrackerApp() {
     );
   };
 
+  const submitSync = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await sync.signIn(syncEmail, syncPassword, sync.needsRegisterConfirm);
+  };
+
+  const renderSyncCard = () => (
+    <article className="sync-card">
+      <h3>跨瀏覽器同步</h3>
+      {!sync.configured && (
+        <>
+          <p>同步服務尚未部署，現在紀錄只存在這個瀏覽器，換一台裝置看不到同一份資料。</p>
+          <small>
+            服務部署好之後，把網址設成 NEXT_PUBLIC_SYNC_URL 再重新發布，這裡就會出現登入欄位。
+            在那之前，換裝置請用下面的「下載 JSON 備份」搬資料。
+          </small>
+        </>
+      )}
+
+      {sync.configured && !sync.signedIn && (
+        <form onSubmit={submitSync} autoComplete="off">
+          <p>登入之後，不管用哪個瀏覽器開啟都是同一份紀錄。</p>
+          <label className="wide">
+            Email
+            <input
+              type="email"
+              name="sync-email"
+              autoComplete="username"
+              value={syncEmail}
+              onChange={(event) => setSyncEmail(event.target.value)}
+              placeholder="你的 email"
+              required
+            />
+          </label>
+          <label className="wide">
+            密碼
+            <input
+              type="password"
+              name="sync-password"
+              autoComplete="current-password"
+              value={syncPassword}
+              onChange={(event) => setSyncPassword(event.target.value)}
+              placeholder="至少 8 個字元"
+              required
+            />
+          </label>
+          {sync.needsRegisterConfirm && (
+            <p className="sync-confirm">第一次使用會建立你的專屬帳號，這組帳密就是你之後在其他瀏覽器登入用的。</p>
+          )}
+          {sync.error && <p className="sync-error" role="alert">{sync.error}</p>}
+          <button className="primary-button" type="submit" disabled={sync.busy}>
+            {sync.busy ? "處理中…" : sync.needsRegisterConfirm ? "建立我的帳號並登入" : "登入／首次啟用"}
+          </button>
+        </form>
+      )}
+
+      {sync.configured && sync.signedIn && (
+        <>
+          <p className="sync-account">已連線：{sync.email}</p>
+          <p className="sync-last">上次同步：{sync.lastSyncedLabel || "尚未同步"}</p>
+          <div className="sync-actions">
+            <button className="primary-button" type="button" onClick={() => void sync.syncNow()} disabled={sync.busy}>
+              {sync.busy ? "同步中…" : "立即同步"}
+            </button>
+            <button className="ghost-button" type="button" onClick={sync.signOut}>登出</button>
+          </div>
+          <small>登出只會清掉這個瀏覽器的登入狀態，這台裝置的紀錄完整保留，之後重新登入還是同一份資料。</small>
+        </>
+      )}
+
+      {sync.configured && sync.notice && <p className="sync-notice">{sync.notice}</p>}
+    </article>
+  );
+
   const renderSettings = () => (
     <section className="settings-page">
       <div className="section-heading"><p className="section-kicker">Settings & backup</p><h2>設定、備份與隱私</h2></div>
@@ -773,8 +872,8 @@ export default function TrackerApp() {
           <h3>個人目標</h3>
           <label>起始體重<input type="number" step="0.1" value={state.profile.startWeight ?? ""} onChange={(event) => updateProfileNumber("startWeight", event.target.value)} /><span>kg</span></label>
           <label>目標體重<input type="number" step="0.1" value={state.profile.goalWeight ?? ""} onChange={(event) => updateProfileNumber("goalWeight", event.target.value)} /><span>kg</span></label>
-          <label>水杯容量<input type="number" step="50" value={state.profile.cupSizeMl} onChange={(event) => setState((current) => ({ ...current, profile: { ...current.profile, cupSizeMl: Number(event.target.value) } }))} /><span>ml</span></label>
-          <label>開始空腹時間<input type="time" value={state.profile.fastingStart} onChange={(event) => setState((current) => ({ ...current, profile: { ...current.profile, fastingStart: event.target.value } }))} /></label>
+          <label>水杯容量<input type="number" step="50" value={state.profile.cupSizeMl} onChange={(event) => updateProfile({ cupSizeMl: Number(event.target.value) })} /><span>ml</span></label>
+          <label>開始空腹時間<input type="time" value={state.profile.fastingStart} onChange={(event) => updateProfile({ fastingStart: event.target.value })} /></label>
         </article>
         <article>
           <h3>追蹤項目</h3>
@@ -783,14 +882,12 @@ export default function TrackerApp() {
             <input
               type="checkbox"
               checked={Boolean(state.profile.trackWaist)}
-              onChange={(event) => setState((current) => ({
-                ...current,
-                profile: { ...current.profile, trackWaist: event.target.checked },
-              }))}
+              onChange={(event) => updateProfile({ trackWaist: event.target.checked })}
             />
             <span><strong>追蹤腰圍</strong><small>關掉時，今天頁不顯示腰圍欄位，週日清單也不會出現量腰圍。已經記錄過的腰圍資料一律保留，打開就看得到。</small></span>
           </label>
         </article>
+        {renderSyncCard()}
         <article>
           <h3>備份與還原</h3>
           <p>資料只存在這個瀏覽器。建議每週下載一份 JSON 到 iCloud Drive。</p>
@@ -815,7 +912,12 @@ export default function TrackerApp() {
   return (
     <div className="app-shell">
       <header className="hero">
-        <div className="hero-topline"><span>100-DAY TRANSFORMATION EXPERIMENT</span><span className="local-only">● 本機儲存</span></div>
+        <div className="hero-topline">
+          <span>100-DAY TRANSFORMATION EXPERIMENT</span>
+          <span className={["local-only", syncBadge[sync.phase].tone].filter(Boolean).join(" ")}>
+            {syncBadge[sync.phase].label}
+          </span>
+        </div>
         <h1>Skin &amp; Bones<br />in 100 Days</h1>
         <p>別追求每天完美。記錄變化，看懂影響，再做一個可以持續的調整。</p>
         <div className="challenge-progress"><div><strong>{progress.status === "upcoming" ? "尚未開始" : progress.status === "complete" ? "100 天已完成" : `DAY ${progress.day}`}</strong><span>{dateLabel(dateKey)}</span></div><i><b style={{ width: `${progress.status === "upcoming" ? 0 : progress.day}%` }} /></i></div>
