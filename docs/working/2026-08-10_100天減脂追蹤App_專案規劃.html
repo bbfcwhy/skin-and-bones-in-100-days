@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>100 天減脂追蹤 App 專案規劃</title>
+  <style>
+    :root {
+      --ink: #183a32;
+      --muted: #61736e;
+      --paper: #fffdf7;
+      --canvas: #f3f0e7;
+      --green: #1f6252;
+      --green-soft: #dcebe5;
+      --lime: #d9ef68;
+      --orange: #f47a53;
+      --yellow: #f4e7a6;
+      --line: #d8d7ce;
+      --shadow: 0 18px 55px rgba(27, 55, 47, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 4%, rgba(217, 239, 104, 0.28), transparent 26rem),
+        var(--canvas);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      line-height: 1.65;
+    }
+
+    button, input { font: inherit; }
+
+    a { color: var(--green); }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 28px auto 80px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(32px, 7vw, 78px);
+      color: #fffdf7;
+      background: var(--green);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      position: absolute;
+      top: -90px;
+      right: -80px;
+      width: 340px;
+      height: 340px;
+      content: "";
+      border: 46px solid rgba(217, 239, 104, 0.14);
+      border-radius: 50%;
+    }
+
+    .eyebrow, .kicker {
+      margin: 0 0 10px;
+      color: var(--orange);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .hero .eyebrow {
+      display: inline-block;
+      padding: 7px 12px;
+      color: var(--ink);
+      background: var(--lime);
+      border-radius: 999px;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      max-width: 850px;
+      margin-bottom: 16px;
+      font-size: clamp(2.2rem, 6.5vw, 5.2rem);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+    }
+
+    h2 {
+      margin-bottom: 8px;
+      font-size: clamp(1.65rem, 3vw, 2.45rem);
+      line-height: 1.2;
+      letter-spacing: -0.035em;
+    }
+
+    h3 { margin-bottom: 6px; }
+
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin-bottom: 0;
+      color: rgba(255, 253, 247, 0.82);
+      font-size: 1.08rem;
+    }
+
+    .hero-actions, .section-actions {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    .button {
+      min-height: 44px;
+      padding: 10px 17px;
+      color: var(--ink);
+      background: var(--lime);
+      border: 1px solid transparent;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .button.secondary {
+      color: inherit;
+      background: transparent;
+      border-color: currentColor;
+    }
+
+    .button.dark {
+      color: #fff;
+      background: var(--green);
+    }
+
+    .status-grid, .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0 0;
+    }
+
+    .status-card, .metric {
+      padding: 18px;
+      background: rgba(255, 253, 247, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+    }
+
+    .status-card small, .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 850;
+    }
+
+    .status-card strong, .metric strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--green);
+      font-size: 1.1rem;
+    }
+
+    section {
+      margin-top: 18px;
+      padding: clamp(24px, 5vw, 52px);
+      background: rgba(255, 253, 247, 0.94);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: 0 10px 35px rgba(27, 55, 47, 0.055);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .muted { color: var(--muted); }
+
+    .recommendation {
+      padding: 20px 22px;
+      background: var(--green-soft);
+      border-left: 6px solid var(--green);
+      border-radius: 16px;
+    }
+
+    .recommendation strong { color: var(--green); }
+
+    .problem-grid, .scope-grid, .screen-grid, .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .card {
+      padding: 20px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+    }
+
+    .card .number {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      margin-bottom: 16px;
+      place-items: center;
+      color: var(--ink);
+      background: var(--yellow);
+      border-radius: 12px;
+      font-weight: 950;
+    }
+
+    .card p:last-child { margin-bottom: 0; }
+
+    .decision-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .decision {
+      padding: 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+    }
+
+    .decision h3 { margin-bottom: 12px; }
+
+    .choice {
+      display: block;
+      position: relative;
+      margin-top: 9px;
+      cursor: pointer;
+    }
+
+    .choice input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .choice span {
+      display: block;
+      min-height: 68px;
+      padding: 13px 15px;
+      color: var(--muted);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      transition: 160ms ease;
+    }
+
+    .choice strong {
+      display: block;
+      color: var(--ink);
+    }
+
+    .choice input:checked + span {
+      color: var(--ink);
+      background: var(--green-soft);
+      border-color: var(--green);
+      box-shadow: 0 0 0 2px rgba(31, 98, 82, 0.12);
+    }
+
+    .badge {
+      display: inline-block;
+      margin-left: 5px;
+      padding: 2px 7px;
+      color: var(--ink);
+      background: var(--lime);
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 900;
+    }
+
+    .scope-card { border-top: 6px solid var(--green); }
+    .scope-card.later { border-top-color: #9faaa6; }
+    .scope-card.no { border-top-color: var(--orange); }
+
+    ul { margin: 12px 0 0; padding-left: 1.25em; }
+    li + li { margin-top: 7px; }
+
+    .screen-grid { grid-template-columns: repeat(5, 1fr); }
+
+    .screen-card {
+      min-height: 178px;
+      padding: 18px;
+      color: #fff;
+      background: var(--green);
+      border-radius: 20px;
+    }
+
+    .screen-card:nth-child(even) {
+      color: var(--ink);
+      background: var(--green-soft);
+    }
+
+    .screen-card small {
+      display: block;
+      margin-bottom: 26px;
+      opacity: 0.72;
+      font-weight: 900;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      counter-reset: flow;
+    }
+
+    .flow-step {
+      position: relative;
+      min-height: 126px;
+      padding: 17px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      counter-increment: flow;
+    }
+
+    .flow-step::before {
+      display: block;
+      margin-bottom: 17px;
+      content: "0" counter(flow);
+      color: var(--orange);
+      font-weight: 950;
+    }
+
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      min-width: 800px;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: #fff;
+      background: var(--green);
+    }
+
+    .roadmap { display: grid; gap: 10px; }
+
+    .phase {
+      display: grid;
+      grid-template-columns: 110px 1fr 180px;
+      gap: 18px;
+      align-items: center;
+      padding: 16px 18px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 15px;
+    }
+
+    .phase time {
+      color: var(--orange);
+      font-weight: 950;
+    }
+
+    .phase b { color: var(--green); }
+
+    .acceptance-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .acceptance-list li {
+      margin: 0;
+      padding: 14px 16px 14px 45px;
+      position: relative;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    .acceptance-list li::before {
+      position: absolute;
+      top: 15px;
+      left: 16px;
+      content: "✓";
+      color: var(--green);
+      font-weight: 950;
+    }
+
+    .copy-box {
+      margin-top: 22px;
+      padding: 20px;
+      color: #fff;
+      background: var(--ink);
+      border-radius: 18px;
+    }
+
+    .copy-box pre {
+      margin: 14px 0 0;
+      white-space: pre-wrap;
+      color: rgba(255, 255, 255, 0.82);
+      font: inherit;
+      font-size: 0.88rem;
+    }
+
+    .toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      padding: 12px 17px;
+      color: #fff;
+      background: var(--ink);
+      border-radius: 999px;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: 180ms ease;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    .footer-note {
+      margin: 24px 0 0;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 900px) {
+      .problem-grid, .scope-grid, .risk-grid { grid-template-columns: 1fr; }
+      .decision-grid, .acceptance-list { grid-template-columns: 1fr; }
+      .screen-grid { grid-template-columns: repeat(2, 1fr); }
+      .flow { grid-template-columns: 1fr; }
+      .phase { grid-template-columns: 90px 1fr; }
+      .phase b { grid-column: 2; }
+    }
+
+    @media (max-width: 560px) {
+      .shell { width: min(100% - 18px, 1180px); margin-top: 9px; }
+      .hero, section { border-radius: 22px; }
+      .section-head { display: block; }
+      .screen-grid { grid-template-columns: 1fr; }
+      .phase { grid-template-columns: 1fr; gap: 4px; }
+      .phase b { grid-column: auto; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .shell { width: 100%; margin: 0; }
+      .hero-actions, .section-actions, .toast { display: none; }
+      section { break-inside: avoid; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">Project Brief v0.1</p>
+      <h1>100 天減脂追蹤 App</h1>
+      <p class="hero-copy">把「今天要做什麼」、「我做了多少」與「這週需不需要調整」放在同一個地方。第一版先服務你自己，連續使用 100 天後，再決定要不要變成公開產品。</p>
+      <div class="hero-actions">
+        <button class="button" type="button" onclick="document.querySelector('#decisions').scrollIntoView()">檢查關鍵決策</button>
+        <button class="button secondary" type="button" onclick="window.print()">列印規劃</button>
+      </div>
+    </header>
+
+    <div class="status-grid" aria-label="推薦專案方向">
+      <div class="status-card"><small>推薦平台</small><strong>iPhone 原生 App</strong></div>
+      <div class="status-card"><small>第一位使用者</small><strong>威爾自己</strong></div>
+      <div class="status-card"><small>資料策略</small><strong>本機優先＋iCloud</strong></div>
+      <div class="status-card"><small>MVP 時程</small><strong>約 6 到 8 週</strong></div>
+      <div class="status-card"><small>GitHub</small><strong>Private repo</strong></div>
+    </div>
+
+    <section aria-labelledby="position-title">
+      <div class="section-head">
+        <div>
+          <p class="kicker">Product position</p>
+          <h2 id="position-title">不是另一個算熱量工具</h2>
+          <p class="muted">產品核心是把個人計畫變成每天可執行、可記錄、可調整的回饋循環。</p>
+        </div>
+      </div>
+      <div class="recommendation"><strong>我的推薦：</strong>先做 iOS 個人版。你的體重、腰圍、步數與運動紀錄都集中在 iPhone 使用情境，先用 SwiftUI 與本機資料庫把體驗做好，比一開始就做帳號、後端與訂閱風險低很多。</div>
+      <div class="problem-grid" style="margin-top: 16px">
+        <article class="card"><div class="number">1</div><h3>執行問題</h3><p class="muted">計畫散在文章、表格與記憶裡，每天要先想一次才能開始。</p></article>
+        <article class="card"><div class="number">2</div><h3>記錄問題</h3><p class="muted">勾選、體重、腰圍、熱量、步數與訓練成績沒有同一條時間線。</p></article>
+        <article class="card"><div class="number">3</div><h3>調整問題</h3><p class="muted">數字有變化時，不知道是單日水分波動，還是真的該改熱量與訓練。</p></article>
+      </div>
+    </section>
+
+    <section id="decisions" aria-labelledby="decision-title">
+      <div class="section-head">
+        <div>
+          <p class="kicker">Decisions</p>
+          <h2 id="decision-title">開工前只需定案 4 件事</h2>
+          <p class="muted">已預選推薦版。你可以直接保留，也可點選其他方案，下方的專案摘要會即時更新。</p>
+        </div>
+      </div>
+      <div class="decision-grid">
+        <div class="decision">
+          <h3>1. 平台</h3>
+          <label class="choice"><input type="radio" name="platform" value="iOS 原生 App（SwiftUI）" checked><span><strong>iOS 原生 <b class="badge">推薦</b></strong>手機執行快，未來可接 HealthKit。</span></label>
+          <label class="choice"><input type="radio" name="platform" value="Web / PWA"><span><strong>Web / PWA</strong>跨裝置開發快，但系統整合較弱。</span></label>
+        </div>
+        <div class="decision">
+          <h3>2. 產品定位</h3>
+          <label class="choice"><input type="radio" name="audience" value="個人先用 100 天，驗證後再公開" checked><span><strong>個人先用 <b class="badge">推薦</b></strong>用真實 100 天找出有效功能。</span></label>
+          <label class="choice"><input type="radio" name="audience" value="第一天就以公開上架為目標"><span><strong>公開產品</strong>需額外做通用化、新手引導與法規文案。</span></label>
+        </div>
+        <div class="decision">
+          <h3>3. 同步</h3>
+          <label class="choice"><input type="radio" name="sync" value="本機優先，透過 SwiftData 與 iCloud 同步" checked><span><strong>本機＋ iCloud <b class="badge">推薦</b></strong>離線可用，不必先經營後端。</span></label>
+          <label class="choice"><input type="radio" name="sync" value="自建帳號與雲端資料庫"><span><strong>自建後端</strong>方便跨平台，但增加帳號、成本與維運。</span></label>
+        </div>
+        <div class="decision">
+          <h3>4. 專案能見度</h3>
+          <label class="choice"><input type="radio" name="repo" value="GitHub private repo，套用 iOS App starter" checked><span><strong>Private repo <b class="badge">推薦</b></strong>先保留個人健康資料與產品策略。</span></label>
+          <label class="choice"><input type="radio" name="repo" value="先不建 GitHub repo"><span><strong>只做本機</strong>省一步，但少了版本備份與審查流程。</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="scope-title">
+      <div class="section-head">
+        <div><p class="kicker">Scope</p><h2 id="scope-title">MVP 範圍</h2><p class="muted">第一版只做「每天會開」與「每週會看」的功能。</p></div>
+      </div>
+      <div class="scope-grid">
+        <article class="card scope-card"><h3>P0，MVP 必做</h3><ul><li>個人設定與 100 天目標</li><li>依運動日自動切換熱量與份量</li><li>今日 Checklist 與數值輸入</li><li>一週運動飲食表</li><li>體重、腰圍、肌力趨勢</li><li>每週檢討與 ±150 kcal 調整</li><li>JSON / CSV 匯出與備份</li></ul></article>
+        <article class="card scope-card later"><h3>P1，自用穩定後</h3><ul><li>HealthKit 讀取步數、體重與睡眠</li><li>本地通知與補充品提醒</li><li>自訂運動 A / B 與食物快速模板</li><li>計畫版本與改動紀錄</li><li>桌面 Widget</li></ul></article>
+        <article class="card scope-card no"><h3>不做清單</h3><ul><li>AI 食物照片估熱量</li><li>社群、排行榜與加好友</li><li>第一版就做訂閱付費</li><li>通用教練後台</li><li>複雜食物資料庫</li><li>自動下醫療診斷</li></ul></article>
+      </div>
+    </section>
+
+    <section aria-labelledby="screens-title">
+      <div class="section-head"><div><p class="kicker">Information architecture</p><h2 id="screens-title">5 個主畫面</h2><p class="muted">主導覽保持少，今天頁是每次開 App 的起點。</p></div></div>
+      <div class="screen-grid">
+        <article class="screen-card"><small>01</small><h3>今天</h3><p>當日熱量、餐點、運動、飲水與輸入欄位。</p></article>
+        <article class="screen-card"><small>02</small><h3>本週</h3><p>7 天行程、完成率、週任務與補做狀態。</p></article>
+        <article class="screen-card"><small>03</small><h3>趨勢</h3><p>7 天平均體重、腰圍、步數、肌力與完成率。</p></article>
+        <article class="screen-card"><small>04</small><h3>計畫</h3><p>100 天目標、運動模板、飲食規則與每週調整紀錄。</p></article>
+        <article class="screen-card"><small>05</small><h3>設定</h3><p>進食窗、水杯、補充品、資料匯出、回饋與關於。</p></article>
+      </div>
+    </section>
+
+    <section aria-labelledby="flow-title">
+      <div class="section-head"><div><p class="kicker">Core loop</p><h2 id="flow-title">核心使用流程</h2></div></div>
+      <div class="flow">
+        <div class="flow-step"><strong>設定目標</strong><br><span class="muted">輸入體重、窗口、設備與偏好。</span></div>
+        <div class="flow-step"><strong>生成計畫</strong><br><span class="muted">建立 100 天、每週運動與份量。</span></div>
+        <div class="flow-step"><strong>今日執行</strong><br><span class="muted">勾選、輸入並完成運動。</span></div>
+        <div class="flow-step"><strong>週日檢討</strong><br><span class="muted">看 7 天平均、腰圍與力量。</span></div>
+        <div class="flow-step"><strong>微調下週</strong><br><span class="muted">維持，或以 150 kcal 為單位調整。</span></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="data-title">
+      <div class="section-head"><div><p class="kicker">Data</p><h2 id="data-title">資料模型</h2><p class="muted">一開始就把「計畫」與「實際紀錄」分開，以後改計畫才不會覆寫過去的資料。</p></div></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>實體</th><th>用途</th><th>核心欄位</th><th>資料保護</th></tr></thead>
+          <tbody>
+            <tr><td>UserProfile</td><td>個人預設</td><td>目標、進食窗、水杯、補充品、設備</td><td>只修改未來計畫</td></tr>
+            <tr><td>Plan / DayPlan</td><td>計畫規則</td><td>日期、運動類型、熱量、份量、Checklist 模板</td><td>計畫保留版本</td></tr>
+            <tr><td>DailyLog</td><td>每日實際</td><td>勾選、熱量、蛋白質、步數、水、睡眠</td><td>不因新計畫重生</td></tr>
+            <tr><td>ExerciseLog</td><td>運動成績</td><td>動作、組數、重量、次數、距離、時間</td><td>保留原始值</td></tr>
+            <tr><td>Measurement</td><td>身體趨勢</td><td>體重、腰圍、體脂、內臟脂等級</td><td>標註來源與時間</td></tr>
+            <tr><td>WeeklyReview</td><td>調整記錄</td><td>7 天平均、差值、疲勞、力量、熱量改動</td><td>每次調整可追溯</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section aria-labelledby="roadmap-title">
+      <div class="section-head"><div><p class="kicker">Roadmap</p><h2 id="roadmap-title">6 到 8 週開發路線</h2><p class="muted">第一張票先打通「今天勾選，關閉 App，重開還在」的完整路徑。</p></div></div>
+      <div class="roadmap">
+        <div class="phase"><time>2 到 3 天</time><div><h3>M0，定義與原型</h3><span class="muted">定案平台、資料策略、主畫面與驗收條件。</span></div><b>產出：PRD＋wireframe</b></div>
+        <div class="phase"><time>第 1 週</time><div><h3>M1，Tracer MVP</h3><span class="muted">今天頁、勾選、輸入、本機儲存與重開還原。</span></div><b>產出：可每天使用</b></div>
+        <div class="phase"><time>第 2 到 3 週</time><div><h3>M2，週計畫與趨勢</h3><span class="muted">7 日排程、日類型份量、體重平均、腰圍與肌力。</span></div><b>產出：可每週檢討</b></div>
+        <div class="phase"><time>第 4 週</time><div><h3>M3，同步與備份</h3><span class="muted">iCloud 同步、離線狀態、匯出、資料復原測試。</span></div><b>產出：資料不怕丟</b></div>
+        <div class="phase"><time>第 5 到 6 週</time><div><h3>M4，Dogfood</h3><span class="muted">連續真實使用，只修阻擋執行或造成資料風險的問題。</span></div><b>產出：穩定個人版</b></div>
+        <div class="phase"><time>第 7 到 8 週</time><div><h3>M5，HealthKit 與發布決策</h3><span class="muted">評估自動步數、體重與睡眠，決定自用或公開測試。</span></div><b>產出：下一階段路線</b></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="accept-title">
+      <div class="section-head"><div><p class="kicker">Definition of done</p><h2 id="accept-title">驗收條件</h2></div></div>
+      <ul class="acceptance-list">
+        <li>今天所有勾選與數字在關閉、重開 App 後仍存在。</li>
+        <li>跑步、肌力、恢復日會顯示正確熱量與熟重澱粉。</li>
+        <li>Day 1、Day 100 與時區邊界的挑戰日數無誤。</li>
+        <li>7 天平均不會把未記錄日當成 0 kg。</li>
+        <li>新版計畫不會覆寫舊的 DailyLog 與 Measurement。</li>
+        <li>匯出後能還原等量資料，並完成一次實際復原測試。</li>
+        <li>iCloud 離線寫入與回線合併不造成紀錄消失。</li>
+        <li>健康數據一律先取得權限，拒絕後主要功能仍可手動使用。</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="risk-title">
+      <div class="section-head"><div><p class="kicker">Risks</p><h2 id="risk-title">三個最大風險</h2></div></div>
+      <div class="risk-grid">
+        <article class="card"><h3>記錄負擔過高</h3><p class="muted">每天要填太多會放棄。原則是能勾就不打字，能從 HealthKit 讀就不重複填。</p></article>
+        <article class="card"><h3>調整得太積極</h3><p class="muted">單日體重不觸發改計畫。只用 7 天平均，且至少連續 2 週才改 150 kcal。</p></article>
+        <article class="card"><h3>健康資料遺失</h3><p class="muted">資料模型只擴張不收縮，每次 migration 前先備份，並保留 JSON / CSV 匯出。</p></article>
+      </div>
+    </section>
+
+    <section aria-labelledby="source-title">
+      <div class="section-head"><div><p class="kicker">Technical basis</p><h2 id="source-title">官方技術依據</h2></div></div>
+      <ul>
+        <li><a href="https://developer.apple.com/documentation/swiftdata/syncing-model-data-across-a-persons-devices">Apple：用 SwiftData 與 CloudKit 同步資料</a>，需 iCloud 與 Background Modes 能力，而且 CloudKit 正式 schema 應以可擴張方式設計。</li>
+        <li><a href="https://developer.apple.com/documentation/healthkit">Apple HealthKit</a>，可在用戶授權後取得步數、體重、腰圍、睡眠與運動資料。</li>
+        <li><a href="https://developer.apple.com/documentation/usernotifications/scheduling-a-notification-locally-from-your-app">Apple：排程本地通知</a>，適合設定每日 Checklist、運動與補充品提醒。</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="next-title">
+      <div class="section-head"><div><p class="kicker">Next step</p><h2 id="next-title">複製專案摘要</h2><p class="muted">先調整上面 4 個選項，再複製。你回覆確認後，才會進入真正的專案建立流程。</p></div></div>
+      <div class="copy-box">
+        <button class="button" id="copyBrief" type="button">複製專案摘要</button>
+        <pre id="briefOutput"></pre>
+      </div>
+    </section>
+
+    <p class="footer-note">建立日期：2026-08-10　狀態：規劃草案，尚未建立 Xcode 專案或 GitHub repo</p>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">已複製</div>
+
+  <script>
+    function selectedValue(name) {
+      return document.querySelector(`input[name="${name}"]:checked`)?.value || '尚未選擇';
+    }
+
+    function buildBrief() {
+      return `專案暫名：100 天減脂追蹤 App
+一句話描述：把每日運動、飲食份量、補充品、體重腰圍與每週調整，整合成一個可執行的 100 天健康追蹤循環。
+平台：${selectedValue('platform')}
+產品定位：${selectedValue('audience')}
+資料同步：${selectedValue('sync')}
+專案能見度：${selectedValue('repo')}
+MVP：今日 Checklist、一週計畫、熱量與份量切換、體重腰圍肌力趨勢、每週 ±150 kcal 調整、資料匯出與備份。
+不做：AI 食物辨識、社群、訂閱、教練後台與醫療診斷。
+驗收重點：關閉重開不丟資料，日類型計算正確，舊紀錄不被新計畫覆寫，匯出可還原。
+預計時程：6 到 8 週完成穩定個人版。`;
+    }
+
+    function updateBrief() {
+      document.querySelector('#briefOutput').textContent = buildBrief();
+    }
+
+    document.querySelectorAll('input[type="radio"]').forEach((input) => {
+      input.addEventListener('change', updateBrief);
+    });
+
+    document.querySelector('#copyBrief').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(buildBrief());
+        const toast = document.querySelector('#toast');
+        toast.classList.add('show');
+        window.setTimeout(() => toast.classList.remove('show'), 1800);
+      } catch {
+        document.querySelector('#briefOutput').focus();
+      }
+    });
+
+    updateBrief();
+  </script>
+</body>
+</html>
