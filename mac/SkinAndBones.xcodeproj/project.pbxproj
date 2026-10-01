@@ -1,0 +1,409 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6FC5AB3FF7390559C0911FBC /* SkinAndBonesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340FD52F8B8B9E787B7A820D /* SkinAndBonesApp.swift */; };
+		7EE3A34BADD7F0DEB97BE18A /* PlanFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99779807AC8A62883A9F222A /* PlanFixture.swift */; };
+		BCAD3CAE789686938335AEE1 /* PlanFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3190CF24428CD1EBE3E756B /* PlanFixtureTests.swift */; };
+		D299A1F5A843FC72E9B12666 /* plan-fixture.json in Resources */ = {isa = PBXBuildFile; fileRef = 2C83DBC600E38809F4BD5B08 /* plan-fixture.json */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2C83DBC600E38809F4BD5B08 /* plan-fixture.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "plan-fixture.json"; sourceTree = "<group>"; };
+		340FD52F8B8B9E787B7A820D /* SkinAndBonesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkinAndBonesApp.swift; sourceTree = "<group>"; };
+		99779807AC8A62883A9F222A /* PlanFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanFixture.swift; sourceTree = "<group>"; };
+		BE956BD00EE959EA1CE13628 /* SkinAndBones.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkinAndBones.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3190CF24428CD1EBE3E756B /* PlanFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanFixtureTests.swift; sourceTree = "<group>"; };
+		FC5CA6E2677F9402D3D4D76E /* SkinAndBonesCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkinAndBonesCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		4675255FA89D478F746DEBBF /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				2C83DBC600E38809F4BD5B08 /* plan-fixture.json */,
+			);
+			path = Fixtures;
+			sourceTree = "<group>";
+		};
+		52ECB41319D7151232270DC2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BE956BD00EE959EA1CE13628 /* SkinAndBones.app */,
+				FC5CA6E2677F9402D3D4D76E /* SkinAndBonesCoreTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		55936798538C34E2569A886E /* SkinAndBones */ = {
+			isa = PBXGroup;
+			children = (
+				340FD52F8B8B9E787B7A820D /* SkinAndBonesApp.swift */,
+			);
+			path = SkinAndBones;
+			sourceTree = "<group>";
+		};
+		603385A0E172842C026B9EB7 /* SkinAndBonesCoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				99779807AC8A62883A9F222A /* PlanFixture.swift */,
+				F3190CF24428CD1EBE3E756B /* PlanFixtureTests.swift */,
+				4675255FA89D478F746DEBBF /* Fixtures */,
+			);
+			path = SkinAndBonesCoreTests;
+			sourceTree = "<group>";
+		};
+		FEB552752B69D5D9E10DE988 = {
+			isa = PBXGroup;
+			children = (
+				55936798538C34E2569A886E /* SkinAndBones */,
+				603385A0E172842C026B9EB7 /* SkinAndBonesCoreTests */,
+				52ECB41319D7151232270DC2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		91C579B10F63EFCA53202BA5 /* SkinAndBonesCoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04D36927E731BA5D065C43E8 /* Build configuration list for PBXNativeTarget "SkinAndBonesCoreTests" */;
+			buildPhases = (
+				D706DFBFA24249B71421FDC0 /* Sources */,
+				1517278E2C673454ED95254B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SkinAndBonesCoreTests;
+			packageProductDependencies = (
+			);
+			productName = SkinAndBonesCoreTests;
+			productReference = FC5CA6E2677F9402D3D4D76E /* SkinAndBonesCoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B77BF3CF1485EB44993F282F /* SkinAndBones */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E7EEF21921F8DA012C609FBE /* Build configuration list for PBXNativeTarget "SkinAndBones" */;
+			buildPhases = (
+				647FE656691500E9787C4BE5 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SkinAndBones;
+			packageProductDependencies = (
+			);
+			productName = SkinAndBones;
+			productReference = BE956BD00EE959EA1CE13628 /* SkinAndBones.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0FB1CF248919742B83F0FBB6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					91C579B10F63EFCA53202BA5 = {
+						DevelopmentTeam = ARX5U6F9ZL;
+						ProvisioningStyle = Automatic;
+					};
+					B77BF3CF1485EB44993F282F = {
+						DevelopmentTeam = ARX5U6F9ZL;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 90C6BB3BB85AFDC2D2012E32 /* Build configuration list for PBXProject "SkinAndBones" */;
+			developmentRegion = "zh-Hant";
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				"zh-Hant",
+			);
+			mainGroup = FEB552752B69D5D9E10DE988;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 52ECB41319D7151232270DC2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B77BF3CF1485EB44993F282F /* SkinAndBones */,
+				91C579B10F63EFCA53202BA5 /* SkinAndBonesCoreTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1517278E2C673454ED95254B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D299A1F5A843FC72E9B12666 /* plan-fixture.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		647FE656691500E9787C4BE5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6FC5AB3FF7390559C0911FBC /* SkinAndBonesApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D706DFBFA24249B71421FDC0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7EE3A34BADD7F0DEB97BE18A /* PlanFixture.swift in Sources */,
+				BCAD3CAE789686938335AEE1 /* PlanFixtureTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2E82A98CA8B51F25CE1D28B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lazzymerlin.SkinAndBonesCoreTests;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		2E95A888A5B9F53FD89B97CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lazzymerlin.SkinAndBonesCoreTests;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		6B622A089C05D91FE066594C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = ARX5U6F9ZL;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D6B810DBF2082AAA56F879D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "100 天減脂";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_LSUIElement = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lazzymerlin.SkinAndBones;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		DFF48FC64A3B4EDE6FA754D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "100 天減脂";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_LSUIElement = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lazzymerlin.SkinAndBones;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		FBB05B0DDD893DE58B1CCF06 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ARX5U6F9ZL;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		04D36927E731BA5D065C43E8 /* Build configuration list for PBXNativeTarget "SkinAndBonesCoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2E82A98CA8B51F25CE1D28B9 /* Debug */,
+				2E95A888A5B9F53FD89B97CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		90C6BB3BB85AFDC2D2012E32 /* Build configuration list for PBXProject "SkinAndBones" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6B622A089C05D91FE066594C /* Debug */,
+				FBB05B0DDD893DE58B1CCF06 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E7EEF21921F8DA012C609FBE /* Build configuration list for PBXNativeTarget "SkinAndBones" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DFF48FC64A3B4EDE6FA754D1 /* Debug */,
+				D6B810DBF2082AAA56F879D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0FB1CF248919742B83F0FBB6 /* Project object */;
+}

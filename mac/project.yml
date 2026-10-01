@@ -1,0 +1,51 @@
+# XcodeGen 設定：改專案設定改這份，再在 mac/ 底下跑 `xcodegen generate`。
+# SkinAndBonesCore 是純邏輯，同時編進 App 與測試；測試不掛在 App 上，跑測試不會開出視窗。
+name: SkinAndBones
+options:
+  bundleIdPrefix: com.lazzymerlin
+  deploymentTarget:
+    macOS: "26.0"
+  developmentLanguage: zh-Hant
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    DEVELOPMENT_TEAM: ARX5U6F9ZL
+    CODE_SIGN_STYLE: Automatic
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+targets:
+  SkinAndBones:
+    type: application
+    platform: macOS
+    sources:
+      - SkinAndBones
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.lazzymerlin.SkinAndBones
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: 100 天減脂
+        INFOPLIST_KEY_LSUIElement: YES
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.healthcare-fitness
+        ENABLE_HARDENED_RUNTIME: YES
+  SkinAndBonesCoreTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - SkinAndBonesCoreTests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.lazzymerlin.SkinAndBonesCoreTests
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  SkinAndBones:
+    build:
+      targets:
+        SkinAndBones: all
+        SkinAndBonesCoreTests: [test]
+    test:
+      config: Debug
+      targets:
+        - SkinAndBonesCoreTests
+    archive:
+      config: Release

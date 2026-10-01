@@ -14,3 +14,7 @@ public/og-image-source.png
 public/icon-master.png
 .claude/
 tsconfig.tsbuildinfo
+
+# Xcode
+xcuserdata/
+*.xcuserstate
