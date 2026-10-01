@@ -15,7 +15,12 @@ Mac 桌面上一直浮著的半透明小視窗：提醒威爾照 100 天減脂�
 ## 資料夾結構
 
 - `docs/` — 規格、設計、PRD（被 2nd Brain symlink）
-- Mac App 的資料夾由實作第一張票建立，建好後回填這裡
+- `mac/` — Mac App（現行）
+  - `project.yml` — XcodeGen 設定，`SkinAndBones.xcodeproj` 由它產生
+  - `SkinAndBones/` — App 外殼：浮動視窗、選單列、開機啟動、存檔位置（碰系統 API 的薄轉接層）
+  - `SkinAndBonesCore/` — 純邏輯：週課表、熱量、第幾天、清單、每日紀錄、進度（同時編進 App 與測試）
+  - `SkinAndBonesTests/` — Swift Testing；`Fixtures/plan-fixture.json` 是計畫頁算出的逐日期望值
+  - `scripts/generate-plan-fixture.mjs` — 用 node 跑計畫頁的 JS 重產 fixture
 - `app/`、`src/`、`tests/`、`workers/` — 舊版網頁（不再開發）
 
 ## 開發原則
