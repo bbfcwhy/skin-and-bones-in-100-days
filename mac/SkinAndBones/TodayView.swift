@@ -10,7 +10,7 @@ struct TodayView: View {
             Divider()
             VStack(alignment: .leading, spacing: 2) {
                 ForEach(model.items) { item in
-                    ChecklistRow(item: item, isChecked: model.isChecked(item)) {
+                    ChecklistRow(item: item, isChecked: model.isChecked(item.id)) {
                         model.toggle(item.id)
                     }
                 }

@@ -66,7 +66,7 @@ struct TodayModelTests {
         clock.set("2026-10-02T00:00:01+08:00")
         #expect(model.refreshToday())
         #expect(model.today == october2)
-        #expect(model.items.allSatisfy { !model.isChecked($0) })
+        #expect(model.items.allSatisfy { !model.isChecked($0.id) })
         #expect(model.records.isChecked("water", on: october1))
         #expect(model.records.isChecked("protein", on: october1))
         #expect(store.stored.isChecked("water", on: october1))
@@ -104,12 +104,12 @@ struct TodayModelTests {
 
         clock.set("2026-10-02T09:00:00+08:00")
         model.refreshToday()
-        #expect(!model.isChecked(ChecklistItem(id: "water", title: "")))
+        #expect(!model.isChecked("water"))
 
         clock.set("2026-10-01T21:00:00+08:00")
         #expect(model.refreshToday())
         #expect(model.today == october1)
-        #expect(model.isChecked(ChecklistItem(id: "water", title: "")))
+        #expect(model.isChecked("water"))
     }
 
     @Test("打勾馬上存檔，存在今天的日期底下")

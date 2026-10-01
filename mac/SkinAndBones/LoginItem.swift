@@ -21,6 +21,18 @@ enum LoginItem {
         }
     }
 
+    /// 選單上的開關。系統要求威爾自己核准時（例如在系統設定關掉過），直接打開登入項目設定頁。
+    static func toggle() {
+        switch SMAppService.mainApp.status {
+        case .enabled:
+            setEnabled(false)
+        case .requiresApproval:
+            SMAppService.openSystemSettingsLoginItems()
+        default:
+            setEnabled(true)
+        }
+    }
+
     @discardableResult
     static func setEnabled(_ enabled: Bool) -> Bool {
         do {

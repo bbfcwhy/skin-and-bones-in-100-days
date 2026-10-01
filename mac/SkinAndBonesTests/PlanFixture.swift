@@ -25,10 +25,11 @@ struct PlanFixture: Decodable {
         let url = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
             .appendingPathComponent("Fixtures/plan-fixture.json")
-        do {
-            return try JSONDecoder().decode(PlanFixture.self, from: Data(contentsOf: url))
-        } catch {
-            fatalError("讀不到 fixture：\(url.path)：\(error)")
+        // 讀不到就給空的 fixture，讓 PlanFixtureTests 清楚地紅，不要讓整個測試行程當掉。
+        guard let data = try? Data(contentsOf: url),
+              let fixture = try? JSONDecoder().decode(PlanFixture.self, from: data) else {
+            return PlanFixture(source: url.path, scriptSha256: "", timeZone: "", days: [])
         }
+        return fixture
     }()
 }

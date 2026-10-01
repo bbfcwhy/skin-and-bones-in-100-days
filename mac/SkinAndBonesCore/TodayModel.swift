@@ -52,8 +52,8 @@ final class TodayModel {
 
     var streak: Int { DailyProgress.streak(today: today, records: records) }
 
-    func isChecked(_ item: ChecklistItem) -> Bool {
-        records.isChecked(item.id, on: today)
+    func isChecked(_ itemID: String) -> Bool {
+        records.isChecked(itemID, on: today)
     }
 
     /// 重新判斷今天是哪一天。過午夜、睡眠喚醒、改系統時間後呼叫；換日回傳 true。

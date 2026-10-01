@@ -61,7 +61,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @objc private func toggleLoginItem() {
-        LoginItem.setEnabled(!LoginItem.isEnabled)
+        LoginItem.toggle()
     }
 }
 
@@ -69,7 +69,9 @@ enum AppPaths {
     /// ~/Library/Application Support/com.lazzymerlin.SkinAndBones/checks.json。
     /// 截圖驗收時用 `-dataDirectory <資料夾>` 啟動，改讀寫那個資料夾，不碰真正的紀錄。
     static var recordsFile: URL {
-        if let custom = UserDefaults.standard.string(forKey: "dataDirectory"), !custom.isEmpty {
+        // 只認啟動參數，不認 defaults write 寫進去的永久設定，正式使用時不會被悄悄導走。
+        let arguments = UserDefaults.standard.volatileDomain(forName: UserDefaults.argumentDomain)
+        if let custom = arguments["dataDirectory"] as? String, !custom.isEmpty {
             return URL(fileURLWithPath: custom, isDirectory: true).appendingPathComponent("checks.json")
         }
         let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]

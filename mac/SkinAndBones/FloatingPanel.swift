@@ -55,7 +55,9 @@ final class FloatingPanel: NSPanel {
     func restorePosition() {
         let restored = setFrameUsingName(Self.autosaveName)
         setFrameAutosaveName(Self.autosaveName)
-        let onScreen = NSScreen.screens.contains { $0.visibleFrame.intersects(frame) }
+        // 標題列（拖動的把手）中間那一點要在某個螢幕上，不然拖不回來。
+        let handle = NSPoint(x: frame.midX, y: frame.maxY - 10)
+        let onScreen = NSScreen.screens.contains { $0.visibleFrame.contains(handle) }
         if !restored || !onScreen {
             placeAtTopRight()
         }
