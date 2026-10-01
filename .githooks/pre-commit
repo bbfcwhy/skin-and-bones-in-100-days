@@ -1,0 +1,55 @@
+#!/bin/bash
+# Pre-commit hook: 快速檢查（< 3 秒）
+# - 跑 SwiftLint 對暫存的 .swift 檔案
+# - 阻止有錯誤的 commit，但 warning 不擋
+
+set -e
+
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+# ── ASC 上架真相檔同步提醒（非阻擋）──────────────────────────
+# 改到會影響 App Store Connect 欄位的檔，卻沒一起更新真相檔，就提醒一聲
+ASC_TRIGGERS=$(git diff --cached --name-only --diff-filter=ACM | grep -iE '\.xcprivacy$|Info\.plist$|\.storekit$|\.entitlements$' || true)
+ASC_DOC=$(git diff --cached --name-only | grep -i 'docs/app-store-connect\.html' || true)
+if [ -n "$ASC_TRIGGERS" ] && [ -z "$ASC_DOC" ]; then
+  echo -e "${YELLOW}⚠ 偵測到可能影響 App Store Connect 上架資料的變動：${NC}"
+  echo "$ASC_TRIGGERS" | sed 's/^/    /'
+  echo "  但這次沒一起更新 docs/app-store-connect.html（ASC 單一真相檔）。"
+  echo "  若動到隱私揭露／權限文案／加密旗標／IAP／版本，記得同步那份，免得送審漏勾。"
+  echo "  （僅提醒，不阻擋 commit。）"
+fi
+
+echo "→ Pre-commit: 檢查暫存的 Swift 檔案"
+
+STAGED_SWIFT_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.swift$' || true)
+
+if [ -z "$STAGED_SWIFT_FILES" ]; then
+  echo "  沒有 Swift 檔案異動，跳過 SwiftLint"
+  exit 0
+fi
+
+if ! command -v swiftlint &> /dev/null; then
+  echo -e "${YELLOW}⚠ SwiftLint 未安裝,跳過檢查${NC}"
+  echo "  安裝方式: brew install swiftlint"
+  exit 0
+fi
+
+echo "  跑 SwiftLint..."
+LINT_OUTPUT=$(echo "$STAGED_SWIFT_FILES" | xargs swiftlint lint --quiet 2>&1 || true)
+
+if [ -n "$LINT_OUTPUT" ]; then
+  echo "$LINT_OUTPUT"
+
+  ERROR_COUNT=$(echo "$LINT_OUTPUT" | grep -c ": error:" || true)
+  if [ "$ERROR_COUNT" -gt 0 ]; then
+    echo -e "${RED}✗ SwiftLint 發現 $ERROR_COUNT 個錯誤,commit 被阻擋${NC}"
+    echo "  修正後再 commit,或用 'git commit --no-verify' 跳過(不建議)"
+    exit 1
+  fi
+fi
+
+echo -e "${GREEN}✓ Pre-commit 通過${NC}"
+exit 0

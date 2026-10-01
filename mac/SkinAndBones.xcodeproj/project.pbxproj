@@ -7,26 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C05D6A9B6B762E291A9B63F /* PlanFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7A5720D8ABC5C79074E63E /* PlanFixture.swift */; };
+		42AF2DF8EC4566CE4A70FF92 /* PlanFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85107FCC3644F81E4093173F /* PlanFixtureTests.swift */; };
 		6FC5AB3FF7390559C0911FBC /* SkinAndBonesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340FD52F8B8B9E787B7A820D /* SkinAndBonesApp.swift */; };
-		7EE3A34BADD7F0DEB97BE18A /* PlanFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99779807AC8A62883A9F222A /* PlanFixture.swift */; };
-		BCAD3CAE789686938335AEE1 /* PlanFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3190CF24428CD1EBE3E756B /* PlanFixtureTests.swift */; };
-		D299A1F5A843FC72E9B12666 /* plan-fixture.json in Resources */ = {isa = PBXBuildFile; fileRef = 2C83DBC600E38809F4BD5B08 /* plan-fixture.json */; };
+		A286819F1281BA7B3AA86AB0 /* plan-fixture.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D85D9EA9C8B9B004EA31E8B /* plan-fixture.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2C83DBC600E38809F4BD5B08 /* plan-fixture.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "plan-fixture.json"; sourceTree = "<group>"; };
+		0D85D9EA9C8B9B004EA31E8B /* plan-fixture.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "plan-fixture.json"; sourceTree = "<group>"; };
+		3179985D4CDE17AE647F827E /* SkinAndBonesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkinAndBonesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		340FD52F8B8B9E787B7A820D /* SkinAndBonesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkinAndBonesApp.swift; sourceTree = "<group>"; };
-		99779807AC8A62883A9F222A /* PlanFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanFixture.swift; sourceTree = "<group>"; };
+		85107FCC3644F81E4093173F /* PlanFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanFixtureTests.swift; sourceTree = "<group>"; };
+		8C7A5720D8ABC5C79074E63E /* PlanFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanFixture.swift; sourceTree = "<group>"; };
 		BE956BD00EE959EA1CE13628 /* SkinAndBones.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkinAndBones.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F3190CF24428CD1EBE3E756B /* PlanFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanFixtureTests.swift; sourceTree = "<group>"; };
-		FC5CA6E2677F9402D3D4D76E /* SkinAndBonesCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkinAndBonesCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		4675255FA89D478F746DEBBF /* Fixtures */ = {
+		14A1E9CD3634912F4C4C3E9A /* SkinAndBonesTests */ = {
 			isa = PBXGroup;
 			children = (
-				2C83DBC600E38809F4BD5B08 /* plan-fixture.json */,
+				8C7A5720D8ABC5C79074E63E /* PlanFixture.swift */,
+				85107FCC3644F81E4093173F /* PlanFixtureTests.swift */,
+				27FF2D7D9DECBFCF1CBED320 /* Fixtures */,
+			);
+			path = SkinAndBonesTests;
+			sourceTree = "<group>";
+		};
+		27FF2D7D9DECBFCF1CBED320 /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				0D85D9EA9C8B9B004EA31E8B /* plan-fixture.json */,
 			);
 			path = Fixtures;
 			sourceTree = "<group>";
@@ -35,7 +45,7 @@
 			isa = PBXGroup;
 			children = (
 				BE956BD00EE959EA1CE13628 /* SkinAndBones.app */,
-				FC5CA6E2677F9402D3D4D76E /* SkinAndBonesCoreTests.xctest */,
+				3179985D4CDE17AE647F827E /* SkinAndBonesTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,21 +58,11 @@
 			path = SkinAndBones;
 			sourceTree = "<group>";
 		};
-		603385A0E172842C026B9EB7 /* SkinAndBonesCoreTests */ = {
-			isa = PBXGroup;
-			children = (
-				99779807AC8A62883A9F222A /* PlanFixture.swift */,
-				F3190CF24428CD1EBE3E756B /* PlanFixtureTests.swift */,
-				4675255FA89D478F746DEBBF /* Fixtures */,
-			);
-			path = SkinAndBonesCoreTests;
-			sourceTree = "<group>";
-		};
 		FEB552752B69D5D9E10DE988 = {
 			isa = PBXGroup;
 			children = (
 				55936798538C34E2569A886E /* SkinAndBones */,
-				603385A0E172842C026B9EB7 /* SkinAndBonesCoreTests */,
+				14A1E9CD3634912F4C4C3E9A /* SkinAndBonesTests */,
 				52ECB41319D7151232270DC2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -70,24 +70,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		91C579B10F63EFCA53202BA5 /* SkinAndBonesCoreTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 04D36927E731BA5D065C43E8 /* Build configuration list for PBXNativeTarget "SkinAndBonesCoreTests" */;
-			buildPhases = (
-				D706DFBFA24249B71421FDC0 /* Sources */,
-				1517278E2C673454ED95254B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = SkinAndBonesCoreTests;
-			packageProductDependencies = (
-			);
-			productName = SkinAndBonesCoreTests;
-			productReference = FC5CA6E2677F9402D3D4D76E /* SkinAndBonesCoreTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		B77BF3CF1485EB44993F282F /* SkinAndBones */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E7EEF21921F8DA012C609FBE /* Build configuration list for PBXNativeTarget "SkinAndBones" */;
@@ -105,6 +87,24 @@
 			productReference = BE956BD00EE959EA1CE13628 /* SkinAndBones.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D192DF168943B80E9390E534 /* SkinAndBonesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8DA9468ECD2DBF9736A202D5 /* Build configuration list for PBXNativeTarget "SkinAndBonesTests" */;
+			buildPhases = (
+				ADA51A8F1B0264F65ECBB43E /* Sources */,
+				9FC7E4B2354127EAD3EEBC26 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SkinAndBonesTests;
+			packageProductDependencies = (
+			);
+			productName = SkinAndBonesTests;
+			productReference = 3179985D4CDE17AE647F827E /* SkinAndBonesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -114,11 +114,11 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
-					91C579B10F63EFCA53202BA5 = {
+					B77BF3CF1485EB44993F282F = {
 						DevelopmentTeam = ARX5U6F9ZL;
 						ProvisioningStyle = Automatic;
 					};
-					B77BF3CF1485EB44993F282F = {
+					D192DF168943B80E9390E534 = {
 						DevelopmentTeam = ARX5U6F9ZL;
 						ProvisioningStyle = Automatic;
 					};
@@ -139,17 +139,17 @@
 			projectRoot = "";
 			targets = (
 				B77BF3CF1485EB44993F282F /* SkinAndBones */,
-				91C579B10F63EFCA53202BA5 /* SkinAndBonesCoreTests */,
+				D192DF168943B80E9390E534 /* SkinAndBonesTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		1517278E2C673454ED95254B /* Resources */ = {
+		9FC7E4B2354127EAD3EEBC26 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D299A1F5A843FC72E9B12666 /* plan-fixture.json in Resources */,
+				A286819F1281BA7B3AA86AB0 /* plan-fixture.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,19 +164,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D706DFBFA24249B71421FDC0 /* Sources */ = {
+		ADA51A8F1B0264F65ECBB43E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7EE3A34BADD7F0DEB97BE18A /* PlanFixture.swift in Sources */,
-				BCAD3CAE789686938335AEE1 /* PlanFixtureTests.swift in Sources */,
+				1C05D6A9B6B762E291A9B63F /* PlanFixture.swift in Sources */,
+				42AF2DF8EC4566CE4A70FF92 /* PlanFixtureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		2E82A98CA8B51F25CE1D28B9 /* Debug */ = {
+		2C160D1AFA3DB46197B49034 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -187,26 +187,10 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lazzymerlin.SkinAndBonesCoreTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lazzymerlin.SkinAndBonesTests;
 				SDKROOT = macosx;
 			};
 			name = Debug;
-		};
-		2E95A888A5B9F53FD89B97CD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				COMBINE_HIDPI_IMAGES = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lazzymerlin.SkinAndBonesCoreTests;
-				SDKROOT = macosx;
-			};
-			name = Release;
 		};
 		6B622A089C05D91FE066594C /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -373,14 +357,30 @@
 			};
 			name = Release;
 		};
+		FE2A2CB758DE1C962777504D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lazzymerlin.SkinAndBonesTests;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		04D36927E731BA5D065C43E8 /* Build configuration list for PBXNativeTarget "SkinAndBonesCoreTests" */ = {
+		8DA9468ECD2DBF9736A202D5 /* Build configuration list for PBXNativeTarget "SkinAndBonesTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2E82A98CA8B51F25CE1D28B9 /* Debug */,
-				2E95A888A5B9F53FD89B97CD /* Release */,
+				2C160D1AFA3DB46197B49034 /* Debug */,
+				FE2A2CB758DE1C962777504D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

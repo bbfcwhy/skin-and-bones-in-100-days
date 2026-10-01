@@ -18,7 +18,7 @@ const PLAN_RELATIVE = '100_Todo/projects/健康管理/2026-08-09_內臟脂肪減
 const PLAN_PATH = process.env.PLAN_PAGE
   ?? `${process.env.HOME}/Library/Mobile Documents/iCloud~md~obsidian/Documents/2nd Brain/${PLAN_RELATIVE}`;
 const OUT_PATH = process.argv[2]
-  ?? new URL('../SkinAndBonesCoreTests/Fixtures/plan-fixture.json', import.meta.url);
+  ?? new URL('../SkinAndBonesTests/Fixtures/plan-fixture.json', import.meta.url);
 const FIRST_DAY = [2026, 10, 1];
 const LAST_DAY = [2026, 11, 17];
 

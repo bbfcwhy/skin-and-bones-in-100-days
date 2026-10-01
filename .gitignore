@@ -18,3 +18,9 @@ tsconfig.tsbuildinfo
 # Xcode
 xcuserdata/
 *.xcuserstate
+DerivedData/
+.swiftpm/
+.build/
+*.orig
+__pycache__/
+*.pyc

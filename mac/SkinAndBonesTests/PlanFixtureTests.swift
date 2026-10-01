@@ -1,7 +1,8 @@
 import Testing
 
 struct PlanFixtureTests {
-    @Test func 涵蓋十月一日到十一月十七日共四十八天() {
+    @Test("fixture 涵蓋 10/1 到 11/17 共 48 天")
+    func coversFortyEightDays() {
         let days = PlanFixture.shared.days
         #expect(days.count == 48)
         #expect(days.first?.date == "2026-10-01")
@@ -9,7 +10,8 @@ struct PlanFixtureTests {
         #expect(Set(days.map(\.date)).count == days.count)
     }
 
-    @Test func 依台北時間產生() {
+    @Test("fixture 依台北時間產生")
+    func usesTaipeiTime() {
         #expect(PlanFixture.shared.timeZone == "Asia/Taipei")
     }
 }

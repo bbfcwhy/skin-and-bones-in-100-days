@@ -28,24 +28,24 @@ targets:
         INFOPLIST_KEY_LSUIElement: YES
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.healthcare-fitness
         ENABLE_HARDENED_RUNTIME: YES
-  SkinAndBonesCoreTests:
+  SkinAndBonesTests:
     type: bundle.unit-test
     platform: macOS
     sources:
-      - SkinAndBonesCoreTests
+      - SkinAndBonesTests
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.lazzymerlin.SkinAndBonesCoreTests
+        PRODUCT_BUNDLE_IDENTIFIER: com.lazzymerlin.SkinAndBonesTests
         GENERATE_INFOPLIST_FILE: YES
 schemes:
   SkinAndBones:
     build:
       targets:
         SkinAndBones: all
-        SkinAndBonesCoreTests: [test]
+        SkinAndBonesTests: [test]
     test:
       config: Debug
       targets:
-        - SkinAndBonesCoreTests
+        - SkinAndBonesTests
     archive:
       config: Release

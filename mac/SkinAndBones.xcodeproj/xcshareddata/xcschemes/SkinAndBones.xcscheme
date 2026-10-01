@@ -29,9 +29,9 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "91C579B10F63EFCA53202BA5"
-               BuildableName = "SkinAndBonesCoreTests.xctest"
-               BlueprintName = "SkinAndBonesCoreTests"
+               BlueprintIdentifier = "D192DF168943B80E9390E534"
+               BuildableName = "SkinAndBonesTests.xctest"
+               BlueprintName = "SkinAndBonesTests"
                ReferencedContainer = "container:SkinAndBones.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -58,9 +58,9 @@
             parallelizable = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "91C579B10F63EFCA53202BA5"
-               BuildableName = "SkinAndBonesCoreTests.xctest"
-               BlueprintName = "SkinAndBonesCoreTests"
+               BlueprintIdentifier = "D192DF168943B80E9390E534"
+               BuildableName = "SkinAndBonesTests.xctest"
+               BlueprintName = "SkinAndBonesTests"
                ReferencedContainer = "container:SkinAndBones.xcodeproj">
             </BuildableReference>
          </TestableReference>

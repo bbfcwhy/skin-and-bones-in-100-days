@@ -1,0 +1,441 @@
+#!/bin/bash
+# ⚠️ ios-app-starter 樣板。註解裡的踩坑判例出自 YourlyOmamori（2026-08），套用到
+#    新專案時，把裡面提到的具體 key／測試名換成自己專案的對應物即可。
+# Pre-push hook: 完整測試（30 秒～數分鐘）
+#
+# 為什麼要這道防線:
+#   1. 保護 main / shared branch — 推到遠端的東西其他人會 pull,壞掉影響整隊
+#   2. 提早發現邏輯 bug — 本機 30 秒就回應;自動 CI 2026-06-10 起停用,這道就是最後一道
+#   3. 養成「push 前自己跑一次 test」的肌肉記憶 — 不靠 CI 兜底
+#
+#   想跳過: git push --no-verify(緊急情況才用,且應馬上回頭修)
+#   詳細設計理由見 .githooks/README.md「為什麼這樣切」段
+
+set -e
+
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+echo -e "${BLUE}→ Pre-push: 完整測試(unit + UI)${NC}"
+echo "  (若要跳過: git push --no-verify,但不建議)"
+
+# hook 所在的資料夾,下面找 _wait-for-simulator.sh 用。要在 cd 之前算:$0 可能是相對路徑。
+HOOK_DIR=$(cd "$(dirname "$0")" && pwd)
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd "$REPO_ROOT"
+
+# linked worktree 的 hook 會拿到 GIT_DIR=<主 repo>/.git/worktrees/<名>,xcodebuild 做 SPM checkout 會沿用而找錯 repo(unable to read tree)
+unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE
+
+# 上架合規:AppIcon 不可含 alpha channel(App Store ITMS-90717 會退件)
+# 原本在 GitHub Actions 把關,2026-06-10 CI 停用後搬進本機 pre-push
+while IFS= read -r ICON; do
+  HAS_ALPHA=$(sips -g hasAlpha "$ICON" 2>/dev/null | awk '/hasAlpha/{print $2}')
+  if [ "$HAS_ALPHA" != "no" ]; then
+    echo -e "${RED}✗ $ICON 含 alpha channel,App Store 會以 ITMS-90717 退件${NC}"
+    echo "  請先去 alpha 再推(可用 sips 或 PIL 重存不帶 alpha 的 PNG)"
+    exit 1
+  fi
+done < <(find . -path "*/AppIcon.appiconset/*.png" -not -path "*/DerivedData/*" 2>/dev/null)
+
+# 找有效的 .xcodeproj
+# Sanity check:必須含 project.pbxproj (過濾 Xcode 在舊路徑殘留的空殼)
+# 排序避免 macOS find 用 inode-order 不可靠 - 確保 root 那層優先
+XCODEPROJ=""
+while IFS= read -r candidate; do
+  if [ -f "$candidate/project.pbxproj" ]; then
+    XCODEPROJ="$candidate"
+    break
+  fi
+done < <(find . -maxdepth 2 -name "*.xcodeproj" -type d 2>/dev/null | sort)
+
+if [ -z "$XCODEPROJ" ]; then
+  echo -e "${YELLOW}⚠ 找不到有效 .xcodeproj (需含 project.pbxproj),跳過測試${NC}"
+  exit 0
+fi
+
+PROJECT_NAME=$(basename "$XCODEPROJ" .xcodeproj)
+
+# 平台判斷:macOS app 沒有 simulator,destination 與測試輪次都跟 iOS 不同。
+# 看 pbxproj,比 xcodebuild -showBuildSettings 快(不必多等幾秒)。兩種寫法都算 iOS:
+#   - SDKROOT = iphoneos(iOS App 範本)
+#   - SUPPORTED_PLATFORMS 列了 iphoneos(Xcode 多平台 App 範本:target 層寫 SDKROOT = auto)。
+#     只看 SDKROOT 的話,多平台專案會被當成 macOS:不等別的 session、只跑 unit、iPad 輪整個跳過
+#     (2026-09-14 拿 QuotationAssistant 的 pbxproj 實測)。
+# 只認這兩個 key:"…[sdk=iphoneos*]" 這類條件式設定,專案改成只支援 macOS 後常會殘留,不能拿來判斷。
+# 多平台專案(iphoneos 與 macosx 都有)一律走 iOS 路徑 — iOS 才是送審主目標。
+if grep -q 'SDKROOT = iphoneos;' "$XCODEPROJ/project.pbxproj" 2>/dev/null \
+   || grep -qE 'SUPPORTED_PLATFORMS = [^;]*iphoneos' "$XCODEPROJ/project.pbxproj" 2>/dev/null; then
+  IS_MACOS=0
+  PLATFORM_LABEL="iPhone"
+else
+  IS_MACOS=1
+  PLATFORM_LABEL="macOS"
+fi
+
+# 先等別的 session 用完模擬器(判準見 _wait-for-simulator.sh 開頭註解)。
+# 下面要開模擬器跑測試。別的 session 也在用的話,兩邊會搶到同一台、UI 測試互相干擾,
+# 或被對方的 `simctl shutdown all` 連帶關掉(2026-09-13 兩種都發生過)。
+# 放在這裡、在碰任何模擬器工具之前:下面挑 simulator 就會叫 simctl,
+# 還在排隊的 hook 不該先生出這種程序,讓別的 session 以為有人在用。macOS app 不用模擬器,不用等。
+# 用 HOOK_DIR 而不是 .githooks/:在 worktree 裡 push 時 hook 本體可能來自主 checkout,helper 要跟它同一份。
+if [ "$IS_MACOS" -eq 0 ]; then
+  WAIT_SIM="$HOOK_DIR/_wait-for-simulator.sh"
+  if [ -x "$WAIT_SIM" ]; then
+    "$WAIT_SIM" "$$" </dev/null || exit 1
+  else
+    echo -e "${YELLOW}⚠ 找不到 $WAIT_SIM,這次沒等別的 session 就開跑${NC}"
+  fi
+fi
+
+PICK_SIM=".githooks/_pick-simulator.sh"
+
+if [ "$IS_MACOS" -eq 1 ]; then
+  # macOS app 直接跑在本機,沒有 simulator 可挑
+  DESTINATION="platform=macOS"
+else
+  # 動態挑 destination — 不寫死 OS / iPhone 型號,避免 Xcode 升級後過期
+  # (寫死的話每升一次 Xcode 都要回頭改 hook,壞 onboarding 體驗)
+  if [ -x "$PICK_SIM" ]; then
+    DESTINATION=$("$PICK_SIM")
+  else
+    echo -e "${YELLOW}⚠ 找不到 $PICK_SIM,fallback 用 OS=latest${NC}"
+    DESTINATION="platform=iOS Simulator,name=iPhone 16,OS=latest"
+  fi
+fi
+echo "  destination: $DESTINATION"
+
+# 第一輪(unit test)要跑哪些 test target:
+# - macOS:UI test 要「輔助使用」權限才起得了 automation mode,沒給會 timeout
+#   (2026-08-11 實測:Timed out while enabling automation mode)。
+#   決議:pre-push 只跑 unit test。UI test target 保留,要跑就手動跑。
+#   已知缺口:這裡用的是 -only-testing,別的 test target 一樣會漏跑(見下面 iOS 的說明);
+#   要改成 -skip-testing,得先在 macOS 專案實測過。
+# - iOS:UI test 拆到後面自己跑(iPhone、iPad 各一輪,理由見那兩輪的註解),這輪把 UI target 排除。
+#   用 -skip-testing 排除,而不是 -only-testing 指名 "${PROJECT_NAME}Tests":
+#   專案可能還有別的 test target(合規測試、SPM 模組測試),指名會把它們靜默漏掉。
+if [ "$IS_MACOS" -eq 1 ]; then
+  UNIT_FILTER="-only-testing:${PROJECT_NAME}Tests"
+  echo -e "${YELLOW}  ⚠ macOS UI test 這輪跳過(沒跑,不是通過)${NC}"
+  echo -e "${YELLOW}    要補跑:給 Xcode 輔助使用權限後 xcodebuild test -only-testing:${PROJECT_NAME}UITests${NC}"
+else
+  UNIT_FILTER="-skip-testing:${PROJECT_NAME}UITests"
+fi
+
+# ── 模擬器收尾:只關這支 hook 自己開機的那台 ─────────────────────────────
+# 2026-09-14 從 YourlyOmamori 移植(該 repo PR #54 有判例與假工具測試)。
+# 以前第一輪前後各跑一次 xcrun simctl shutdown all,連別人正在用的模擬器一起關:
+#   2026-06-10 YourlyOmamori 在 Xcode 手動驗收中的 App 被 SIGTERM 砍掉;2026-09-13 QuotationAssistant
+#   的 pre-push 開頭也全部關掉,另一個 session 跑到一半的測試被中止(signal term)。
+# 現在每一台模擬器第一次上場前(iPhone 在 unit 輪前、iPad 在 iPad 輪前),先看它有沒有開機:
+#   - 沒開 → 這支 hook 會把它開起來,這台的輪次跑完就關(當初全部關掉的用意:別留在背景吃資源、過熱)
+#   - 已經開著 → 有人在用(Xcode 手動驗收、別的 session),跑完照原樣留著。只關這一台也會出事:
+#     2026-08-01 Simulator.app 還握著被關掉的裝置,狀態卡在 Shutting Down,接著在 Xcode 按 Run 就炸
+#   - 別台一律不碰
+# 開跑前也不再先關:_pick-simulator 優先挑已開機的那台,就是要跟 Xcode 共用、避開 PTY 衝突,
+# 先關掉等於把它挑的那台變回冷開機。
+# 中途 Ctrl-C 或被 kill 時由 EXIT trap 收尾,不然那台會一直開著:下一輪看到它開著,
+# 會當成別人在用而不關。kill -9 攔不到,要自己 xcrun simctl shutdown <UDID>。
+# macOS app 沒有模擬器:第一輪開跑前的記錄、開機、清 app 都先看 IS_MACOS,兩個 UI 輪本來就只有 iOS 會跑。
+
+# destination 對到的模擬器 UDID,一行一台。iPad 輪是 id=<UDID>;iPhone 輪是 name=…,OS=…,
+# 照同樣的名稱 + iOS 版本去裝置清單找(同名同版本不只一台就全列,因為不知道 xcodebuild 挑哪台)。
+# 認不出來(例如 fallback 的 OS=latest)就不列:認不出來的一律不關。
+sim_udids_for() {
+  case "$1" in *",id="*) echo "${1##*,id=}"; return 0 ;; esac
+  xcrun simctl list devices available -j 2>/dev/null | DEST="$1" python3 -c '
+import json, os, re, sys
+dest = dict(kv.split("=", 1) for kv in os.environ["DEST"].split(",") if "=" in kv)
+try:
+    data = json.load(sys.stdin)
+except Exception:
+    sys.exit(0)
+for runtime, devs in data.get("devices", {}).items():
+    m = re.search(r"iOS-([0-9-]+)$", runtime)
+    if not m:
+        continue
+    ver = m.group(1).replace("-", ".")
+    if dest.get("OS") not in (ver, ".".join(ver.split(".")[:2])):
+        continue
+    for d in devs:
+        if d.get("name") == dest.get("name"):
+            print(d["udid"])
+' 2>/dev/null || true
+}
+
+# 現在開著回 0。讀不到狀態也當成開著:寧可跑完留著,也不要關到別人在用的
+sim_is_booted() {
+  local booted
+  booted=$(xcrun simctl list devices booted 2>/dev/null) || return 0
+  printf '%s\n' "$booted" | grep -qF "($1)"
+}
+
+SIMS_WE_BOOT=""   # 這一輪會開機、跑完要關的 UDID
+note_sims_we_boot() {  # 每台模擬器第一次上場前、開機之前呼叫一次,$1 = destination
+  local u found=0
+  for u in $(sim_udids_for "$1"); do
+    found=1
+    if sim_is_booted "$u"; then
+      echo "  模擬器 $u 開跑前就開著(可能有人在用),跑完不關"
+    else
+      SIMS_WE_BOOT="$SIMS_WE_BOOT $u"
+    fi
+  done
+  [ "$found" = "1" ] || echo -e "${YELLOW}  ⚠ 認不出這輪用的是哪台模擬器,跑完不會自動關${NC}"
+}
+shut_down_sims_we_booted() {
+  local u
+  for u in $SIMS_WE_BOOT; do
+    echo "  模擬器:關掉這一輪開機的 $u"
+    xcrun simctl shutdown "$u" >/dev/null 2>&1 || true
+  done
+  SIMS_WE_BOOT=""
+}
+
+# ── 清 simulator 上的舊 app(只有 iOS)──────────────────────────────────
+# iPhone 的兩輪、iPad 輪,開跑前都先 simctl uninstall 這個 app。兩個判例:
+#   - 殘留 app 擋住啟動(2026-08-02,估價單助手):simulator 裡殘留一份舊版 app 時,新版裝上去
+#     啟動會被 SBMainWorkspace 用 Busy("Application failed preflight checks")擋掉 —— 10 條
+#     UI test 全部死在「app 起不來」、每輪紅的名單還會換人,看起來像 flaky,其實是殘留。
+#     手動 uninstall 後同一份 code 19 條全過。
+#   - 殘留資料污染下一輪:見 iPhone UI 輪、iPad 輪的註解。
+# 清的只有 simulator 裡這個 app 的資料,跟真機/真實使用者資料無關。
+BUNDLE_ID=""
+IPHONE_UDID=""
+if [ "$IS_MACOS" -eq 0 ]; then
+  BUNDLE_ID=$(xcodebuild -showBuildSettings -project "$XCODEPROJ" -scheme "$PROJECT_NAME" 2>/dev/null \
+    | awk -F' = ' '/ PRODUCT_BUNDLE_IDENTIFIER = /{print $2; exit}') || true
+  if [ -z "$BUNDLE_ID" ]; then
+    echo -e "${YELLOW}  ⚠ 取不到 bundle id,這次不會清 simulator 上的舊 app${NC}"
+    echo -e "${YELLOW}    測試若大量死在 app 啟動,先手動 xcrun simctl uninstall${NC}"
+  fi
+  # iPhone 輪的 destination 是 name=…,OS=…,要清 app 得先反查是哪一台(iPad 輪本來就是 id=…)。
+  # 用模擬器收尾的同一支 sim_udids_for:清 app 的那台和跑完要不要關的那台,才會是同一台。
+  # 同名同版本不只一台時取第一台;認不出來(例如 OS=latest)就不清。
+  IPHONE_UDID=$(sim_udids_for "$DESTINATION" | head -1)
+fi
+clean_iphone_app() {
+  [ -n "$IPHONE_UDID" ] && [ -n "$BUNDLE_ID" ] || return 0
+  xcrun simctl uninstall "$IPHONE_UDID" "$BUNDLE_ID" >/dev/null 2>&1
+}
+
+# ── 暫存 log ──────────────────────────────────────────────────────────────
+# 三輪的 log 都放進 mktemp -d 建的專屬目錄:目錄名帶專案名好認,檔名保留 .log 副檔名。
+# 不要寫成 `LOG_FILE=$(mktemp -t 名字).log` —— `.log` 接在指令替換之外,mktemp 原子建立的
+# 是另一個沒有 .log 的檔(每次 push 在暫存目錄留一個永遠用不到的空檔),腳本真正寫入的
+# `xxx.log` 反而是非原子建立的路徑。macOS 的 BSD mktemp 也只替換「結尾」的 X,所以
+# `mktemp "名字.XXXXXXXX.log"` 會原樣建出一個叫 XXXXXXXX 的固定名檔案,一樣不能用。
+# 清理策略:全綠或跳過就清掉,測試紅了整包留著並印出路徑 —— 三輪都不加 -quiet(見 report_failure),
+# log 裡有完整的 build 與斷言輸出,失敗當下就是靠它查
+# (更早的 trap "rm -f" EXIT 是連失敗那次的 log 也刪,印出的路徑點開是空的)。
+LOG_DIR=$(mktemp -d -t "${PROJECT_NAME}-pre-push")
+UNIT_LOG="$LOG_DIR/unit-tests.log"
+IPHONE_UI_LOG="$LOG_DIR/iphone-ui-tests.log"
+UI_LOG="$LOG_DIR/ipad-ui-tests.log"
+KEEP_LOGS=0
+cleanup_logs() {
+  [ "$KEEP_LOGS" = 1 ] && return 0
+  rm -f "$UNIT_LOG" "$IPHONE_UI_LOG" "$UI_LOG"
+  rmdir "$LOG_DIR" 2>/dev/null || true
+}
+
+# 收尾合成一個 EXIT trap。bash 的 EXIT trap 只有一個,分開 trap 兩次的話,後設的會把先設的蓋掉:
+# 蓋掉清 log 的 → 每次 push 都留下暫存 log;蓋掉模擬器收尾的 → 中途 Ctrl-C 後模擬器一直開著。
+# 兩種都由 .githooks/tests/simulator-cleanup.test.py 把關。
+on_exit() {
+  shut_down_sims_we_booted
+  cleanup_logs
+}
+trap on_exit EXIT
+
+# 三輪共用的失敗回報:先印「哪幾條紅」,再印斷言細節,最後給 log 路徑。
+# 用法:report_failure <標題> <秒數> <log 路徑>
+# 不要幫 xcodebuild 加 -quiet:它連寫進 log 檔的斷言都一起壓掉,失敗時翻 log 只看得到
+# 一份 Failing tests 清單加 ** TEST FAILED **,跟終端印的一樣,等於白留(2026-08-02 判例)。
+# 輸出本來就重導向進 log 檔,不加 -quiet 不會洗版終端,代價只是 log 檔變大。
+report_failure() {
+  KEEP_LOGS=1   # 紅了才留 log,下面印的路徑要真的點得開
+  echo -e "${RED}✗ $1 ($2s)${NC}"
+  echo "—— 紅了哪幾條 ——"
+  # macOS 的 xcodebuild 印「Testing failed:」,iOS simulator 印「Failing tests:」— 兩種都撈,
+  # 否則 macOS 測試紅了這裡會印出一片空白(2026-08-11 踩過)。
+  grep -A10 -E "Failing tests:|Testing failed:" "$3" | head -14
+  echo "—— 錯誤輸出 ——"
+  grep -E "(Test Case.*failed|Assertion Failure|XCTAssert|error:|Expectation failed|encountered an error|recorded an issue)" "$3" | head -20
+  echo "  完整 log: $3"
+  echo ""
+}
+
+START_TIME=$(date +%s)
+
+set +e
+if [ "$IS_MACOS" -eq 0 ]; then
+  # 要在開機之前記,才分得出這台是不是這一輪開的
+  note_sims_we_boot "$DESTINATION"
+  # 先 boot 起來再清 app:uninstall 要指名一台開著的裝置。
+  # 順帶避開冷 boot 直接跑測試容易撞到的 test runner 連線問題(見 iPad 輪註解)。
+  if [ -n "$IPHONE_UDID" ]; then
+    xcrun simctl boot "$IPHONE_UDID" >/dev/null 2>&1
+    xcrun simctl bootstatus "$IPHONE_UDID" -b >/dev/null 2>&1
+  fi
+  clean_iphone_app
+fi
+
+# ── 第一輪:unit test(iOS 在 iPhone 上跑)─────────────────────────────────
+# UI test 不在這輪:iOS 拆到後面 iPhone、iPad 各跑一輪,macOS 不跑(見上方 UNIT_FILTER)。
+# 注意：不可加 CODE_SIGNING_ALLOWED=NO — app 有 CloudKit entitlements 後，
+# 不簽名 = entitlements 沒被簽進去 → test runner 啟動即 crash（2026-06-11 踩過）。
+# simulator 用免費本機簽名，不需要付費憑證。
+xcodebuild test \
+  -project "$XCODEPROJ" \
+  -scheme "$PROJECT_NAME" \
+  -destination "$DESTINATION" \
+  -configuration Debug \
+  "$UNIT_FILTER" \
+  -parallel-testing-enabled NO \
+  -disable-concurrent-destination-testing \
+  -maximum-parallel-testing-workers 1 \
+  > "$UNIT_LOG" 2>&1
+UNIT_RESULT=$?
+set -e
+
+UNIT_DURATION=$(($(date +%s) - START_TIME))
+
+if [ $UNIT_RESULT -ne 0 ]; then
+  report_failure "${PLATFORM_LABEL} unit 測試失敗" "$UNIT_DURATION" "$UNIT_LOG"
+  echo -e "${RED}Push 被阻擋. 修好測試後再推.${NC}"
+  exit 1
+fi
+
+# macOS app 沒有後面兩個 UI 輪(也沒有 simulator),測到這裡就結束
+if [ "$IS_MACOS" -eq 1 ]; then
+  echo -e "${GREEN}✓ unit test 全通過 (${UNIT_DURATION}s)${NC}"
+  echo -e "${YELLOW}  注意:UI test 這輪沒跑(需要輔助使用權限),不算通過${NC}"
+  exit 0
+fi
+
+echo -e "${GREEN}✓ iPhone unit 測試通過 (${UNIT_DURATION}s)${NC}"
+
+# ── 第二輪:iPhone 的 UI test ────────────────────────────────────────────
+# 2026-08-01 之前 pre-push 完全不跑 UI test(整個 UI target 用 -skip-testing 跳過),理由是
+# UI test flaky、pre-push 要快;代價是 UI 迴歸完全沒防線 —— 三條 tab 測試就這樣在 iPhone
+# 綠了好幾個月,直到第一次在 iPad 上跑才發現全紅。現在兩台都跑:這輪 iPhone、下方第三輪 iPad。
+#
+# 為什麼不跟 unit test 同一個 xcodebuild 呼叫:
+#   2026-08-02 判例(估價單助手)。unit test 是 Swift Testing、跑在 host app 裡,
+#   「Customer 持久化」「CompanyProfile」「CloudKit schema seeder」這些 suite 會把資料
+#   寫進 app 的容器;UI test 接著啟動時看到的是一個「已經有資料」的 app,前提整個被破壞
+#   (例:「加入客戶庫後按鈕應自動消失」,那位客戶早就在庫裡了)。
+#   同一個 xcodebuild 呼叫中間插不了手,所以拆成兩次呼叫、中間再 uninstall 一次。
+#   實測:同一輪跑紅 11 條,拆開後剩 1 條。
+#
+# 為什麼兩個 UI 輪都加 -retry-tests-on-failure -test-iterations 3,而 unit 輪不加:
+#   XCUITest 本質受時序影響(動畫、鍵盤彈出、sheet dismiss 都要時間)。估價單助手
+#   2026-08-03 實測:同一份 code 連跑四輪,紅的條數在 1/2/4/5 之間跳、成員每次洗牌,
+#   逐條補等待變成打地鼠。retry 是 Apple 官方對 flaky 的處置(Xcode 13+):真迴歸連紅
+#   三次照樣被擋,flaky 第二次就過。
+#   unit test 不給 retry —— 它該是確定性的,給它 retry 等於幫真 bug 遮掩。
+UI_START_IPHONE=$(date +%s)
+
+set +e
+# 這輪不再叫 note_sims_we_boot:同一台 iPhone 在 unit 輪前記過了。這時它開著,是這支 hook
+# 在 unit 輪前開的;再記一次會被當成「開跑前就開著(有人在用)」,印出互相矛盾的訊息。
+clean_iphone_app
+xcodebuild test \
+  -project "$XCODEPROJ" \
+  -scheme "$PROJECT_NAME" \
+  -destination "$DESTINATION" \
+  -configuration Debug \
+  -only-testing:"${PROJECT_NAME}UITests" \
+  -parallel-testing-enabled NO \
+  -disable-concurrent-destination-testing \
+  -maximum-parallel-testing-workers 1 \
+  -retry-tests-on-failure \
+  -test-iterations 3 \
+  > "$IPHONE_UI_LOG" 2>&1
+IPHONE_UI_RESULT=$?
+shut_down_sims_we_booted
+set -e
+
+IPHONE_UI_DURATION=$(($(date +%s) - UI_START_IPHONE))
+
+if [ $IPHONE_UI_RESULT -ne 0 ]; then
+  report_failure "iPhone UI 測試失敗" "$IPHONE_UI_DURATION" "$IPHONE_UI_LOG"
+  echo -e "${RED}Push 被阻擋. 修好測試後再推.${NC}"
+  exit 1
+fi
+
+DURATION=$((UNIT_DURATION + IPHONE_UI_DURATION))
+echo -e "${GREEN}✓ iPhone UI 測試通過 (${IPHONE_UI_DURATION}s)${NC}"
+
+# ── 第三輪:iPad 上的 UI 測試 ────────────────────────────────────────────
+# 為什麼 iPhone 跑過 UI 測試,還要在 iPad 再跑一輪:
+#   iOS 26 的 TabView 在兩種裝置上是不同元件 — iPhone 是底部 UITabBar,
+#   iPad 是頂部浮動 _UIFloatingTabBar(XCUITest 看不到 TabBar 型別,
+#   app.tabBars.count == 0)。三條 tab 測試在 iPhone 綠了好幾個月,
+#   2026-08-01 第一次在 iPad 上跑就全紅。
+#   而 iPad 正是 Apple 的審查機(1.0 build 8 的 2.1(b) 退件出自 iPad Air 11"),
+#   iPad 專屬的 UI 迴歸必須在 push 前擋下來,不能等審查員幫我們發現。
+# 沒有 iPad simulator 的機器:大聲印警告後跳過,不擋 push(也不假裝跑過)。
+IPAD_DEST=""
+if [ -x "$PICK_SIM" ]; then
+  IPAD_DEST=$("$PICK_SIM" ipad 2>/dev/null || true)
+fi
+
+if [ -z "$IPAD_DEST" ]; then
+  echo -e "${YELLOW}⚠ 這台機器沒有可用的 iPad simulator — iPad UI 測試這輪跳過(沒跑,不是通過)${NC}"
+  echo -e "${YELLOW}  要補跑:裝一台 iPad simulator 後 xcodebuild test -only-testing:${PROJECT_NAME}UITests${NC}"
+  exit 0
+fi
+
+IPAD_UDID="${IPAD_DEST##*,id=}"
+echo -e "${BLUE}→ Pre-push: iPad UI 測試${NC}"
+echo "  destination: $IPAD_DEST"
+
+UI_START=$(date +%s)
+
+set +e
+note_sims_we_boot "$IPAD_DEST"
+# 冷 boot 的 device 直接跑 UI test 會 `Failed to establish communication with
+# the test runner (Channel disconnected)` — 先 boot 到 Finished 再上,不是多此一舉。
+xcrun simctl boot "$IPAD_UDID" >/dev/null 2>&1
+xcrun simctl bootstatus "$IPAD_UDID" -b >/dev/null 2>&1
+
+# 跑之前先移除 app — 除了上面講的「殘留 app 擋住啟動」,還有一層:UI test 重裝 app
+# 不會清掉它的 UserDefaults,上一輪留下的狀態會污染下一輪。2026-08-01 實例:iPad 上
+# `state.customerEntitlement` 被寫成 "subscribed" 之後,付費牆那兩條(前提是「免費版 +
+# 商品載不到」)就每跑必紅,而同一份 code 在乾淨的 iPhone 上全綠 —— 查了半天才發現紅的
+# 不是程式碼,是 simulator 的殘留資料。
+[ -n "$BUNDLE_ID" ] && xcrun simctl uninstall "$IPAD_UDID" "$BUNDLE_ID" >/dev/null 2>&1
+
+xcodebuild test \
+  -project "$XCODEPROJ" \
+  -scheme "$PROJECT_NAME" \
+  -destination "$IPAD_DEST" \
+  -configuration Debug \
+  -only-testing:"${PROJECT_NAME}UITests" \
+  -parallel-testing-enabled NO \
+  -disable-concurrent-destination-testing \
+  -maximum-parallel-testing-workers 1 \
+  -retry-tests-on-failure \
+  -test-iterations 3 \
+  > "$UI_LOG" 2>&1
+UI_RESULT=$?
+shut_down_sims_we_booted
+set -e
+
+UI_DURATION=$(($(date +%s) - UI_START))
+
+if [ $UI_RESULT -ne 0 ]; then
+  report_failure "iPad UI 測試失敗" "$UI_DURATION" "$UI_LOG"
+  echo -e "${RED}Push 被阻擋. iPad 上的 UI 迴歸就是審查員會看到的畫面,修好再推.${NC}"
+  echo -e "${YELLOW}  真的是環境問題(test runner 起不來)而非測試紅:git push --no-verify${NC}"
+  exit 1
+fi
+
+echo -e "${GREEN}✓ iPad UI 測試通過 (${UI_DURATION}s)${NC}"
+echo -e "${GREEN}✓ 所有測試通過 (共 $((DURATION + UI_DURATION))s)${NC}"
+exit 0

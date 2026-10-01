@@ -1,0 +1,40 @@
+disabled_rules:
+  - type_body_length
+  - file_length
+  - line_length
+  - function_body_length
+  - cyclomatic_complexity
+  - trailing_comma
+  - todo
+  - shorthand_operator
+  - function_parameter_count
+
+opt_in_rules:
+  - empty_count
+  - explicit_init
+  - first_where
+  - sorted_first_last
+  - contains_over_first_not_nil
+
+excluded:
+  - .build
+  - .swiftpm
+  - node_modules
+  - mac/build
+  - "mac/SkinAndBones/Generated"
+  - "mac/SkinAndBonesTests/Generated"
+
+force_cast: warning
+force_try: warning
+
+identifier_name:
+  min_length: 1
+  max_length: 60
+  excluded:
+    - id
+
+type_name:
+  min_length: 2
+  max_length: 60
+
+reporter: "xcode"
