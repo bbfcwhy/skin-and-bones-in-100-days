@@ -12,7 +12,7 @@ NC='\033[0m'
 
 # ── ASC 上架真相檔同步提醒（非阻擋）──────────────────────────
 # 改到會影響 App Store Connect 欄位的檔，卻沒一起更新真相檔，就提醒一聲
-ASC_TRIGGERS=$(git diff --cached --name-only --diff-filter=ACM | grep -iE '\.xcprivacy$|Info\.plist$|\.storekit$|\.entitlements$' || true)
+ASC_TRIGGERS=$(git diff --cached --name-only --diff-filter=ACMR | grep -iE '\.xcprivacy$|Info\.plist$|\.storekit$|\.entitlements$' || true)
 ASC_DOC=$(git diff --cached --name-only | grep -i 'docs/app-store-connect\.html' || true)
 if [ -n "$ASC_TRIGGERS" ] && [ -z "$ASC_DOC" ]; then
   echo -e "${YELLOW}⚠ 偵測到可能影響 App Store Connect 上架資料的變動：${NC}"
@@ -24,7 +24,8 @@ fi
 
 echo "→ Pre-commit: 檢查暫存的 Swift 檔案"
 
-STAGED_SWIFT_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.swift$' || true)
+# R 不能少：git mv 後又改內容的檔，暫存區記成改名（R）不是修改（M），漏了就整個不檢查（2026-10-01）
+STAGED_SWIFT_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep '\.swift$' || true)
 
 if [ -z "$STAGED_SWIFT_FILES" ]; then
   echo "  沒有 Swift 檔案異動，跳過 SwiftLint"
