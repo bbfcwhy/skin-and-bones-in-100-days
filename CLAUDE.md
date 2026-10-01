@@ -21,6 +21,9 @@ Mac 桌面上一直浮著的半透明小視窗：提醒威爾照 100 天減脂�
   - `SkinAndBonesCore/` — 純邏輯：週課表、熱量、第幾天、清單、每日紀錄、進度（同時編進 App 與測試）
   - `SkinAndBonesTests/` — Swift Testing；`Fixtures/plan-fixture.json` 是計畫頁算出的逐日期望值
   - `scripts/generate-plan-fixture.mjs` — 用 node 跑計畫頁的 JS 重產 fixture
+  - `scripts/install.sh` — 建 Release 版、裝到 `/Applications/SkinAndBones.app` 並啟動（舊版搬到 `mac/build/replaced/`）
+- 勾選紀錄：`~/Library/Application Support/com.lazzymerlin.SkinAndBones/checks.json`。重裝不會動到；驗收截圖要用 `open -n /Applications/SkinAndBones.app --args -dataDirectory <別的資料夾>`，不要在真實紀錄上點。
+- 啟動 App 會出現在威爾的桌面上：開之前先跟他說一聲。
 - `app/`、`src/`、`tests/`、`workers/` — 舊版網頁（不再開發）
 
 ## 開發原則
